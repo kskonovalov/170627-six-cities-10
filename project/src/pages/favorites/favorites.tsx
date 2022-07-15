@@ -1,7 +1,7 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
 
-import Header from '../../components/ui/header/Header';
+import Header from '../../components/ui/header/header';
 import {AppRoute} from '../../const';
 
 const Favorites = () => (

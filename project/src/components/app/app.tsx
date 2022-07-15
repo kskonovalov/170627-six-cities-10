@@ -6,7 +6,7 @@ import Login from '../../pages/login/login';
 import Favorites from '../../pages/favorites/favorites';
 import Room from '../../pages/room/room';
 import NotFound from '../../pages/not-found/not-found';
-import PrivateRoute from '../PrivateRoute';
+import PrivateRoute from '../private-route';
 
 function App(): JSX.Element {
   return (

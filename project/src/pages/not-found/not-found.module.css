@@ -23,7 +23,21 @@
 }
 .page__content-title {
   font-size: 100px;
+  margin: 0;
 }
 .page__content-description {
   font-size: 20px;
+}
+.page__content-button {
+  background: #fff;
+  padding: 10px 40px;
+  margin-top: 30px;
+  text-transform: uppercase;
+  border: 1px solid #4481c3;
+  transition: all 0.2s ease-in-out;
+  cursor: pointer;
+}
+.page__content-button:hover {
+  opacity: 0.8;
+  background: rgba(68, 129, 195, 0.3);
 }

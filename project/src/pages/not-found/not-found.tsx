@@ -1,6 +1,8 @@
 import React from 'react';
+import {Link} from 'react-router-dom';
 
-import Header from '../../components/ui/header/Header';
+import Header from '../../components/ui/header/header';
+import {AppRoute} from '../../const';
 import styles from './not-found.module.css';
 
 const NotFound = () => (
@@ -17,6 +19,11 @@ const NotFound = () => (
       <div className={styles['page__content']}>
         <h1 className={styles['page__content-title']}>404</h1>
         <p className={styles['page__content-description']}>The page is not found</p>
+        <Link to={AppRoute.Main}>
+          <button type="button" className={styles['page__content-button']}>
+            Go home
+          </button>
+        </Link>
       </div>
     </main>
   </div>

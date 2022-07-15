@@ -1,7 +1,7 @@
 import React from 'react';
 
 import Card from '../../components/ui/card/card';
-import Header from '../../components/ui/header/Header';
+import Header from '../../components/ui/header/header';
 
 type IndexProps = {
   offersCount: number

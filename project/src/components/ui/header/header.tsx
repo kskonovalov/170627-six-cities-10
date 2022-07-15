@@ -6,6 +6,7 @@ import {AppRoute} from '../../../const';
 const Header = () => {
   const isAuth = true;
   const location = useLocation();
+  const toShowSignInLink = !isAuth && location.pathname !== AppRoute.Login;
 
   return (
     <header className="header">
@@ -33,7 +34,7 @@ const Header = () => {
                     </a>
                   </li>
                 </>}
-              {(!isAuth && location.pathname !== AppRoute.Login) &&
+              {toShowSignInLink &&
                 <li className="header__nav-item">
                   <Link className="header__nav-link" to={AppRoute.Login}>
                     <span className="header__signout">Sign in</span>

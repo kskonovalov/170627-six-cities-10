@@ -1,6 +1,6 @@
 import React from 'react';
 
-import Header from '../../components/ui/header/Header';
+import Header from '../../components/ui/header/header';
 
 const Room = () => {
   const isAuth = true;
