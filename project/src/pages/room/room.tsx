@@ -3,7 +3,8 @@ import React from 'react';
 import Header from '../../components/ui/header/header';
 
 const Room = () => {
-  const isAuth = true;
+  /* TODO: move isAuth to the global state */
+  const isAuth: boolean = (window.localStorage.getItem('isAuth') === 'true') || false;
 
   return (
     <div className="page">

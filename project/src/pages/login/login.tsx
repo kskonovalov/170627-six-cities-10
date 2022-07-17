@@ -1,11 +1,21 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 
 import Header from '../../components/ui/header/header';
 import {AppRoute} from '../../const';
 import {Navigate} from 'react-router-dom';
 
 const Login = () => {
-  const isAuth = true;
+  /* TODO: move isAuth to the global state */
+  const [isAuth, setIsAuth] = useState(false);
+  useEffect(() => {
+    const storedIsAuth: boolean = (window.localStorage.getItem('isAuth') === 'true') || false;
+    setIsAuth(storedIsAuth);
+  }, []);
+  const onSubmitHandle = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    window.localStorage.setItem('isAuth', 'true');
+    setIsAuth(true);
+  };
 
   return (
     isAuth ?
@@ -17,7 +27,7 @@ const Login = () => {
           <div className="page__login-container container">
             <section className="login">
               <h1 className="login__title">Sign in</h1>
-              <form className="login__form form" action="#" method="post">
+              <form className="login__form form" action="#" method="post" onSubmit={onSubmitHandle}>
                 <div className="login__input-wrapper form__input-wrapper">
                   <label className="visually-hidden">E-mail</label>
                   <input className="login__input form__input" type="email" name="email" placeholder="Email" required/>
