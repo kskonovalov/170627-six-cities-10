@@ -20,7 +20,7 @@ const App = ({Offers}: AppProps) => (
       <Route path={AppRoute.Login} element={<Login/>}/>
       <Route path={AppRoute.Favorites} element={
         <PrivateRoute>
-          <Favorites/>
+          <Favorites Offers={Offers}/>
         </PrivateRoute>
       }
       />

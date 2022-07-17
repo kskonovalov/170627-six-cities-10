@@ -8,11 +8,18 @@ type CardsListProps = {
 }
 
 const CardsList = ({Offers}: CardsListProps) => {
-  const [activeCardID, setActiveCardID] = useState('offer1');
+  const [activeCardID, setActiveCardID] = useState<string | boolean>(false);
   return (
     <div className="cities__places-list places__list tabs__content">
       {
-        Offers.map((Offer) => <Card key={Offer.id} Offer={Offer} isActive={Offer.id === activeCardID} setActiveCardID={setActiveCardID}/>)
+        Offers.map((Offer) => (
+          <Card
+            key={Offer.id}
+            Offer={Offer}
+            isActive={Offer.id === activeCardID}
+            setCardActive={() => setActiveCardID(Offer.id)}
+          />)
+        )
       }
     </div>
   );
