@@ -1,18 +1,22 @@
-import React from 'react';
+import React, {Dispatch, SetStateAction} from 'react';
 import {Link} from 'react-router-dom';
 
 import {AppRoute} from '../../../const';
 import {OfferType} from '../../../mocks/offers';
+import styles from './card.module.css';
 
 type CardProps = {
-  Offer: OfferType
+  Offer: OfferType,
+  isActive: boolean,
+  setActiveCardID: Dispatch<SetStateAction<string>>
 }
 
-const Card = ({Offer}: CardProps) => {
+const Card = ({Offer, isActive, setActiveCardID}: CardProps) => {
   const {id, isPremium, image, price, rating, title, type} = Offer;
   const cardLink: string = AppRoute.Card + id;
+  const classForActiveCard = isActive ? 'place-card_active' : '';
   return (
-    <article className="cities__card place-card">
+    <article className={`cities__card place-card ${styles['place-card']} ${styles[classForActiveCard]}`} onMouseEnter={() => (setActiveCardID(Offer.id))}>
       {isPremium &&
         <div className="place-card__mark">
           <span>Premium</span>

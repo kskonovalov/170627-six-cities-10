@@ -9,11 +9,11 @@ import NotFound from '../../pages/not-found/not-found';
 import PrivateRoute from '../private-route';
 import {OfferType} from '../../mocks/offers';
 
-type AppTypes = {
+type AppProps = {
   Offers: OfferType[]
 }
 
-const App = ({Offers}: AppTypes) => (
+const App = ({Offers}: AppProps) => (
   <BrowserRouter>
     <Routes>
       <Route path={AppRoute.Main} element={<Main Offers={Offers}/>}/>

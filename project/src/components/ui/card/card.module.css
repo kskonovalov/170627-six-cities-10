@@ -1,0 +1,6 @@
+.place-card {
+  transition: all 0.2s ease-in-out;
+}
+.place-card_active {
+  transform: scale(1.01);
+}

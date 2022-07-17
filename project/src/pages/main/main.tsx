@@ -1,7 +1,7 @@
 import React from 'react';
 
-import Card from '../../components/ui/card/card';
 import Header from '../../components/ui/header/header';
+import CardsList from '../../components/ui/cards-list/cards-list';
 import {OfferType} from '../../mocks/offers';
 
 type MainProps = {
@@ -71,11 +71,7 @@ const Main = ({Offers}: MainProps) => {
                   <li className="places__option" tabIndex={0}>Top rated first</li>
                 </ul>
               </form>
-              <div className="cities__places-list places__list tabs__content">
-                {
-                  Offers.map((Offer) => <Card Offer={Offer} key={Offer.id}/>)
-                }
-              </div>
+              <CardsList Offers={Offers} />
             </section>
             <div className="cities__right-section">
               <section className="cities__map map"></section>
