@@ -1,6 +1,5 @@
 import React from 'react';
 
-import Header from '../../components/ui/header/header';
 import CardsList from '../../components/ui/cards-list/cards-list';
 import {OfferType} from '../../mocks/offers';
 
@@ -12,7 +11,6 @@ const Main = ({Offers}: MainProps) => {
   const offersCount = Offers.length;
   return (
     <div className="page page--gray page--main">
-      <Header/>
       <main className="page__main page__main--index">
         <h1 className="visually-hidden">Cities</h1>
         <div className="tabs">

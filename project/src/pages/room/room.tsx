@@ -1,6 +1,5 @@
 import React from 'react';
 
-import Header from '../../components/ui/header/header';
 import CommentForm from '../../components/ui/comment-form/comment-form';
 
 const Room = () => {
@@ -9,7 +8,6 @@ const Room = () => {
 
   return (
     <div className="page">
-      <Header/>
       <main className="page__main page__main--property">
         <section className="property">
           <div className="property__gallery-container container">

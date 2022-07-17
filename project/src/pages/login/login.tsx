@@ -1,6 +1,5 @@
 import React, {useEffect, useState} from 'react';
 
-import Header from '../../components/ui/header/header';
 import {AppRoute} from '../../const';
 import {Navigate} from 'react-router-dom';
 
@@ -22,7 +21,6 @@ const Login = () => {
       <Navigate to={AppRoute.Favorites}/>
       :
       <div className="page page--gray page--login">
-        <Header/>
         <main className="page__main page__main--login">
           <div className="page__login-container container">
             <section className="login">

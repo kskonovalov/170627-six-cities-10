@@ -1,7 +1,6 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
 
-import Header from '../../components/ui/header/header';
 import FavoriteCard from '../../components/ui/favorite-card/favorite-card';
 import {AppRoute} from '../../const';
 import {OfferType} from '../../mocks/offers';
@@ -23,7 +22,6 @@ const Favorites = ({Offers}: FavoritesProps) => {
 
   return (
     <div className="page">
-      <Header/>
       {Object.keys(userFavorites).length > 0 &&
         <main className="page__main page__main--favorites">
           <div className="page__favorites-container container">
@@ -60,11 +58,6 @@ const Favorites = ({Offers}: FavoritesProps) => {
             </section>
           </div>
         </main>}
-      <footer className="footer container">
-        <a className="footer__logo-link" href="main.html">
-          <img className="footer__logo" src="img/logo.svg" alt="6 cities logo" width="64" height="33"/>
-        </a>
-      </footer>
     </div>
   );
 };
