@@ -2,19 +2,23 @@ import React from 'react';
 import {Link} from 'react-router-dom';
 
 import {AppRoute} from '../../../const';
-import {OfferType} from '../../../mocks/offers';
+import {offerType} from '../../../mocks/offers';
 import styles from './card.module.css';
 
 type CardProps = {
-  Offer: OfferType,
+  offer: offerType,
   isActive: boolean,
   setCardActive: () => void
 };
 
-const Card = ({Offer, isActive, setCardActive}: CardProps) => {
-  const {id, isPremium, image, price, rating, title, type} = Offer;
+const Card = ({offer, isActive, setCardActive}: CardProps) => {
+  const {isPremium, images, price, rating, title, type, id} = offer;
+
+  const image: string | boolean = (typeof images !== 'undefined' && images.length > 0) ? images[0] : false;
+
   const cardLink: string = AppRoute.Card + id;
   const classForActiveCard = isActive ? 'place-card_active' : '';
+  const calculatedRating = (rating >= 0 && rating <= 5) ? Math.round(rating) * 20 : 0;
   return (
     <article className={`cities__card place-card ${styles['place-card']} ${styles[classForActiveCard]}`} onMouseEnter={setCardActive}>
       {isPremium &&
@@ -42,7 +46,8 @@ const Card = ({Offer, isActive, setCardActive}: CardProps) => {
         </div>
         <div className="place-card__rating rating">
           <div className="place-card__stars rating__stars">
-            <span style={{'width': `${rating} + '%'`}}></span>
+            <span style={{width: `${calculatedRating}%`}}></span>
+            {calculatedRating}
             <span className="visually-hidden">Rating</span>
           </div>
         </div>

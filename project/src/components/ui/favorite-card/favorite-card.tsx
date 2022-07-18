@@ -2,15 +2,18 @@ import React from 'react';
 import {Link} from 'react-router-dom';
 
 import {AppRoute} from '../../../const';
-import {OfferType} from '../../../mocks/offers';
+import {offerType} from '../../../mocks/offers';
 import styles from './favorite-card.module.css';
 
 type FavoriteCardProps = {
-  Offer: OfferType
+  offer: offerType
 };
 
-const FavoriteCard = ({Offer}: FavoriteCardProps) => {
-  const {id, isPremium, image, price, rating, title, type} = Offer;
+const FavoriteCard = ({offer}: FavoriteCardProps) => {
+  const {id, isPremium, images, price, rating, title, type} = offer;
+
+  const image: string | boolean = (typeof images !== 'undefined' && images.length > 0) ? images[0] : false;
+
   const cardLink: string = AppRoute.Card + id;
   return (
     <article className={`favorites__card place-card ${styles['place-card']}`}>
@@ -19,9 +22,10 @@ const FavoriteCard = ({Offer}: FavoriteCardProps) => {
           <span>Premium</span>
         </div>}
       <div className="favorites__image-wrapper place-card__image-wrapper">
-        <Link to={cardLink}>
-          <img className="place-card__image" src={image} width="150" height="110" alt={title}/>
-        </Link>
+        {image &&
+          <Link to={cardLink}>
+            <img className="place-card__image" src={image} width="150" height="110" alt={title}/>
+          </Link>}
       </div>
       <div className="favorites__card-info place-card__info">
         <div className="place-card__price-wrapper">

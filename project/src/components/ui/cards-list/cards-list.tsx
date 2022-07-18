@@ -1,23 +1,23 @@
 import React, {useState} from 'react';
 
 import Card from '../card/card';
-import {OfferType} from '../../../mocks/offers';
+import {offerType} from '../../../mocks/offers';
 
 type CardsListProps = {
-  Offers: OfferType[]
+  offers: offerType[]
 }
 
-const CardsList = ({Offers}: CardsListProps) => {
-  const [activeCardID, setActiveCardID] = useState<string | boolean>(false);
+const CardsList = ({offers}: CardsListProps) => {
+  const [activeCardID, setActiveCardID] = useState<number | boolean>(false);
   return (
     <div className="cities__places-list places__list tabs__content">
       {
-        Offers.map((Offer) => (
+        offers.map((offer) => (
           <Card
-            key={Offer.id}
-            Offer={Offer}
-            isActive={Offer.id === activeCardID}
-            setCardActive={() => setActiveCardID(Offer.id)}
+            key={offer.id}
+            offer={offer}
+            isActive={offer.id === activeCardID}
+            setCardActive={() => setActiveCardID(offer.id)}
           />)
         )
       }

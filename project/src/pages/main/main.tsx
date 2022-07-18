@@ -1,14 +1,14 @@
 import React from 'react';
 
 import CardsList from '../../components/ui/cards-list/cards-list';
-import {OfferType} from '../../mocks/offers';
+import {offerType} from '../../mocks/offers';
 
 type MainProps = {
-  Offers: OfferType[]
+  offers: offerType[]
 }
 
-const Main = ({Offers}: MainProps) => {
-  const offersCount = Offers.length;
+const Main = ({offers}: MainProps) => {
+  const offersCount = offers.length;
   return (
     <div className="page page--gray page--main">
       <main className="page__main page__main--index">
@@ -69,7 +69,7 @@ const Main = ({Offers}: MainProps) => {
                   <li className="places__option" tabIndex={0}>Top rated first</li>
                 </ul>
               </form>
-              <CardsList Offers={Offers} />
+              <CardsList offers={offers} />
             </section>
             <div className="cities__right-section">
               <section className="cities__map map"></section>

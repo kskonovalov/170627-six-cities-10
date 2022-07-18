@@ -9,22 +9,22 @@ import PrivateRoute from '../private-route';
 import Layout from '../ui/layout/layout';
 import ScrollTop from '../ux/scroll-top';
 import {AppRoute} from '../../const';
-import {OfferType} from '../../mocks/offers';
+import {offerType} from '../../mocks/offers';
 
 type AppProps = {
-  Offers: OfferType[]
+  offers: offerType[]
 }
 
-const App = ({Offers}: AppProps) => (
+const App = ({offers}: AppProps) => (
   <BrowserRouter>
     <ScrollTop />
     <Routes>
       <Route path={AppRoute.Main} element={<Layout/>}>
-        <Route index element={<Main Offers={Offers}/>}/>
+        <Route index element={<Main offers={offers}/>}/>
         <Route path={AppRoute.Login} element={<Login/>}/>
         <Route path={AppRoute.Favorites} element={
           <PrivateRoute>
-            <Favorites Offers={Offers}/>
+            <Favorites offers={offers}/>
           </PrivateRoute>
         }
         />
