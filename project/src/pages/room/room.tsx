@@ -3,24 +3,28 @@ import {useParams} from 'react-router-dom';
 
 import Reviews from '../../components/ui/reviews/reviews';
 import CommentForm from '../../components/ui/comment-form/comment-form';
-import NotFound from '../not-found/not-found';
-
-import offers from '../../mocks/offers';
-import reviews from '../../mocks/reviews';
 import Card from '../../components/ui/card/card';
+import NotFound from '../not-found/not-found';
+import {offerType} from '../../mocks/offers';
+import {reviewType} from '../../mocks/reviews';
 
-const Room = () => {
+type RoomType = {
+  offers: offerType[],
+  reviews: reviewType[]
+}
+
+const Room = ({offers, reviews}: RoomType) => {
   /* TODO: move isAuth to the global state */
   const isAuth: boolean = (window.localStorage.getItem('isAuth') === 'true') || false;
 
   const {id} = useParams();
 
   // TODO: replace with actual data from the server
-  if(typeof id === 'undefined') {
+  if (typeof id === 'undefined') {
     return <NotFound/>;
   }
-  const requestedOfferID = parseInt(id, 10);
-  if(typeof offers[requestedOfferID - 1] === 'undefined') {
+  const requestedOfferID = Number(id);
+  if (isNaN(requestedOfferID) || typeof offers[requestedOfferID - 1] === 'undefined') {
     return <NotFound/>;
   }
 
@@ -54,8 +58,8 @@ const Room = () => {
                 <h1 className="property__name">
                   {title}
                 </h1>
-                <button className="property__bookmark-button button" type="button">
-                  <svg className="property__bookmark-icon" width="31" height="33">
+                <button className="property__bookmark-button button property__bookmark-button--active" type="button">
+                  <svg className="property__bookmark-icon place-card__bookmark-icon" width="31" height="33">
                     <use xlinkHref="#icon-bookmark"></use>
                   </svg>
                   <span className="visually-hidden">To bookmarks</span>
@@ -135,7 +139,7 @@ const Room = () => {
             <h2 className="near-places__title">Other places in the neighbourhood</h2>
             <div className="near-places__list places__list">
               {
-                nearbyPlaces.map((offer) => <Card offer={offer} isActive={false} setCardActive={() => ''} key={offer.id} />)
+                nearbyPlaces.map((offer) => <Card offer={offer} isActive={false} setCardActive={() => ''} key={offer.id}/>)
               }
             </div>
           </section>

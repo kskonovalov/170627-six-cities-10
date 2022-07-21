@@ -10,14 +10,16 @@ import Layout from '../ui/layout/layout';
 import ScrollTop from '../ux/scroll-top';
 import {AppRoute} from '../../const';
 import {offerType} from '../../mocks/offers';
+import {reviewType} from '../../mocks/reviews';
 
 type AppProps = {
-  offers: offerType[]
+  offers: offerType[],
+  reviews: reviewType[]
 }
 
-const App = ({offers}: AppProps) => (
+const App = ({offers, reviews}: AppProps) => (
   <BrowserRouter>
-    <ScrollTop />
+    <ScrollTop/>
     <Routes>
       <Route path={AppRoute.Main} element={<Layout/>}>
         <Route index element={<Main offers={offers}/>}/>
@@ -28,7 +30,7 @@ const App = ({offers}: AppProps) => (
           </PrivateRoute>
         }
         />
-        <Route path={AppRoute.Room} element={<Room/>}/>
+        <Route path={AppRoute.Room} element={<Room offers={offers} reviews={reviews}/>}/>
         <Route path={AppRoute.NotFound} element={<NotFound/>}/>
       </Route>
     </Routes>

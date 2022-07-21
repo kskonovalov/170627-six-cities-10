@@ -15,7 +15,7 @@ const Favorites = ({offers}: FavoritesProps) => {
   }
   const cityoffers: cityoffersType = {};
   offers.forEach((item) => {
-    if(!(item.city.name in cityoffers)) {
+    if (!(item.city.name in cityoffers)) {
       cityoffers[item.city.name] = [];
     }
     cityoffers[item.city.name].push(item);
