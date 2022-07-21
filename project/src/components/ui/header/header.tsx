@@ -1,10 +1,22 @@
-import React from 'react';
-import {Link, useLocation} from 'react-router-dom';
+import React, {useEffect, useState} from 'react';
+import {Link, Navigate, useLocation} from 'react-router-dom';
 
 import {AppRoute} from '../../../const';
 
 const Header = () => {
-  const isAuth = true;
+  /* TODO: move isAuth to the global state */
+  const [isAuth, setIsAuth] = useState(false);
+  useEffect(() => {
+    const storedIsAuth: boolean = (window.localStorage.getItem('isAuth') === 'true') || false;
+    setIsAuth(storedIsAuth);
+  }, []);
+  const signOutHandle = (e: React.MouseEvent<HTMLElement>) => {
+    e.preventDefault();
+    window.localStorage.setItem('isAuth', 'false');
+    setIsAuth(false);
+    return <Navigate to={AppRoute.Main}/>;
+  };
+
   const location = useLocation();
   const toShowSignInLink = !isAuth && location.pathname !== AppRoute.Login;
 
@@ -29,7 +41,7 @@ const Header = () => {
                     </Link>
                   </li>
                   <li className="header__nav-item">
-                    <a className="header__nav-link" href="/#">
+                    <a className="header__nav-link" href='/#' onClick={signOutHandle}>
                       <span className="header__signout">Sign out</span>
                     </a>
                   </li>

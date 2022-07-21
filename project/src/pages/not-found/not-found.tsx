@@ -1,13 +1,11 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
 
-import Header from '../../components/ui/header/header';
 import {AppRoute} from '../../const';
 import styles from './not-found.module.css';
 
 const NotFound = () => (
   <div className="page">
-    <Header/>
     <main className={`page__main page__main--404 ${styles.page}`}>
       <div className={styles['page__image-wrap']}>
         <img
