@@ -1,7 +1,10 @@
-import React from 'react';
+import React, {useState} from 'react';
 
 import CardsList from '../../components/ui/cards-list/cards-list';
+import Map from '../../components/ui/map/map';
 import {offerType} from '../../mocks/offers';
+import {Points} from '../../types/map-types';
+import {AmsterdamCity} from '../../const';
 
 type MainProps = {
   offers: offerType[]
@@ -9,6 +12,15 @@ type MainProps = {
 
 const Main = ({offers}: MainProps) => {
   const offersCount = offers.length;
+  const [activeCardID, setActiveCardID] = useState<number | boolean>(false);
+
+  const points: Points = offers.map((item) => ({
+    title: item.title,
+    lat: item.location.latitude,
+    lng: item.location.longitude,
+    id: item.id
+  }));
+
   return (
     <div className="page page--gray page--main">
       <main className="page__main page__main--index">
@@ -69,10 +81,15 @@ const Main = ({offers}: MainProps) => {
                   <li className="places__option" tabIndex={0}>Top rated first</li>
                 </ul>
               </form>
-              <CardsList offers={offers}/>
+              <CardsList
+                offers={offers}
+                setCardActive={setActiveCardID}
+                activeCardID={activeCardID}
+                className='cities__places-list places__list tabs__content'
+              />
             </section>
             <div className="cities__right-section">
-              <section className="cities__map map"></section>
+              <Map containerClassName='cities__map map' city={AmsterdamCity} points={points} selectedPointID={activeCardID}/>
             </div>
           </div>
         </div>

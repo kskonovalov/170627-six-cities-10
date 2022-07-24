@@ -8,19 +8,19 @@ import styles from './card.module.css';
 type CardProps = {
   offer: offerType,
   isActive: boolean,
-  setCardActive: () => void
+  setCardActive?: () => void,
+  setCardInactive?: () => void
 };
 
-const Card = ({offer, isActive, setCardActive}: CardProps) => {
+const Card = ({offer, isActive, setCardActive = () => '', setCardInactive = () => ''}: CardProps) => {
   const {isPremium, images, price, rating, title, type, id} = offer;
-
   const image: string | boolean = (typeof images !== 'undefined' && images.length > 0) ? images[0] : false;
-
   const cardLink: string = AppRoute.Card + id;
   const classForActiveCard = isActive ? 'place-card_active' : '';
   const calculatedRating = (rating >= 0 && rating <= 5) ? Math.round(rating) * 20 : 0;
+
   return (
-    <article className={`cities__card place-card ${styles['place-card']} ${styles[classForActiveCard]}`} onMouseEnter={setCardActive}>
+    <article className={`cities__card place-card ${styles['place-card']} ${styles[classForActiveCard]}`} onMouseEnter={setCardActive} onMouseOut={setCardInactive}>
       {isPremium &&
         <div className="place-card__mark">
           <span>Premium</span>
