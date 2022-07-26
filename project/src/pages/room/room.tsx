@@ -17,7 +17,7 @@ type RoomType = {
 }
 
 const Room = ({offers, reviews}: RoomType) => {
-  const [activeCardID, setActiveCardID] = useState<number | boolean>(false);
+  const [activeCardID, setActiveCardID] = useState<number | null>(null);
   /* TODO: move isAuth to the global state */
   const isAuth: boolean = (window.localStorage.getItem('isAuth') === 'true') || false;
 

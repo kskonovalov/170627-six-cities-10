@@ -12,7 +12,7 @@ type MainProps = {
 
 const Main = ({offers}: MainProps) => {
   const offersCount = offers.length;
-  const [activeCardID, setActiveCardID] = useState<number | boolean>(false);
+  const [activeCardID, setActiveCardID] = useState<number | null>(null);
 
   const points: Points = offers.map((item) => ({
     title: item.title,

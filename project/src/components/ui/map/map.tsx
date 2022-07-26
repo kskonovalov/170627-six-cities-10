@@ -9,7 +9,7 @@ import {defaultIcon, activeIcon} from '../../../const';
 type MapProps = {
   city: City,
   points: Points,
-  selectedPointID: number | boolean,
+  selectedPointID: number | null,
   containerClassName: string
 };
 

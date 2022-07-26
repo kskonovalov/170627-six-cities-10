@@ -6,8 +6,8 @@ import {offerType} from '../../../mocks/offers';
 type CardsListProps = {
   className: string,
   offers: offerType[],
-  setCardActive: Dispatch<SetStateAction<number | boolean>>,
-  activeCardID: number | boolean
+  setCardActive: Dispatch<SetStateAction<number | null>>,
+  activeCardID: number | null
 }
 
 const CardsList = ({className, offers, activeCardID, setCardActive}: CardsListProps) => (
@@ -19,7 +19,7 @@ const CardsList = ({className, offers, activeCardID, setCardActive}: CardsListPr
           offer={offer}
           isActive={offer.id === activeCardID}
           setCardActive={() => setCardActive(offer.id)}
-          setCardInactive={() => setCardActive(false)}
+          setCardInactive={() => setCardActive(null)}
         />)
       )
     }

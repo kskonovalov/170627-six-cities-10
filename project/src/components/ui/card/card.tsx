@@ -8,11 +8,11 @@ import styles from './card.module.css';
 type CardProps = {
   offer: offerType,
   isActive: boolean,
-  setCardActive?: () => void,
-  setCardInactive?: () => void
+  setCardActive: () => void,
+  setCardInactive: () => void
 };
 
-const Card = ({offer, isActive, setCardActive = () => '', setCardInactive = () => ''}: CardProps) => {
+const Card = ({offer, isActive, setCardActive , setCardInactive}: CardProps) => {
   const {isPremium, images, price, rating, title, type, id} = offer;
   const image: string | boolean = (typeof images !== 'undefined' && images.length > 0) ? images[0] : false;
   const cardLink: string = AppRoute.Card + id;
