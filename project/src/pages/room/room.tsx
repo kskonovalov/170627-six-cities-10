@@ -1,12 +1,15 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {useParams} from 'react-router-dom';
 
 import Reviews from '../../components/ui/reviews/reviews';
 import CommentForm from '../../components/ui/comment-form/comment-form';
-import Card from '../../components/ui/card/card';
+import CardsList from '../../components/ui/cards-list/cards-list';
 import NotFound from '../not-found/not-found';
+import Map from '../../components/ui/map/map';
 import {offerType} from '../../mocks/offers';
 import {reviewType} from '../../mocks/reviews';
+import {Points} from '../../types/map-types';
+import {AmsterdamCity} from '../../const';
 
 type RoomType = {
   offers: offerType[],
@@ -14,6 +17,7 @@ type RoomType = {
 }
 
 const Room = ({offers, reviews}: RoomType) => {
+  const [activeCardID, setActiveCardID] = useState<number | null>(null);
   /* TODO: move isAuth to the global state */
   const isAuth: boolean = (window.localStorage.getItem('isAuth') === 'true') || false;
 
@@ -34,6 +38,12 @@ const Room = ({offers, reviews}: RoomType) => {
 
   // TODO: replace with the nearby places
   const nearbyPlaces = offers.slice(0, 3);
+  const points: Points = nearbyPlaces.map((item) => ({
+    title: item.title,
+    lat: item.location.latitude,
+    lng: item.location.longitude,
+    id: item.id
+  }));
 
   return (
     <div className="page">
@@ -132,16 +142,17 @@ const Room = ({offers, reviews}: RoomType) => {
               </section>
             </div>
           </div>
-          <section className="property__map map"></section>
+          <Map containerClassName='property__map map' city={AmsterdamCity} points={points} selectedPointID={activeCardID}/>
         </section>
         <div className="container">
           <section className="near-places places">
             <h2 className="near-places__title">Other places in the neighbourhood</h2>
-            <div className="near-places__list places__list">
-              {
-                nearbyPlaces.map((offer) => <Card offer={offer} isActive={false} setCardActive={() => ''} key={offer.id}/>)
-              }
-            </div>
+            <CardsList
+              offers={nearbyPlaces}
+              setCardActive={setActiveCardID}
+              activeCardID={activeCardID}
+              className='near-places__list places__list'
+            />
           </section>
         </div>
       </main>
