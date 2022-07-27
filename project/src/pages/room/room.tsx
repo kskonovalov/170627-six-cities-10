@@ -129,11 +129,9 @@ const Room = ({offers, reviews}: RoomType) => {
                       {value}
                     </p>
                   ))}
-                  {typeof description === 'string' && (
-                    <p className="property__text">
-                      {description}
-                    </p>
-                  )}
+                  <p className="property__text">
+                    {description}
+                  </p>
                 </div>
               </div>
               <section className="property__reviews reviews">
