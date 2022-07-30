@@ -6,6 +6,7 @@ import {Points} from '../../types/map-types';
 import {locations} from '../../const';
 import {useAppDispatch, useAppSelector} from '../../hooks/redux-hooks';
 import {changeCity} from '../../store/actions';
+import styles from './main.module.css';
 
 const Main = () => {
   /* store */
@@ -37,9 +38,9 @@ const Main = () => {
             <ul className="locations__list tabs__list">
               {locations.map((item) => (
                 <li className="locations__item" key={item.title}>
-                  <a className={`locations__item-link tabs__item ${item.title === city.title ? 'tabs__item--active' : ''}`} href="/#" onClick={(e) => {e.preventDefault(); dispatch(changeCity(item));}}>
+                  <button className={`locations__item-link tabs__item ${item.title === city.title ? 'tabs__item--active' : ''} ${styles['locations__item-link']}`} onClick={(e) => {e.preventDefault(); dispatch(changeCity(item));}}>
                     <span>{item.title}</span>
-                  </a>
+                  </button>
                 </li>))}
             </ul>
           </section>
