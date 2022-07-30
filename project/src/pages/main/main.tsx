@@ -2,16 +2,21 @@ import React, {useState} from 'react';
 
 import CardsList from '../../components/ui/cards-list/cards-list';
 import Map from '../../components/ui/map/map';
-import {offerType} from '../../mocks/offers';
 import {Points} from '../../types/map-types';
-import {AmsterdamCity} from '../../const';
+import {locations} from '../../const';
+import {useAppDispatch, useAppSelector} from '../../hooks/redux-hooks';
+import {changeCity} from '../../store/actions';
 
-type MainProps = {
-  offers: offerType[]
-}
+const Main = () => {
+  /* store */
+  const {city, offers: allOffers} = useAppSelector((state) => state);
+  const dispatch = useAppDispatch();
 
-const Main = ({offers}: MainProps) => {
+  /* TODO: replace with actual data from server */
+  const offers = allOffers.filter((item) => item.city.name === city.title);
+
   const offersCount = offers.length;
+
   const [activeCardID, setActiveCardID] = useState<number | null>(null);
 
   const points: Points = offers.map((item) => ({
@@ -21,6 +26,8 @@ const Main = ({offers}: MainProps) => {
     id: item.id
   }));
 
+  const placesWord = offersCount === 0 || offersCount > 1 ? 'places' : 'place';
+
   return (
     <div className="page page--gray page--main">
       <main className="page__main page__main--index">
@@ -28,36 +35,12 @@ const Main = ({offers}: MainProps) => {
         <div className="tabs">
           <section className="locations container">
             <ul className="locations__list tabs__list">
-              <li className="locations__item">
-                <a className="locations__item-link tabs__item" href="/#">
-                  <span>Paris</span>
-                </a>
-              </li>
-              <li className="locations__item">
-                <a className="locations__item-link tabs__item" href="/#">
-                  <span>Cologne</span>
-                </a>
-              </li>
-              <li className="locations__item">
-                <a className="locations__item-link tabs__item" href="/#">
-                  <span>Brussels</span>
-                </a>
-              </li>
-              <li className="locations__item">
-                <a className="locations__item-link tabs__item tabs__item--active" href="/#">
-                  <span>Amsterdam</span>
-                </a>
-              </li>
-              <li className="locations__item">
-                <a className="locations__item-link tabs__item" href="/#">
-                  <span>Hamburg</span>
-                </a>
-              </li>
-              <li className="locations__item">
-                <a className="locations__item-link tabs__item" href="/#">
-                  <span>Dusseldorf</span>
-                </a>
-              </li>
+              {locations.map((item) => (
+                <li className="locations__item" key={item.title}>
+                  <a className={`locations__item-link tabs__item ${item.title === city.title ? 'tabs__item--active' : ''}`} href="/#" onClick={(e) => {e.preventDefault(); dispatch(changeCity(item));}}>
+                    <span>{item.title}</span>
+                  </a>
+                </li>))}
             </ul>
           </section>
         </div>
@@ -65,7 +48,7 @@ const Main = ({offers}: MainProps) => {
           <div className="cities__places-container container">
             <section className="cities__places places">
               <h2 className="visually-hidden">Places</h2>
-              <b className="places__found">{offersCount} places to stay in Amsterdam</b>
+              <b className="places__found">{offersCount} {placesWord} to stay in {city.title}</b>
               <form className="places__sorting" action="#" method="get">
                 <span className="places__sorting-caption">Sort by</span>
                 <span className="places__sorting-type" tabIndex={0}>
@@ -89,7 +72,7 @@ const Main = ({offers}: MainProps) => {
               />
             </section>
             <div className="cities__right-section">
-              <Map containerClassName='cities__map map' city={AmsterdamCity} points={points} selectedPointID={activeCardID}/>
+              <Map containerClassName='cities__map map' city={city} points={points} selectedPointID={activeCardID}/>
             </div>
           </div>
         </div>

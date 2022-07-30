@@ -20,7 +20,7 @@ const Card = ({offer, isActive, setCardActive , setCardInactive}: CardProps) => 
   const calculatedRating = (rating >= 0 && rating <= 5) ? Math.round(rating) * 20 : 0;
 
   return (
-    <article className={`cities__card place-card ${styles['place-card']} ${styles[classForActiveCard]}`} onMouseEnter={setCardActive} onMouseOut={setCardInactive}>
+    <article className={`cities__card place-card ${styles['place-card']} ${styles[classForActiveCard]}`} onMouseEnter={setCardActive} onMouseLeave={setCardInactive}>
       {isPremium &&
         <div className="place-card__mark">
           <span>Premium</span>
