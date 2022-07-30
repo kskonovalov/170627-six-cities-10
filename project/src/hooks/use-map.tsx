@@ -39,7 +39,7 @@ function useMap(
         lng: city.lng
       });
     }
-  }, [mapRef, city]);
+  }, [mapRef, city, map]);
 
   return map;
 }
