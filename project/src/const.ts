@@ -1,7 +1,7 @@
 import {City} from './types/map-types';
 
 /* Application routes */
-export enum AppRoute {
+export const enum AppRoute {
   Main = '/',
   Login = '/login',
   Favorites = '/favorites',
@@ -62,3 +62,15 @@ export const locations: City[] = [
     lng: 6.773456
   },
 ];
+
+/* Order / Sort by */
+type orderType = {
+  [key: string]: string
+};
+export const order: orderType = {
+  Popular: 'Popular',
+  PriceLowToHigh: 'Price: low to high',
+  PriceHighToLow: 'Price: high to low',
+  TopRatedFirst: 'Top rated first'
+};
+export const sortByLocalStorageName = 'sortBy';

@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 
 import CardsList from '../../components/ui/cards-list/cards-list';
 import Map from '../../components/ui/map/map';
@@ -7,14 +7,31 @@ import {locations} from '../../const';
 import {useAppDispatch, useAppSelector} from '../../hooks/redux-hooks';
 import {changeCity} from '../../store/actions';
 import styles from './main.module.css';
+import Sorting from '../../components/ui/sorting/sorting';
 
 const Main = () => {
   /* store */
-  const {city, offers: allOffers} = useAppSelector((state) => state);
+  const {city, offers: allOffers, sortBy} = useAppSelector((state) => state);
+  const [offers, setOffers] = useState(allOffers);
   const dispatch = useAppDispatch();
 
   /* TODO: replace with actual data from server */
-  const offers = allOffers.filter((item) => item.city.name === city.title);
+  useEffect(() => {
+    setOffers(allOffers.filter((item) => item.city.name === city.title).sort((offer1, offer2) => {
+      switch (sortBy) {
+        case 'Popular':
+          return 0; // default order;
+        case 'PriceLowToHigh':
+          return offer1.price - offer2.price;
+        case 'PriceHighToLow':
+          return offer2.price - offer1.price;
+        case 'TopRatedFirst':
+          return offer2.rating - offer1.rating;
+        default:
+          return 0;
+      }
+    }));
+  }, [allOffers, city, sortBy]);
 
   const offersCount = offers.length;
 
@@ -38,7 +55,10 @@ const Main = () => {
             <ul className="locations__list tabs__list">
               {locations.map((item) => (
                 <li className="locations__item" key={item.title}>
-                  <button className={`locations__item-link tabs__item ${item.title === city.title ? 'tabs__item--active' : ''} ${styles['locations__item-link']}`} onClick={(e) => {e.preventDefault(); dispatch(changeCity(item));}}>
+                  <button className={`locations__item-link tabs__item ${item.title === city.title ? 'tabs__item--active' : ''} ${styles['locations__item-link']}`} onClick={(e) => {
+                    e.preventDefault();
+                    dispatch(changeCity(item));}}
+                  >
                     <span>{item.title}</span>
                   </button>
                 </li>))}
@@ -50,21 +70,7 @@ const Main = () => {
             <section className="cities__places places">
               <h2 className="visually-hidden">Places</h2>
               <b className="places__found">{offersCount} {placesWord} to stay in {city.title}</b>
-              <form className="places__sorting" action="#" method="get">
-                <span className="places__sorting-caption">Sort by</span>
-                <span className="places__sorting-type" tabIndex={0}>
-                  Popular
-                  <svg className="places__sorting-arrow" width="7" height="4">
-                    <use xlinkHref="#icon-arrow-select"></use>
-                  </svg>
-                </span>
-                <ul className="places__options places__options--custom places__options--opened">
-                  <li className="places__option places__option--active" tabIndex={0}>Popular</li>
-                  <li className="places__option" tabIndex={0}>Price: low to high</li>
-                  <li className="places__option" tabIndex={0}>Price: high to low</li>
-                  <li className="places__option" tabIndex={0}>Top rated first</li>
-                </ul>
-              </form>
+              <Sorting/>
               <CardsList
                 offers={offers}
                 setCardActive={setActiveCardID}

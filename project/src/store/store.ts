@@ -1,7 +1,12 @@
 import {configureStore} from '@reduxjs/toolkit';
-import reducer from './reducer';
 
-const store = configureStore({reducer});
+import reducer from './reducer';
+import {saveSortByToLocalStorage} from './middleware';
+
+const store = configureStore({
+  reducer,
+  middleware: [saveSortByToLocalStorage]
+});
 
 export default store;
 
