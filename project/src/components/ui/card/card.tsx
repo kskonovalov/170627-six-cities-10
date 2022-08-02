@@ -2,11 +2,11 @@ import React from 'react';
 import {Link} from 'react-router-dom';
 
 import {AppRoute} from '../../../const';
-import {offerType} from '../../../mocks/offers';
+import {Offer} from '../../../mocks/offers';
 import styles from './card.module.css';
 
 type CardProps = {
-  offer: offerType,
+  offer: Offer,
   isActive: boolean,
   setCardActive: () => void,
   setCardInactive: () => void

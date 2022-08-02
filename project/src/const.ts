@@ -11,17 +11,17 @@ export const enum AppRoute {
 }
 
 /* Icons */
-type iconType = {
+type Icon = {
   iconUrl: string,
   iconSize: [number, number],
   iconAnchor: [number, number]
 }
-export const defaultIcon: iconType = {
+export const defaultIcon: Icon = {
   iconUrl: 'img/pin.svg',
   iconSize: [27, 39],
   iconAnchor: [20, 40]
 };
-export const activeIcon: iconType = {
+export const activeIcon: Icon = {
   iconUrl: 'img/pin-active.svg',
   iconSize: [27, 39],
   iconAnchor: [20, 40]

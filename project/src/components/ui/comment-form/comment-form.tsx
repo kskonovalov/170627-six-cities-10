@@ -1,11 +1,11 @@
 import React, {ChangeEvent, FormEvent, useState} from 'react';
 
 const CommentForm = () => {
-  type formDataType = {
+  type FormData = {
     rating: number | boolean,
     comment: string
   }
-  const [formData, setFormData] = useState<formDataType>({
+  const [formData, setFormData] = useState<FormData>({
     rating: false,
     comment: ''
   });

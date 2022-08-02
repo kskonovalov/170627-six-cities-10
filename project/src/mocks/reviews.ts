@@ -1,4 +1,4 @@
-export type reviewType = {
+export type Review = {
   comment: string
   date: string
   id: number
@@ -11,7 +11,7 @@ export type reviewType = {
   }
 }
 
-const reviews: reviewType[] = [
+const reviews: Review[] = [
   {
     'comment': 'A quiet cozy and picturesque that hides behind a a river by the unique lightness of Amsterdam.',
     'date': 'Mon Jul 18 2022 17:36:17 GMT+0200 (Central European Summer Time)',
