@@ -74,3 +74,4 @@ export const order: orderType = {
   TopRatedFirst: 'Top rated first'
 };
 export const sortByLocalStorageName = 'sortBy';
+export const cityLocalStorageName = 'city';

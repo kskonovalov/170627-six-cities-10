@@ -3,7 +3,7 @@ import {createReducer} from '@reduxjs/toolkit';
 import {changeCity, setOffers, setSortBy} from './actions';
 import {City} from '../types/map-types';
 import offers, {Offer} from '../mocks/offers';
-import {locations, sortByLocalStorageName} from '../const';
+import {locations, sortByLocalStorageName, cityLocalStorageName} from '../const';
 
 export type Store = {
   city: City,
@@ -11,8 +11,14 @@ export type Store = {
   sortBy: string
 };
 
+const getUserSavedCity = () => {
+  const savedCity = window.localStorage.getItem(cityLocalStorageName);
+  const foundCity = locations.filter((item) => item.title === savedCity);
+  return foundCity[0] ? foundCity[0] : locations[0];
+};
+
 export const initialState: Store = {
-  city: locations[0], // show the first city -- Paris -- by default
+  city: getUserSavedCity(),
   offers: offers,
   sortBy: window.localStorage.getItem(sortByLocalStorageName) || 'Popular'
 };
