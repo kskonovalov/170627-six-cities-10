@@ -10,12 +10,12 @@ import PrivateRoute from '../private-route';
 import Layout from '../ui/layout/layout';
 import ScrollTop from '../ux/scroll-top';
 import {AppRoute} from '../../const';
-import {reviewType} from '../../mocks/reviews';
+import {Review} from '../../mocks/reviews';
 
 import offers from '../../mocks/offers';
 
 type AppProps = {
-  reviews: reviewType[]
+  reviews: Review[]
 }
 
 const App = ({reviews}: AppProps) => (
