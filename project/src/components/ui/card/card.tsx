@@ -2,11 +2,11 @@ import React from 'react';
 import {Link} from 'react-router-dom';
 
 import {AppRoute} from '../../../const';
-import {offerType} from '../../../mocks/offers';
+import {Offer} from '../../../mocks/offers';
 import styles from './card.module.css';
 
 type CardProps = {
-  offer: offerType,
+  offer: Offer,
   isActive: boolean,
   setCardActive: () => void,
   setCardInactive: () => void
@@ -20,7 +20,7 @@ const Card = ({offer, isActive, setCardActive , setCardInactive}: CardProps) => 
   const calculatedRating = (rating >= 0 && rating <= 5) ? Math.round(rating) * 20 : 0;
 
   return (
-    <article className={`cities__card place-card ${styles['place-card']} ${styles[classForActiveCard]}`} onMouseEnter={setCardActive} onMouseOut={setCardInactive}>
+    <article className={`cities__card place-card ${styles['place-card']} ${styles[classForActiveCard]}`} onMouseEnter={setCardActive} onMouseLeave={setCardInactive}>
       {isPremium &&
         <div className="place-card__mark">
           <span>Premium</span>

@@ -1,11 +1,11 @@
 import React, {Dispatch, SetStateAction} from 'react';
 
 import Card from '../card/card';
-import {offerType} from '../../../mocks/offers';
+import {Offer} from '../../../mocks/offers';
 
 type CardsListProps = {
   className: string,
-  offers: offerType[],
+  offers: Offer[],
   setCardActive: Dispatch<SetStateAction<number | null>>,
   activeCardID: number | null
 }

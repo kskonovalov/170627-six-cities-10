@@ -4,7 +4,7 @@ type Location = {
   'zoom': number
 }
 
-export type offerType = {
+export type Offer = {
   'city': {
     'name': string,
     'location': Location
@@ -31,7 +31,7 @@ export type offerType = {
   'id': number
 }
 
-const offers: offerType[] =
+const offers: Offer[] =
   [
     {
       'city': {

@@ -1,9 +1,9 @@
 import React from 'react';
 
-import {reviewType} from '../../../mocks/reviews';
+import {Review} from '../../../mocks/reviews';
 
 type ReviewsProps = {
-  reviews: reviewType[]
+  reviews: Review[]
 }
 
 const Reviews = ({reviews}: ReviewsProps) => (

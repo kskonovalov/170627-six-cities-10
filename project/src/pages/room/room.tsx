@@ -6,20 +6,21 @@ import CommentForm from '../../components/ui/comment-form/comment-form';
 import CardsList from '../../components/ui/cards-list/cards-list';
 import NotFound from '../not-found/not-found';
 import Map from '../../components/ui/map/map';
-import {offerType} from '../../mocks/offers';
-import {reviewType} from '../../mocks/reviews';
+import {Review} from '../../mocks/reviews';
 import {Points} from '../../types/map-types';
-import {AmsterdamCity} from '../../const';
+import {useAppSelector} from '../../hooks/redux-hooks';
 
-type RoomType = {
-  offers: offerType[],
-  reviews: reviewType[]
+type RoomProps = {
+  reviews: Review[]
 }
 
-const Room = ({offers, reviews}: RoomType) => {
+const Room = ({reviews}: RoomProps) => {
   const [activeCardID, setActiveCardID] = useState<number | null>(null);
   /* TODO: move isAuth to the global state */
   const isAuth: boolean = (window.localStorage.getItem('isAuth') === 'true') || false;
+
+  /* TODO: replace offers with nearby places */
+  const {offers, city} = useAppSelector((store) => store);
 
   const {id} = useParams();
 
@@ -32,6 +33,7 @@ const Room = ({offers, reviews}: RoomType) => {
     return <NotFound/>;
   }
 
+  /* TODO: replace offers[requestedOfferID - 1] with the data from the server */
   const {isPremium, price, rating, title, images, bedrooms, type, maxAdults, goods, host, description = ''} = offers[requestedOfferID - 1];
   const {avatarUrl, name, isPro} = host;
   const calculatedRating = (rating >= 0 && rating <= 5) ? Math.floor(rating) * 20 : 0;
@@ -140,7 +142,7 @@ const Room = ({offers, reviews}: RoomType) => {
               </section>
             </div>
           </div>
-          <Map containerClassName='property__map map' city={AmsterdamCity} points={points} selectedPointID={activeCardID}/>
+          <Map containerClassName='property__map map' city={city} points={points} selectedPointID={activeCardID}/>
         </section>
         <div className="container">
           <section className="near-places places">

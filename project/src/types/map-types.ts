@@ -1,8 +1,7 @@
 export type City = {
   title: string,
   lat: number,
-  lng: number,
-  zoom: number
+  lng: number
 };
 
 export type Point = {

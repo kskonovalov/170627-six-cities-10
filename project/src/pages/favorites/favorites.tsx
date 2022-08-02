@@ -3,17 +3,17 @@ import {Link} from 'react-router-dom';
 
 import FavoriteCard from '../../components/ui/favorite-card/favorite-card';
 import {AppRoute} from '../../const';
-import {offerType} from '../../mocks/offers';
+import {Offer} from '../../mocks/offers';
 
 type FavoritesProps = {
-  offers: offerType[]
+  offers: Offer[]
 }
 
 const Favorites = ({offers}: FavoritesProps) => {
-  type cityoffersType = {
-    [city: string]: offerType[]
+  type CityOffers = {
+    [city: string]: Offer[]
   }
-  const cityoffers: cityoffersType = {};
+  const cityoffers: CityOffers = {};
   offers.forEach((item) => {
     if (!(item.city.name in cityoffers)) {
       cityoffers[item.city.name] = [];
