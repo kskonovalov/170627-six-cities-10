@@ -1,7 +1,12 @@
 import {configureStore} from '@reduxjs/toolkit';
-import reducer from './reducer';
 
-const store = configureStore({reducer});
+import reducer from './reducer';
+import {saveUserSettingsToLocalStorage} from './middleware';
+
+const store = configureStore({
+  reducer,
+  middleware: [saveUserSettingsToLocalStorage]
+});
 
 export default store;
 
