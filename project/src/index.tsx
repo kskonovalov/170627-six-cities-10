@@ -4,7 +4,10 @@ import {Provider} from 'react-redux';
 
 import App from './components/app/app';
 import store from './store/store';
-import reviews from './mocks/reviews';
+import {fetchOffersAction} from './store/api-actions';
+
+/* load initial offers */
+store.dispatch(fetchOffersAction());
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement,
@@ -13,7 +16,7 @@ const root = ReactDOM.createRoot(
 root.render(
   <React.StrictMode>
     <Provider store={store}>
-      <App reviews={reviews}/>
+      <App/>
     </Provider>
   </React.StrictMode>,
 );

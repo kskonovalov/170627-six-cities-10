@@ -1,4 +1,4 @@
-import {City} from './types/map-types';
+import {City} from './types/types';
 
 /* Application routes */
 export const enum AppRoute {
@@ -8,6 +8,23 @@ export const enum AppRoute {
   Card = '/offer/',
   Room = '/offer/:id',
   NotFound = '*',
+}
+
+/* API routes */
+// https://10.react.pages.academy/six-cities/spec
+export const enum ApiRoute {
+  // Hotels
+  Hotels = '/hotels', // GET
+  Offer = '/hotels/{hotelID}', // GET
+  Nearby = '/hotels/{hotelID}/nearby', // GET
+  // Favorite
+  Favorite = '/favorite', // GET
+  AddToFavorites = '/favorite/{hotelID}/{status}', // POST
+  // Comments
+  Comments = '/comments/{hotelID}', // GET, POST
+  // User
+  User = '/login', // GET, POST
+  Logout = '/logout', // DELETE
 }
 
 /* Icons */

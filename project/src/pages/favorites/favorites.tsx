@@ -3,13 +3,13 @@ import {Link} from 'react-router-dom';
 
 import FavoriteCard from '../../components/ui/favorite-card/favorite-card';
 import {AppRoute} from '../../const';
-import {Offer} from '../../mocks/offers';
+import {Offer} from '../../types/types';
 
-type FavoritesProps = {
-  offers: Offer[]
-}
 
-const Favorites = ({offers}: FavoritesProps) => {
+const Favorites = () => {
+  // TODO: get favorites from API
+  const offers: Offer[] = [];
+
   type CityOffers = {
     [city: string]: Offer[]
   }

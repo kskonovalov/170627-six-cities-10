@@ -10,15 +10,8 @@ import PrivateRoute from '../private-route';
 import Layout from '../ui/layout/layout';
 import ScrollTop from '../ux/scroll-top';
 import {AppRoute} from '../../const';
-import {Review} from '../../mocks/reviews';
 
-import offers from '../../mocks/offers';
-
-type AppProps = {
-  reviews: Review[]
-}
-
-const App = ({reviews}: AppProps) => (
+const App = () => (
   <BrowserRouter>
     <ScrollTop/>
     <Routes>
@@ -27,11 +20,11 @@ const App = ({reviews}: AppProps) => (
         <Route path={AppRoute.Login} element={<Login/>}/>
         <Route path={AppRoute.Favorites} element={
           <PrivateRoute>
-            <Favorites offers={offers}/>
+            <Favorites/>
           </PrivateRoute>
         }
         />
-        <Route path={AppRoute.Room} element={<Room reviews={reviews}/>}/>
+        <Route path={AppRoute.Room} element={<Room/>}/>
         <Route path={AppRoute.NotFound} element={<NotFound/>}/>
       </Route>
     </Routes>

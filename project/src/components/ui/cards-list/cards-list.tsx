@@ -1,7 +1,7 @@
 import React, {Dispatch, SetStateAction} from 'react';
 
 import Card from '../card/card';
-import {Offer} from '../../../mocks/offers';
+import {Offer} from '../../../types/types';
 
 type CardsListProps = {
   className: string,
