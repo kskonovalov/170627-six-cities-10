@@ -2,7 +2,7 @@ import {configureStore, getDefaultMiddleware} from '@reduxjs/toolkit';
 
 import reducer from './reducer';
 import createAPI from '../api/api';
-import {saveUserSettingsToLocalStorage} from './middleware';
+import {saveUserSettingsToLocalStorage, dropUserTokenAfterLogout} from './middleware';
 
 export const api = createAPI();
 
@@ -12,7 +12,7 @@ const store = configureStore({
     thunk: {
       extraArgument: api
     }
-  }).concat(saveUserSettingsToLocalStorage)
+  }).concat([saveUserSettingsToLocalStorage, dropUserTokenAfterLogout])
 });
 
 export default store;

@@ -23,8 +23,15 @@ export const enum ApiRoute {
   // Comments
   Comments = '/comments/{hotelID}', // GET, POST
   // User
-  User = '/login', // GET, POST
+  Login = '/login', // GET, POST
   Logout = '/logout', // DELETE
+}
+
+/* Authorization status */
+export const enum AuthorizationStatus {
+  Auth = 'AUTH',
+  NoAuth = 'NO_AUTH',
+  Unknown = 'UNKNOWN'
 }
 
 /* Icons */
@@ -92,3 +99,27 @@ export const order: orderType = {
 };
 export const sortByLocalStorageName = 'sortBy';
 export const cityLocalStorageName = 'city';
+
+/* User login */
+export type userData = {
+  id: number,
+  email: string,
+  token: string
+}
+export type authData = {
+  login: string,
+  password: string,
+}
+
+export const backendUrl = 'https://10.react.pages.academy/six-cities';
+export const requestTimeout = 5000; // ms
+
+// based on https://www.npmjs.com/package/http-status-codes
+export const enum statusCodes {
+  BAD_REQUEST = 400,
+  UNAUTHORIZED = 401,
+  NOT_FOUND = 404,
+  OK = 200,
+}
+
+export const defaultErrorText = 'Something went wrong! Pleasy try again later';

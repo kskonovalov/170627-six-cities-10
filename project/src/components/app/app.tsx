@@ -10,25 +10,30 @@ import PrivateRoute from '../private-route';
 import Layout from '../ui/layout/layout';
 import ScrollTop from '../ux/scroll-top';
 import {AppRoute} from '../../const';
+import {useAppSelector} from '../../hooks/redux-hooks';
 
-const App = () => (
-  <BrowserRouter>
-    <ScrollTop/>
-    <Routes>
-      <Route path={AppRoute.Main} element={<Layout/>}>
-        <Route index element={<Main />}/>
-        <Route path={AppRoute.Login} element={<Login/>}/>
-        <Route path={AppRoute.Favorites} element={
-          <PrivateRoute>
-            <Favorites/>
-          </PrivateRoute>
-        }
-        />
-        <Route path={AppRoute.Room} element={<Room/>}/>
-        <Route path={AppRoute.NotFound} element={<NotFound/>}/>
-      </Route>
-    </Routes>
-  </BrowserRouter>
-);
+const App = () => {
+  const authorizationStatus = useAppSelector((store) => store.authorizationStatus);
+
+  return (
+    <BrowserRouter>
+      <ScrollTop/>
+      <Routes>
+        <Route path={AppRoute.Main} element={<Layout/>}>
+          <Route index element={<Main/>}/>
+          <Route path={AppRoute.Login} element={<Login/>}/>
+          <Route path={AppRoute.Favorites} element={
+            <PrivateRoute authorizationStatus={authorizationStatus}>
+              <Favorites/>
+            </PrivateRoute>
+          }
+          />
+          <Route path={AppRoute.Room} element={<Room/>}/>
+          <Route path={AppRoute.NotFound} element={<NotFound/>}/>
+        </Route>
+      </Routes>
+    </BrowserRouter>
+  );
+};
 
 export default App;

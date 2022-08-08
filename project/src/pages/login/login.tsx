@@ -1,24 +1,72 @@
-import React, {useEffect, useState} from 'react';
-
-import {AppRoute} from '../../const';
+import React, {ChangeEvent, useState} from 'react';
 import {Navigate} from 'react-router-dom';
 
+import {AppRoute, AuthorizationStatus} from '../../const';
+import {useAppSelector, useAppDispatch} from '../../hooks/redux-hooks';
+import {loginAction} from '../../store/api-actions';
+import {validateEmail} from '../../helpers/validate-email';
+import classes from './login.module.css';
+
 const Login = () => {
-  /* TODO: move isAuth to the global state */
-  const [isAuth, setIsAuth] = useState(false);
-  useEffect(() => {
-    const storedIsAuth: boolean = (window.localStorage.getItem('isAuth') === 'true') || false;
-    setIsAuth(storedIsAuth);
-  }, []);
+  type formDataType = {
+    email: string,
+    password: string,
+    emailError: string,
+    passwordError: string,
+    hasErrors: boolean
+  }
+  const [formData, setFormData] = useState<formDataType>({
+    email: '',
+    password: '',
+    emailError: '',
+    passwordError: '',
+    hasErrors: false
+  });
+  const minPasswordLength = 2;
+
+  /* TODO: тут возможно фигня написана, и сложно будет расширять правила валидации
+  *  думаю что хорошей практикой будет подключить что-нибудь для работы с формами,
+  * например https://www.npmjs.com/package/react-hook-form
+  * или https://www.npmjs.com/package/formik
+  * */
+  const formDataHandler = (e: ChangeEvent<HTMLInputElement>) => {
+    const fieldName = e.target.name;
+    const fieldValue = e.target.value.trim();
+    // validation
+    const newFormData = {
+      ...formData,
+      [fieldName]: fieldValue,
+      hasErrors: false,
+      passwordError: '',
+      emailError: ''
+    };
+    if (fieldName === 'password' && fieldValue.length <= minPasswordLength) {
+      newFormData.hasErrors = true;
+      newFormData.passwordError = `Password length should be more than ${minPasswordLength} symbols`;
+    }
+    if (fieldName === 'email' && fieldValue && !validateEmail(fieldValue)) {
+      newFormData.hasErrors = true;
+      newFormData.emailError = 'Should be valid e-mail address!';
+    }
+    setFormData(newFormData);
+  };
+
+  const dispatch = useAppDispatch();
+  const authorizationStatus = useAppSelector((store) => store.authorizationStatus);
+
   const onSubmitHandle = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    window.localStorage.setItem('isAuth', 'true');
-    setIsAuth(true);
+    if (!formData.hasErrors) {
+      dispatch(loginAction({
+        login: formData.email,
+        password: formData.password
+      }));
+    }
   };
 
   return (
-    isAuth ?
-      <Navigate to={AppRoute.Favorites}/>
+    authorizationStatus === AuthorizationStatus.Auth ?
+      <Navigate to={AppRoute.Main}/>
       :
       <div className="page page--gray page--login">
         <main className="page__main page__main--login">
@@ -28,20 +76,38 @@ const Login = () => {
               <form className="login__form form" action="#" method="post" onSubmit={onSubmitHandle}>
                 <div className="login__input-wrapper form__input-wrapper">
                   <label className="visually-hidden">E-mail</label>
-                  <input className="login__input form__input" type="email" name="email" placeholder="Email" required/>
+                  <input
+                    className="login__input form__input"
+                    type="email"
+                    name="email"
+                    placeholder="Email"
+                    required
+                    value={formData.email}
+                    onChange={formDataHandler}
+                  />
+                  {formData.emailError && <div className={classes['form__input-warning']}>{formData.emailError}</div>}
                 </div>
                 <div className="login__input-wrapper form__input-wrapper">
                   <label className="visually-hidden">Password</label>
-                  <input className="login__input form__input" type="password" name="password" placeholder="Password" required/>
+                  <input
+                    className="login__input form__input"
+                    type="password"
+                    name="password"
+                    placeholder="Password"
+                    required
+                    value={formData.password}
+                    onChange={formDataHandler}
+                  />
+                  {formData.passwordError && <div className={classes['form__input-warning']}>{formData.passwordError}</div>}
                 </div>
                 <button className="login__submit form__submit button" type="submit">Sign in</button>
               </form>
             </section>
             <section className="locations locations--login locations--current">
               <div className="locations__item">
-                <a className="locations__item-link" href="/#">
+                <span className="locations__item-link">
                   <span>Amsterdam</span>
-                </a>
+                </span>
               </div>
             </section>
           </div>

@@ -1,15 +1,16 @@
 import {createReducer} from '@reduxjs/toolkit';
 
-import {changeCity, loadOffers, offersLoading, setSortBy, setError} from './actions';
+import {changeCity, loadOffers, offersLoading, setSortBy, setError, setAuthorizationStatus} from './actions';
 import {City, Offer} from '../types/types';
-import {locations, sortByLocalStorageName, cityLocalStorageName} from '../const';
+import {locations, sortByLocalStorageName, cityLocalStorageName, AuthorizationStatus} from '../const';
 
 export type Store = {
   city: City,
   offers: Offer[],
   offersLoading: boolean,
   sortBy: string,
-  error: string|null
+  error: string|null,
+  authorizationStatus: AuthorizationStatus
 };
 
 const getUserSavedCity = () => {
@@ -23,7 +24,8 @@ export const initialState: Store = {
   offers: [],
   offersLoading: true,
   sortBy: window.localStorage.getItem(sortByLocalStorageName) || 'Popular',
-  error: null
+  error: null,
+  authorizationStatus: AuthorizationStatus.Unknown
 };
 
 const reducer = createReducer(initialState, (builder) => {
@@ -42,6 +44,9 @@ const reducer = createReducer(initialState, (builder) => {
     })
     .addCase(setError, (state: Store, action) => {
       state.error = action.payload;
+    })
+    .addCase(setAuthorizationStatus, (state: Store, action) => {
+      state.authorizationStatus = action.payload;
     });
 });
 

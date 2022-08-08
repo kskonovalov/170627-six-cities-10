@@ -69,7 +69,7 @@ const Main = () => {
           <div className="cities__places-container container">
             <section className="cities__places places">
               {/* если убираю тут " || offersCount === 0", то после загрузки офферов _иногда_ мелькает "0 places to stay in Amsterdam"*/}
-              {offersLoading || offersCount === 0 ?
+              {offersLoading ?
                 <Loader/> :
                 <><h2 className="visually-hidden">Places</h2>
                   <b className="places__found">{offersCount} {placesWord} to stay in {city.title}</b>
