@@ -23,12 +23,14 @@ const createAPI = (): AxiosInstance => {
     }
   );
 
+  // show error if the request failed
   api.interceptors.response.use(
-    (response) => response,
+    (response) => {
+      store.dispatch(setError(null));
+      return response;
+    },
     (error: AxiosError) => {
-      if(error.response) {
-        store.dispatch(setError(error.response.data.error));
-      }
+      store.dispatch(setError(error.response?.data?.error || 'Something went wrong'));
 
       throw error;
     }
