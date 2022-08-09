@@ -22,13 +22,14 @@ declare module 'react-notifications' {
     title?: ReactNode,
     message: ReactNode,
     timeOut?: number,
-    onClick: () => any,
-    onRequestHide: () => any
+    onClick: () => void,
+    onRequestHide: () => void
   }
 
   interface NotificationsProps {
     notifications: Notification[];
-    onRequestHide?: (notification: Notification) => any;
+    /* tslint:disable */
+    onRequestHide?: (notification: Notification) => void;
     enterTimeout?: number;
     leaveTimeout?: number;
   }
@@ -43,17 +44,18 @@ declare module 'react-notifications' {
     title?: NotificationProps['title']
     message?: NotificationProps['message']
     timeout?: number,
-    onClick?: () => any,
+    /* tslint:disable */
+    onClick?: () => void,
     priority?: boolean
   }
 
-  class Notification extends React.Component<NotificationProps, {}> {
+  class Notification extends React.Component<NotificationProps, Record<string, unknown>> {
   }
 
-  class Notifications extends React.Component<NotificationsProps, {}> {
+  class Notifications extends React.Component<NotificationsProps, Record<string, unknown>> {
   }
 
-  class NotificationContainer extends React.Component<NotificationContainerProps, {}> {
+  class NotificationContainer extends React.Component<NotificationContainerProps, Record<string, unknown>> {
   }
 
   class NotificationManager extends EventEmitter {
