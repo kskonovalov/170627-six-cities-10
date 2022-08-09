@@ -6,15 +6,10 @@ import CommentForm from '../../components/ui/comment-form/comment-form';
 import CardsList from '../../components/ui/cards-list/cards-list';
 import NotFound from '../not-found/not-found';
 import Map from '../../components/ui/map/map';
-import {Review} from '../../mocks/reviews';
-import {Points} from '../../types/map-types';
+import {Points, Review} from '../../types/types';
 import {useAppSelector} from '../../hooks/redux-hooks';
 
-type RoomProps = {
-  reviews: Review[]
-}
-
-const Room = ({reviews}: RoomProps) => {
+const Room = () => {
   const [activeCardID, setActiveCardID] = useState<number | null>(null);
   /* TODO: move isAuth to the global state */
   const isAuth: boolean = (window.localStorage.getItem('isAuth') === 'true') || false;
@@ -46,6 +41,10 @@ const Room = ({reviews}: RoomProps) => {
     lng: item.location.longitude,
     id: item.id
   }));
+
+
+  // TODO: replace with actual reviews
+  const reviews: Review[] = [];
 
   return (
     <div className="page">

@@ -1,5 +1,7 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {BrowserRouter, Route, Routes} from 'react-router-dom';
+import {NotificationContainer, NotificationManager} from 'react-notifications';
+import 'react-notifications/lib/notifications.css';
 
 import Main from '../../pages/main/main';
 import Login from '../../pages/login/login';
@@ -10,32 +12,34 @@ import PrivateRoute from '../private-route';
 import Layout from '../ui/layout/layout';
 import ScrollTop from '../ux/scroll-top';
 import {AppRoute} from '../../const';
-import {Review} from '../../mocks/reviews';
+import {useAppSelector} from '../../hooks/redux-hooks';
 
-import offers from '../../mocks/offers';
+const App = () => {
+  const {error} = useAppSelector((state) => state);
+  useEffect(() => {
+    error !== null && NotificationManager.error(error, 'Error', 3000);
+  }, [error]);
 
-type AppProps = {
-  reviews: Review[]
-}
-
-const App = ({reviews}: AppProps) => (
-  <BrowserRouter>
-    <ScrollTop/>
-    <Routes>
-      <Route path={AppRoute.Main} element={<Layout/>}>
-        <Route index element={<Main />}/>
-        <Route path={AppRoute.Login} element={<Login/>}/>
-        <Route path={AppRoute.Favorites} element={
-          <PrivateRoute>
-            <Favorites offers={offers}/>
-          </PrivateRoute>
-        }
-        />
-        <Route path={AppRoute.Room} element={<Room reviews={reviews}/>}/>
-        <Route path={AppRoute.NotFound} element={<NotFound/>}/>
-      </Route>
-    </Routes>
-  </BrowserRouter>
-);
+  return (
+    <BrowserRouter>
+      <ScrollTop/>
+      <NotificationContainer/>
+      <Routes>
+        <Route path={AppRoute.Main} element={<Layout/>}>
+          <Route index element={<Main/>}/>
+          <Route path={AppRoute.Login} element={<Login/>}/>
+          <Route path={AppRoute.Favorites} element={
+            <PrivateRoute>
+              <Favorites/>
+            </PrivateRoute>
+          }
+          />
+          <Route path={AppRoute.Room} element={<Room/>}/>
+          <Route path={AppRoute.NotFound} element={<NotFound/>}/>
+        </Route>
+      </Routes>
+    </BrowserRouter>
+  );
+};
 
 export default App;

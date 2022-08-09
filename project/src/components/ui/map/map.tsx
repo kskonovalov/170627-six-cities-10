@@ -3,7 +3,7 @@ import {Icon, Marker} from 'leaflet';
 
 import useMap from '../../../hooks/use-map';
 import 'leaflet/dist/leaflet.css';
-import {City, Points} from '../../../types/map-types';
+import {City, Points} from '../../../types/types';
 import {defaultIcon, activeIcon} from '../../../const';
 
 type MapProps = {

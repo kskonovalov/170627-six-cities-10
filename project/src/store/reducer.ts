@@ -1,14 +1,15 @@
 import {createReducer} from '@reduxjs/toolkit';
 
-import {changeCity, setOffers, setSortBy} from './actions';
-import {City} from '../types/map-types';
-import offers, {Offer} from '../mocks/offers';
+import {changeCity, loadOffers, offersLoading, setSortBy, setError} from './actions';
+import {City, Offer} from '../types/types';
 import {locations, sortByLocalStorageName, cityLocalStorageName} from '../const';
 
 export type Store = {
   city: City,
   offers: Offer[],
-  sortBy: string
+  offersLoading: boolean,
+  sortBy: string,
+  error: string|null
 };
 
 const getUserSavedCity = () => {
@@ -19,8 +20,10 @@ const getUserSavedCity = () => {
 
 export const initialState: Store = {
   city: getUserSavedCity(),
-  offers: offers,
-  sortBy: window.localStorage.getItem(sortByLocalStorageName) || 'Popular'
+  offers: [],
+  offersLoading: true,
+  sortBy: window.localStorage.getItem(sortByLocalStorageName) || 'Popular',
+  error: null
 };
 
 const reducer = createReducer(initialState, (builder) => {
@@ -28,11 +31,17 @@ const reducer = createReducer(initialState, (builder) => {
     .addCase(changeCity, (state: Store, action) => {
       state.city = action.payload;
     })
-    .addCase(setOffers, (state: Store, action) => {
+    .addCase(loadOffers, (state: Store, action) => {
       state.offers = action.payload;
+    })
+    .addCase(offersLoading, (state: Store, action) => {
+      state.offersLoading = action.payload;
     })
     .addCase(setSortBy, (state: Store, action) => {
       state.sortBy = action.payload;
+    })
+    .addCase(setError, (state: Store, action) => {
+      state.error = action.payload;
     });
 });
 
