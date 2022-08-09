@@ -9,7 +9,7 @@ export type Store = {
   offers: Offer[],
   offersLoading: boolean,
   sortBy: string,
-  error: string|null,
+  error: string | string[] | null,
   authorizationStatus: AuthorizationStatus
 };
 

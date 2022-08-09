@@ -3,64 +3,52 @@ import {Navigate} from 'react-router-dom';
 
 import {AppRoute, AuthorizationStatus} from '../../const';
 import {useAppSelector, useAppDispatch} from '../../hooks/redux-hooks';
+import {setError} from '../../store/actions';
 import {loginAction} from '../../store/api-actions';
 import {validateEmail} from '../../helpers/validate-email';
-import classes from './login.module.css';
 
 const Login = () => {
-  type formDataType = {
-    email: string,
-    password: string,
-    emailError: string,
-    passwordError: string,
-    hasErrors: boolean
-  }
-  const [formData, setFormData] = useState<formDataType>({
-    email: '',
-    password: '',
-    emailError: '',
-    passwordError: '',
-    hasErrors: false
-  });
-  const minPasswordLength = 2;
-
-  /* TODO: тут возможно фигня написана, и сложно будет расширять правила валидации
-  *  думаю что хорошей практикой будет подключить что-нибудь для работы с формами,
-  * например https://www.npmjs.com/package/react-hook-form
-  * или https://www.npmjs.com/package/formik
-  * */
-  const formDataHandler = (e: ChangeEvent<HTMLInputElement>) => {
-    const fieldName = e.target.name;
-    const fieldValue = e.target.value.trim();
-    // validation
-    const newFormData = {
-      ...formData,
-      [fieldName]: fieldValue,
-      hasErrors: false,
-      passwordError: '',
-      emailError: ''
-    };
-    if (fieldName === 'password' && fieldValue.length <= minPasswordLength) {
-      newFormData.hasErrors = true;
-      newFormData.passwordError = `Password length should be more than ${minPasswordLength} symbols`;
-    }
-    if (fieldName === 'email' && fieldValue && !validateEmail(fieldValue)) {
-      newFormData.hasErrors = true;
-      newFormData.emailError = 'Should be valid e-mail address!';
-    }
-    setFormData(newFormData);
-  };
-
   const dispatch = useAppDispatch();
   const authorizationStatus = useAppSelector((store) => store.authorizationStatus);
 
+  type formDataType = {
+    email: string,
+    password: string
+  }
+  const [formData, setFormData] = useState<formDataType>({
+    email: '',
+    password: ''
+  });
+  const minPasswordLength = 2;
+
+  const formDataHandler = (e: ChangeEvent<HTMLInputElement>) => {
+    const fieldName = e.target.name;
+    const fieldValue = e.target.value.trim();
+
+    setFormData({
+      ...formData,
+      [fieldName]: fieldValue
+    });
+  };
+
   const onSubmitHandle = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (!formData.hasErrors) {
+    const errors: string[] = [];
+
+    if (formData.password.length <= minPasswordLength) {
+      errors.push(`Password length should be more than ${minPasswordLength} symbols`);
+    }
+    if (!validateEmail(formData.email)) {
+      errors.push('Should be valid e-mail address!');
+    }
+
+    if (!errors.length) {
       dispatch(loginAction({
         login: formData.email,
         password: formData.password
       }));
+    } else {
+      dispatch(setError(errors));
     }
   };
 
@@ -85,7 +73,6 @@ const Login = () => {
                     value={formData.email}
                     onChange={formDataHandler}
                   />
-                  {formData.emailError && <div className={classes['form__input-warning']}>{formData.emailError}</div>}
                 </div>
                 <div className="login__input-wrapper form__input-wrapper">
                   <label className="visually-hidden">Password</label>
@@ -98,7 +85,6 @@ const Login = () => {
                     value={formData.password}
                     onChange={formDataHandler}
                   />
-                  {formData.passwordError && <div className={classes['form__input-warning']}>{formData.passwordError}</div>}
                 </div>
                 <button className="login__submit form__submit button" type="submit">Sign in</button>
               </form>
