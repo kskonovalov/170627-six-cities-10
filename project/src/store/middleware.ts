@@ -1,8 +1,9 @@
 import {Middleware, Dispatch, AnyAction} from '@reduxjs/toolkit';
 
 import {Store} from './reducer';
-import {changeCity, setSortBy} from './actions';
-import {sortByLocalStorageName, cityLocalStorageName} from '../const';
+import {changeCity, setSortBy, setAuthorizationStatus} from './actions';
+import {sortByLocalStorageName, cityLocalStorageName, AuthorizationStatus} from '../const';
+import {unsetToken} from '../api/token';
 
 /* Save the 'Sort by' option into the user's local storage */
 export const saveUserSettingsToLocalStorage: Middleware<Record<string, unknown>, Store, Dispatch<AnyAction>> = (_store) =>
@@ -16,3 +17,14 @@ export const saveUserSettingsToLocalStorage: Middleware<Record<string, unknown>,
       }
       next(action);
     };
+
+/* drop token after logout */
+export const dropUserTokenAfterLogout: Middleware<Record<string, unknown>, Store, Dispatch<AnyAction>> =
+  (_store) =>
+    (next) =>
+      (action) => {
+        if (setAuthorizationStatus.match(action) && action.payload === AuthorizationStatus.NoAuth) {
+          unsetToken();
+        }
+        next(action);
+      };

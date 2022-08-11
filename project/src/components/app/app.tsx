@@ -12,13 +12,24 @@ import PrivateRoute from '../private-route';
 import Layout from '../ui/layout/layout';
 import ScrollTop from '../ux/scroll-top';
 import {AppRoute} from '../../const';
-import {useAppSelector} from '../../hooks/redux-hooks';
+import {useAppSelector, useAppDispatch} from '../../hooks/redux-hooks';
+import {setError} from '../../store/actions';
 
 const App = () => {
+  const authorizationStatus = useAppSelector((store) => store.authorizationStatus);
   const {error} = useAppSelector((state) => state);
+  const dispatch = useAppDispatch();
+
+  // if there's error and error is not empty, just show the error and remove it from the store
   useEffect(() => {
-    error !== null && NotificationManager.error(error, 'Error', 3000);
-  }, [error]);
+    if(typeof error === 'string' || error instanceof String) {
+      NotificationManager.error(error, 'Error', 3000);
+    }
+    if(Array.isArray(error)) {
+      error.map((errorItem) => NotificationManager.error(errorItem, 'Error', 3000));
+    }
+    dispatch(setError(null));
+  }, [error, dispatch]);
 
   return (
     <BrowserRouter>
@@ -29,7 +40,7 @@ const App = () => {
           <Route index element={<Main/>}/>
           <Route path={AppRoute.Login} element={<Login/>}/>
           <Route path={AppRoute.Favorites} element={
-            <PrivateRoute>
+            <PrivateRoute authorizationStatus={authorizationStatus}>
               <Favorites/>
             </PrivateRoute>
           }

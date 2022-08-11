@@ -1,59 +1,60 @@
-import React, {useEffect, useState} from 'react';
-import {Link, Navigate, useLocation} from 'react-router-dom';
+import React from 'react';
+import {Link, useLocation} from 'react-router-dom';
 
-import {AppRoute} from '../../../const';
+import {AppRoute, AuthorizationStatus} from '../../../const';
+import {useAppDispatch, useAppSelector} from '../../../hooks/redux-hooks';
+import {setAuthorizationStatus} from '../../../store/actions';
+import Loader from '../../ux/loader';
 
 const Header = () => {
-  /* TODO: move isAuth to the global state */
-  const [isAuth, setIsAuth] = useState(false);
-  useEffect(() => {
-    const storedIsAuth: boolean = (window.localStorage.getItem('isAuth') === 'true') || false;
-    setIsAuth(storedIsAuth);
-  }, []);
+  const dispatch = useAppDispatch();
+  const authorizationStatus = useAppSelector((state) => state.authorizationStatus);
+
   const signOutHandle = (e: React.MouseEvent<HTMLElement>) => {
     e.preventDefault();
-    window.localStorage.setItem('isAuth', 'false');
-    setIsAuth(false);
-    return <Navigate to={AppRoute.Main}/>;
+    dispatch(setAuthorizationStatus(AuthorizationStatus.NoAuth));
   };
 
   const location = useLocation();
-  const toShowSignInLink = !isAuth && location.pathname !== AppRoute.Login;
+  const toShowUserFields = authorizationStatus === AuthorizationStatus.Auth;
+  const toShowSignInLink = authorizationStatus === AuthorizationStatus.NoAuth && location.pathname !== AppRoute.Login;
 
   return (
     <header className="header">
       <div className="container">
         <div className="header__wrapper">
           <div className="header__left">
-            <Link className={`header__logo-link ${isAuth ? 'header__logo-link--active' : ''}`} to={AppRoute.Main}>
+            <Link className='header__logo-link header__logo-link--active' to={AppRoute.Main}>
               <img className="header__logo" src="img/logo.svg" alt="6 cities logo" width="81" height="41"/>
             </Link>
           </div>
-          <nav className="header__nav">
-            <ul className="header__nav-list">
-              {isAuth &&
-                <>
-                  <li className="header__nav-item user">
-                    <Link className="header__nav-link header__nav-link--profile" to={AppRoute.Favorites}>
-                      <div className="header__avatar-wrapper user__avatar-wrapper"></div>
-                      <span className="header__user-name user__name">Oliver.conner@gmail.com</span>
-                      <span className="header__favorite-count">3</span>
-                    </Link>
-                  </li>
+          {authorizationStatus === AuthorizationStatus.Unknown ?
+            <Loader/> :
+            <nav className="header__nav">
+              <ul className="header__nav-list">
+                {toShowUserFields &&
+                  <>
+                    <li className="header__nav-item user">
+                      <Link className="header__nav-link header__nav-link--profile" to={AppRoute.Favorites}>
+                        <div className="header__avatar-wrapper user__avatar-wrapper"></div>
+                        <span className="header__user-name user__name">Oliver.conner@gmail.com</span>
+                        <span className="header__favorite-count">3</span>
+                      </Link>
+                    </li>
+                    <li className="header__nav-item">
+                      <a className="header__nav-link" href='/#' onClick={signOutHandle}>
+                        <span className="header__signout">Sign out</span>
+                      </a>
+                    </li>
+                  </>}
+                {toShowSignInLink &&
                   <li className="header__nav-item">
-                    <a className="header__nav-link" href='/#' onClick={signOutHandle}>
-                      <span className="header__signout">Sign out</span>
-                    </a>
-                  </li>
-                </>}
-              {toShowSignInLink &&
-                <li className="header__nav-item">
-                  <Link className="header__nav-link" to={AppRoute.Login}>
-                    <span className="header__signout">Sign in</span>
-                  </Link>
-                </li>}
-            </ul>
-          </nav>
+                    <Link className="header__nav-link" to={AppRoute.Login}>
+                      <span className="header__signout">Sign in</span>
+                    </Link>
+                  </li>}
+              </ul>
+            </nav>}
         </div>
       </div>
     </header>

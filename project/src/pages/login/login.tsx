@@ -1,24 +1,60 @@
-import React, {useEffect, useState} from 'react';
-
-import {AppRoute} from '../../const';
+import React, {ChangeEvent, useState} from 'react';
 import {Navigate} from 'react-router-dom';
 
+import {AppRoute, AuthorizationStatus} from '../../const';
+import {useAppSelector, useAppDispatch} from '../../hooks/redux-hooks';
+import {setError} from '../../store/actions';
+import {loginAction} from '../../store/api-actions';
+import {validateEmail} from '../../helpers/validate-email';
+
 const Login = () => {
-  /* TODO: move isAuth to the global state */
-  const [isAuth, setIsAuth] = useState(false);
-  useEffect(() => {
-    const storedIsAuth: boolean = (window.localStorage.getItem('isAuth') === 'true') || false;
-    setIsAuth(storedIsAuth);
-  }, []);
+  const dispatch = useAppDispatch();
+  const authorizationStatus = useAppSelector((store) => store.authorizationStatus);
+
+  type formDataType = {
+    email: string,
+    password: string
+  }
+  const [formData, setFormData] = useState<formDataType>({
+    email: '',
+    password: ''
+  });
+  const minPasswordLength = 2;
+
+  const formDataHandler = (e: ChangeEvent<HTMLInputElement>) => {
+    const fieldName = e.target.name;
+    const fieldValue = e.target.value.trim();
+
+    setFormData({
+      ...formData,
+      [fieldName]: fieldValue
+    });
+  };
+
   const onSubmitHandle = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    window.localStorage.setItem('isAuth', 'true');
-    setIsAuth(true);
+    const errors: string[] = [];
+
+    if (formData.password.length <= minPasswordLength) {
+      errors.push(`Password length should be more than ${minPasswordLength} symbols`);
+    }
+    if (!validateEmail(formData.email)) {
+      errors.push('Should be valid e-mail address!');
+    }
+
+    if (!errors.length) {
+      dispatch(loginAction({
+        login: formData.email,
+        password: formData.password
+      }));
+    } else {
+      dispatch(setError(errors));
+    }
   };
 
   return (
-    isAuth ?
-      <Navigate to={AppRoute.Favorites}/>
+    authorizationStatus === AuthorizationStatus.Auth ?
+      <Navigate to={AppRoute.Main}/>
       :
       <div className="page page--gray page--login">
         <main className="page__main page__main--login">
@@ -28,20 +64,36 @@ const Login = () => {
               <form className="login__form form" action="#" method="post" onSubmit={onSubmitHandle}>
                 <div className="login__input-wrapper form__input-wrapper">
                   <label className="visually-hidden">E-mail</label>
-                  <input className="login__input form__input" type="email" name="email" placeholder="Email" required/>
+                  <input
+                    className="login__input form__input"
+                    type="email"
+                    name="email"
+                    placeholder="Email"
+                    required
+                    value={formData.email}
+                    onChange={formDataHandler}
+                  />
                 </div>
                 <div className="login__input-wrapper form__input-wrapper">
                   <label className="visually-hidden">Password</label>
-                  <input className="login__input form__input" type="password" name="password" placeholder="Password" required/>
+                  <input
+                    className="login__input form__input"
+                    type="password"
+                    name="password"
+                    placeholder="Password"
+                    required
+                    value={formData.password}
+                    onChange={formDataHandler}
+                  />
                 </div>
                 <button className="login__submit form__submit button" type="submit">Sign in</button>
               </form>
             </section>
             <section className="locations locations--login locations--current">
               <div className="locations__item">
-                <a className="locations__item-link" href="/#">
+                <span className="locations__item-link">
                   <span>Amsterdam</span>
-                </a>
+                </span>
               </div>
             </section>
           </div>

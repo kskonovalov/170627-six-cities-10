@@ -1,3 +1,5 @@
+// react-notifications library doesn't have official types
+// created type is based on github issue https://github.com/minhtranite/react-notifications/issues/29#issuecomment-648846225
 declare module 'react-notifications' {
   import {ReactNode} from 'react';
   import {EventEmitter} from 'events';
