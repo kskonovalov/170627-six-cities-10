@@ -98,7 +98,7 @@ export const submitReviewAction = createAsyncThunk<void, {offerID: string | numb
       status: true
     }));
     try {
-      await api.post<any>(
+      await api.post(
         ApiRoute.Comments.replace('{hotelID}', `${reviewData.offerID}`),
         {
           comment: reviewData.comment,

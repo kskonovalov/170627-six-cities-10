@@ -1,4 +1,4 @@
-import React, {ChangeEvent, FormEvent, useState, useEffect, Fragment} from 'react';
+import React, {ChangeEvent, FormEvent, useState, useEffect, Fragment, useMemo} from 'react';
 
 import {useAppDispatch, useAppSelector} from '../../../hooks/redux-hooks';
 import {fetchOfferReviewsAction, submitReviewAction} from '../../../store/api-actions';
@@ -17,10 +17,10 @@ const CommentForm = ({offerID}: CommentFormProps) => {
     rating: number,
     comment: string
   }
-  const initialFormData: FormData = {
+  const initialFormData: FormData = useMemo(() => ({
     rating: 0,
     comment: ''
-  };
+  }), []);
   const [formData, setFormData] = useState<FormData>(initialFormData);
 
   const setRating = (e: ChangeEvent<HTMLInputElement>) => {
@@ -57,7 +57,7 @@ const CommentForm = ({offerID}: CommentFormProps) => {
       setFormData(initialFormData);
       dispatch(fetchOfferReviewsAction(offerID));
     }
-  }, [commentIsOnSubmit]);
+  }, [commentIsOnSubmit, dispatch, initialFormData, offerID]);
 
   type starsType = {
     [stars: string]: string
@@ -104,7 +104,7 @@ const CommentForm = ({offerID}: CommentFormProps) => {
           <b className="reviews__text-amount">50 characters</b>
           {!commentLengthGoodEnough && <>&nbsp;({minCommentLength - formData.comment.length} symbols left)</>}.
         </p>
-        <button className="reviews__submit form__submit button" type="submit" disabled={!commentLengthGoodEnough || commentIsOnSubmit}>{commentIsOnSubmit ? <Loader /> : 'Submit'}</button>
+        <button className="reviews__submit form__submit button" type="submit" disabled={!commentLengthGoodEnough || commentIsOnSubmit}>{commentIsOnSubmit ? <Loader/> : 'Submit'}</button>
       </div>
     </form>
   );

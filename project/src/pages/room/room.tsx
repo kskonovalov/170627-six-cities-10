@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {useParams} from 'react-router-dom';
+import {useParams, Link} from 'react-router-dom';
 
 import Reviews from '../../components/ui/reviews/reviews';
 import CommentForm from '../../components/ui/comment-form/comment-form';
@@ -7,10 +7,11 @@ import CardsList from '../../components/ui/cards-list/cards-list';
 import NotFound from '../not-found/not-found';
 import Map from '../../components/ui/map/map';
 import Loader from '../../components/ux/loader';
-import {Points} from '../../types/types';
+import {Offer, Points} from '../../types/types';
 import {useAppSelector, useAppDispatch} from '../../hooks/redux-hooks';
-import {AuthorizationStatus, loadingObj} from '../../const';
+import {AppRoute, AuthorizationStatus, loadingObj} from '../../const';
 import {fetchNearbyPlacesAction, fetchOfferAction, fetchOfferReviewsAction} from '../../store/api-actions';
+import classes from './room.module.css';
 
 const Room = () => {
   const dispatch = useAppDispatch();
@@ -18,11 +19,13 @@ const Room = () => {
   const {city, authorizationStatus, offer, loading, nearby, reviews} = useAppSelector((store) => store);
 
   const {id} = useParams();
+
+  const offerIsLoading = loading[loadingObj.offer] || false;
   useEffect(() => {
-    if (typeof id !== 'undefined' && (!(loadingObj.offer in loading) || !loading[loadingObj.offer])) {
+    if (typeof id !== 'undefined' && !offerIsLoading && offer === null) {
       dispatch(fetchOfferAction(id));
     }
-  }, [id]);
+  }, [id, dispatch, offer, offerIsLoading]);
 
   // we may not need to load Nearby and Comments, in case we didn't load the offer
   useEffect(() => {
@@ -30,7 +33,7 @@ const Room = () => {
       dispatch(fetchNearbyPlacesAction(id));
       dispatch(fetchOfferReviewsAction(id));
     }
-  }, [offer, id]);
+  }, [offer, id, dispatch]);
 
   if (loading[loadingObj.offer]) {
     return <Loader/>;
@@ -45,7 +48,7 @@ const Room = () => {
   const calculatedRating = (rating >= 0 && rating <= 5) ? Math.floor(rating) * 20 : 0;
 
   // nearby places
-  const points: Points = nearby.map((item: any) => ({
+  const points: Points = nearby.map((item: Offer) => ({
     title: item.title,
     lat: item.location.latitude,
     lng: item.location.longitude,
@@ -144,7 +147,9 @@ const Room = () => {
               </div>
               <section className="property__reviews reviews">
                 <Reviews reviews={reviews}/>
-                {authorizationStatus === AuthorizationStatus.Auth && <CommentForm offerID={offer.id}/>}
+                {authorizationStatus === AuthorizationStatus.Auth ?
+                  <CommentForm offerID={offer.id}/> :
+                  <p className={classes['sign-in-message']}><Link to={AppRoute.Login}>Sign in</Link> to write a review!</p>}
               </section>
             </div>
           </div>

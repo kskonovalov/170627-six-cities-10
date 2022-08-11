@@ -18,7 +18,7 @@ const Main = () => {
   /* load initial offers */
   useEffect(() => {
     dispatch(fetchOffersAction());
-  }, []);
+  }, [dispatch]);
 
 
   // I tried to use useMemo here, but the app works faster without it
