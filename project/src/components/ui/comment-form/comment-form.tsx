@@ -1,14 +1,27 @@
-import React, {ChangeEvent, FormEvent, useState, Fragment} from 'react';
+import React, {ChangeEvent, FormEvent, useState, useEffect, Fragment} from 'react';
 
-const CommentForm = () => {
+import {useAppDispatch, useAppSelector} from '../../../hooks/redux-hooks';
+import {fetchOfferReviewsAction, submitReviewAction} from '../../../store/api-actions';
+import Loader from '../../ux/loader';
+import {loadingObj} from '../../../const';
+
+type CommentFormProps = {
+  offerID: number
+}
+
+const CommentForm = ({offerID}: CommentFormProps) => {
+  const dispatch = useAppDispatch();
+  const commentIsOnSubmit = useAppSelector((store) => store.loading[loadingObj.commentSubmit]) || false;
+
   type FormData = {
-    rating: number | boolean,
+    rating: number,
     comment: string
   }
-  const [formData, setFormData] = useState<FormData>({
-    rating: false,
+  const initialFormData: FormData = {
+    rating: 0,
     comment: ''
-  });
+  };
+  const [formData, setFormData] = useState<FormData>(initialFormData);
 
   const setRating = (e: ChangeEvent<HTMLInputElement>) => {
     setFormData((prevState) => ({
@@ -25,23 +38,37 @@ const CommentForm = () => {
   };
 
   const minCommentLength = 50;
-  const commentLengthGoodEnough = formData.comment.length > 0 && formData.comment.length < minCommentLength;
+  const commentLengthGoodEnough = formData.comment.length > minCommentLength;
 
   const submitHandler = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // TODO: handle submitted comment
+    if (!commentIsOnSubmit) {
+      dispatch(submitReviewAction({
+        offerID,
+        comment: formData.comment,
+        rating: formData.rating
+      }));
+    }
   };
+
+  // clear form fields after the comment was pushed
+  useEffect(() => {
+    if (!commentIsOnSubmit) {
+      setFormData(initialFormData);
+      dispatch(fetchOfferReviewsAction(offerID));
+    }
+  }, [commentIsOnSubmit]);
 
   type starsType = {
     [stars: string]: string
   };
 
   const stars: starsType = {
-    '5': 'perfect',
-    '4': 'good',
-    '3': 'not bad',
-    '2': 'badly',
-    '1': 'terribly',
+    'perfect': '5',
+    'good': '4',
+    'not bad': '3',
+    'badly': '2',
+    'terribly': '1',
   };
 
   return (
@@ -50,9 +77,9 @@ const CommentForm = () => {
       <div className="reviews__rating-form form__rating">
         {
           Object.keys(stars).map((key) => (
-            <Fragment key={key}>
-              <input className="form__rating-input visually-hidden" name="rating" value={key} id={`${key}-stars`} type="radio" checked={formData.rating === parseInt(key, 10)} onChange={setRating}/>
-              <label htmlFor={`${key}-stars`} className="reviews__rating-label form__rating-label" title={stars[key]}>
+            <Fragment key={stars[key]}>
+              <input className="form__rating-input visually-hidden" name="rating" value={stars[key]} id={`${stars[key]}-stars`} type="radio" checked={formData.rating === parseInt(stars[key], 10)} onChange={setRating} required/>
+              <label htmlFor={`${stars[key]}-stars`} className="reviews__rating-label form__rating-label" title={key}>
                 <svg className="form__star-image" width="37" height="33">
                   <use xlinkHref="#icon-star"></use>
                 </svg>
@@ -71,13 +98,13 @@ const CommentForm = () => {
       </textarea>
       <div className="reviews__button-wrapper">
         <p className="reviews__help">
-          To submit review please make sure to set
+          To submit review please make sure to set&nbsp;
           <span className="reviews__star">rating</span>
           and describe your stay with at least&nbsp;
           <b className="reviews__text-amount">50 characters</b>
-          {commentLengthGoodEnough && <>&nbsp;({minCommentLength - formData.comment.length} symbols left)</>}.
+          {!commentLengthGoodEnough && <>&nbsp;({minCommentLength - formData.comment.length} symbols left)</>}.
         </p>
-        <button className="reviews__submit form__submit button" type="submit" disabled={commentLengthGoodEnough}>Submit</button>
+        <button className="reviews__submit form__submit button" type="submit" disabled={!commentLengthGoodEnough || commentIsOnSubmit}>{commentIsOnSubmit ? <Loader /> : 'Submit'}</button>
       </div>
     </form>
   );

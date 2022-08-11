@@ -5,7 +5,7 @@ import {AppDispatch} from './store';
 import {Store} from './reducer';
 import {Offer, Review} from '../types/types';
 import {loadOffers, loading, setAuthorizationStatus, loadOffer, loadNearby, loadOfferReviews} from './actions';
-import {ApiRoute, AuthorizationStatus, authData, userData} from '../const';
+import {ApiRoute, AuthorizationStatus, authData, userData, loadingObj} from '../const';
 import {setToken, unsetToken} from '../api/token';
 
 type asyncThunkConfigType = {
@@ -18,7 +18,7 @@ export const fetchOffersAction = createAsyncThunk<void, undefined, asyncThunkCon
   'data/loadOffers',
   async (_arg, {dispatch, extra: api}) => {
     dispatch(loading({
-      name: 'offers',
+      name: loadingObj.offers,
       status: true
     }));
     try {
@@ -26,64 +26,88 @@ export const fetchOffersAction = createAsyncThunk<void, undefined, asyncThunkCon
       dispatch(loadOffers(data));
     } finally {
       dispatch(loading({
-        name: 'offers',
+        name: loadingObj.offers,
         status: false
       }));
     }
   }
 );
 
-export const fetchOfferAction = createAsyncThunk<void, string, asyncThunkConfigType>(
+export const fetchOfferAction = createAsyncThunk<void, string | number, asyncThunkConfigType>(
   'data/loadOffer',
   async (offerID, {dispatch, extra: api}) => {
     dispatch(loading({
-      name: 'offer',
+      name: loadingObj.offer,
       status: true
     }));
     try {
-      const {data} = await api.get<Offer>(ApiRoute.Offer.replace('{hotelID}', offerID));
+      const {data} = await api.get<Offer>(ApiRoute.Offer.replace('{hotelID}', `${offerID}`));
       dispatch(loadOffer(data));
     } finally {
       dispatch(loading({
-        name: 'offer',
+        name: loadingObj.offer,
         status: false
       }));
     }
   }
 );
 
-export const fetchNearbyPlacesAction = createAsyncThunk<void, string, asyncThunkConfigType>(
+export const fetchNearbyPlacesAction = createAsyncThunk<void, string | number, asyncThunkConfigType>(
   'data/loadNearbyPlaces',
   async (offerID, {dispatch, extra: api}) => {
     dispatch(loading({
-      name: 'nearby',
+      name: loadingObj.nearby,
       status: true
     }));
     try {
-      const {data} = await api.get<Offer[]>(ApiRoute.Nearby.replace('{hotelID}', offerID));
+      const {data} = await api.get<Offer[]>(ApiRoute.Nearby.replace('{hotelID}', `${offerID}`));
       dispatch(loadNearby(data));
     } finally {
       dispatch(loading({
-        name: 'nearby',
+        name: loadingObj.nearby,
         status: false
       }));
     }
   }
 );
 
-export const fetchOfferReviewsAction = createAsyncThunk<void, string, asyncThunkConfigType>(
+export const fetchOfferReviewsAction = createAsyncThunk<void, string | number, asyncThunkConfigType>(
   'data/loadOfferReviews',
   async (offerID, {dispatch, extra: api}) => {
     dispatch(loading({
-      name: 'reviews',
+      name: loadingObj.reviews,
       status: true
     }));
     try {
-      const {data} = await api.get<Review[]>(ApiRoute.Comments.replace('{hotelID}', offerID));
+      const {data} = await api.get<Review[]>(ApiRoute.Comments.replace('{hotelID}', `${offerID}`));
       dispatch(loadOfferReviews(data));
     } finally {
       dispatch(loading({
-        name: 'reviews',
+        name: loadingObj.reviews,
+        status: false
+      }));
+    }
+  }
+);
+
+export const submitReviewAction = createAsyncThunk<void, {offerID: string | number, comment: string, rating: number}, asyncThunkConfigType>(
+  'data/sendReviewAction',
+  async (reviewData, {dispatch, extra: api}) => {
+    dispatch(loading({
+      name: loadingObj.commentSubmit,
+      status: true
+    }));
+    try {
+      await api.post<any>(
+        ApiRoute.Comments.replace('{hotelID}', `${reviewData.offerID}`),
+        {
+          comment: reviewData.comment,
+          rating: reviewData.rating
+        }
+      );
+    } finally {
+      dispatch(loading({
+        name: loadingObj.commentSubmit,
         status: false
       }));
     }

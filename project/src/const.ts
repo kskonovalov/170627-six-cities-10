@@ -123,3 +123,12 @@ export const enum statusCodes {
 }
 
 export const defaultErrorText = 'Something went wrong! Pleasy try again later';
+
+// different loading objects
+export const enum loadingObj {
+  offers = 'offers',
+  offer = 'offer',
+  nearby = 'nearby',
+  reviews = 'reviews',
+  commentSubmit = 'commentSubmit',
+}

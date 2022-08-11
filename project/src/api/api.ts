@@ -11,6 +11,11 @@ const shouldShowError = (error: AxiosError) => {
   if (error.config.url === ApiRoute.Login && error.response?.status === statusCodes.UNAUTHORIZED) {
     return false;
   }
+  // custom text for not found message
+  if (error.response?.status === statusCodes.NOT_FOUND) {
+    store.dispatch(setError('Page not found'));
+    return false;
+  }
 
   // by default always show the error
   return true;

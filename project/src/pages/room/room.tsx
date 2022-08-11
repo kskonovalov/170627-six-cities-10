@@ -9,7 +9,7 @@ import Map from '../../components/ui/map/map';
 import Loader from '../../components/ux/loader';
 import {Points} from '../../types/types';
 import {useAppSelector, useAppDispatch} from '../../hooks/redux-hooks';
-import {AuthorizationStatus} from '../../const';
+import {AuthorizationStatus, loadingObj} from '../../const';
 import {fetchNearbyPlacesAction, fetchOfferAction, fetchOfferReviewsAction} from '../../store/api-actions';
 
 const Room = () => {
@@ -19,7 +19,7 @@ const Room = () => {
 
   const {id} = useParams();
   useEffect(() => {
-    if (typeof id !== 'undefined' && (!('offer' in loading) || !loading['offer'])) {
+    if (typeof id !== 'undefined' && (!(loadingObj.offer in loading) || !loading[loadingObj.offer])) {
       dispatch(fetchOfferAction(id));
     }
   }, [id]);
@@ -32,7 +32,7 @@ const Room = () => {
     }
   }, [offer, id]);
 
-  if (loading['offer']) {
+  if (loading[loadingObj.offer]) {
     return <Loader/>;
   }
 
@@ -51,7 +51,7 @@ const Room = () => {
     lng: item.location.longitude,
     id: item.id
   }));
-  const nearbyIsLoading = 'nearby' in loading && loading['nearby'];
+  const nearbyIsLoading = loadingObj.nearby in loading && loading[loadingObj.nearby];
 
   return (
     <div className="page">
@@ -144,7 +144,7 @@ const Room = () => {
               </div>
               <section className="property__reviews reviews">
                 <Reviews reviews={reviews}/>
-                {authorizationStatus === AuthorizationStatus.Auth && <CommentForm/>}
+                {authorizationStatus === AuthorizationStatus.Auth && <CommentForm offerID={offer.id}/>}
               </section>
             </div>
           </div>

@@ -3,7 +3,7 @@ import React, {useEffect, useState} from 'react';
 import CardsList from '../../components/ui/cards-list/cards-list';
 import Map from '../../components/ui/map/map';
 import {Points} from '../../types/types';
-import {locations} from '../../const';
+import {loadingObj, locations} from '../../const';
 import {useAppDispatch, useAppSelector} from '../../hooks/redux-hooks';
 import {changeCity} from '../../store/actions';
 import styles from './main.module.css';
@@ -76,7 +76,7 @@ const Main = () => {
         <div className="cities">
           <div className="cities__places-container container">
             <section className="cities__places places">
-              {loading['offers'] || offersCount === null ?
+              {loading[loadingObj.offers] || offersCount === null ?
                 <Loader/> :
                 <><h2 className="visually-hidden">Places</h2>
                   <b className="places__found">{offersCount} {placesWord} to stay in {city.title}</b>
