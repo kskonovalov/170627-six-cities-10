@@ -4,10 +4,7 @@ import {Provider} from 'react-redux';
 
 import App from './components/app/app';
 import store from './store/store';
-import {fetchOffersAction, checkAuthAction} from './store/api-actions';
-
-/* load initial offers */
-store.dispatch(fetchOffersAction());
+import {checkAuthAction} from './store/api-actions';
 
 /* load user state */
 store.dispatch(checkAuthAction());

@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {useParams} from 'react-router-dom';
 
 import Reviews from '../../components/ui/reviews/reviews';
@@ -6,45 +6,52 @@ import CommentForm from '../../components/ui/comment-form/comment-form';
 import CardsList from '../../components/ui/cards-list/cards-list';
 import NotFound from '../not-found/not-found';
 import Map from '../../components/ui/map/map';
-import {Points, Review} from '../../types/types';
-import {useAppSelector} from '../../hooks/redux-hooks';
+import Loader from '../../components/ux/loader';
+import {Points} from '../../types/types';
+import {useAppSelector, useAppDispatch} from '../../hooks/redux-hooks';
+import {AuthorizationStatus} from '../../const';
+import {fetchNearbyPlacesAction, fetchOfferAction, fetchOfferReviewsAction} from '../../store/api-actions';
 
 const Room = () => {
+  const dispatch = useAppDispatch();
   const [activeCardID, setActiveCardID] = useState<number | null>(null);
-  /* TODO: move isAuth to the global state */
-  const isAuth: boolean = (window.localStorage.getItem('isAuth') === 'true') || false;
-
-  /* TODO: replace offers with nearby places */
-  const {offers, city} = useAppSelector((store) => store);
+  const {city, authorizationStatus, offer, loading, nearby, reviews} = useAppSelector((store) => store);
 
   const {id} = useParams();
+  useEffect(() => {
+    if (typeof id !== 'undefined' && (!('offer' in loading) || !loading['offer'])) {
+      dispatch(fetchOfferAction(id));
+    }
+  }, [id]);
 
-  // TODO: replace with actual data from the server
-  if (typeof id === 'undefined') {
+  // we may not need to load Nearby and Comments, in case we didn't load the offer
+  useEffect(() => {
+    if (typeof id !== 'undefined' && offer !== null) {
+      dispatch(fetchNearbyPlacesAction(id));
+      dispatch(fetchOfferReviewsAction(id));
+    }
+  }, [offer, id]);
+
+  if (loading['offer']) {
+    return <Loader/>;
+  }
+
+  if (typeof id === 'undefined' || offer === null) {
     return <NotFound/>;
   }
-  const requestedOfferID = Number(id);
-  if (isNaN(requestedOfferID) || typeof offers[requestedOfferID - 1] === 'undefined') {
-    return <NotFound/>;
-  }
 
-  /* TODO: replace offers[requestedOfferID - 1] with the data from the server */
-  const {isPremium, price, rating, title, images, bedrooms, type, maxAdults, goods, host, description = ''} = offers[requestedOfferID - 1];
+  const {isPremium, price, rating, title, images, bedrooms, type, maxAdults, goods, host, description = ''} = offer;
   const {avatarUrl, name, isPro} = host;
   const calculatedRating = (rating >= 0 && rating <= 5) ? Math.floor(rating) * 20 : 0;
 
-  // TODO: replace with the nearby places
-  const nearbyPlaces = offers.slice(0, 3);
-  const points: Points = nearbyPlaces.map((item) => ({
+  // nearby places
+  const points: Points = nearby.map((item: any) => ({
     title: item.title,
     lat: item.location.latitude,
     lng: item.location.longitude,
     id: item.id
   }));
-
-
-  // TODO: replace with actual reviews
-  const reviews: Review[] = [];
+  const nearbyIsLoading = 'nearby' in loading && loading['nearby'];
 
   return (
     <div className="page">
@@ -137,23 +144,27 @@ const Room = () => {
               </div>
               <section className="property__reviews reviews">
                 <Reviews reviews={reviews}/>
-                {isAuth && <CommentForm/>}
+                {authorizationStatus === AuthorizationStatus.Auth && <CommentForm/>}
               </section>
             </div>
           </div>
-          <Map containerClassName='property__map map' city={city} points={points} selectedPointID={activeCardID}/>
+          {nearbyIsLoading && <Loader/>}
+          {nearby.length > 0 &&
+            <Map containerClassName='property__map map' city={city} points={points} selectedPointID={activeCardID}/>}
         </section>
-        <div className="container">
-          <section className="near-places places">
-            <h2 className="near-places__title">Other places in the neighbourhood</h2>
-            <CardsList
-              offers={nearbyPlaces}
-              setCardActive={setActiveCardID}
-              activeCardID={activeCardID}
-              className='near-places__list places__list'
-            />
-          </section>
-        </div>
+        {nearbyIsLoading && <Loader/>}
+        {nearby.length > 0 &&
+          <div className="container">
+            <section className="near-places places">
+              <h2 className="near-places__title">Other places in the neighbourhood</h2>
+              <CardsList
+                offers={nearby}
+                setCardActive={setActiveCardID}
+                activeCardID={activeCardID}
+                className='near-places__list places__list'
+              />
+            </section>
+          </div>}
       </main>
     </div>
   );

@@ -3,24 +3,90 @@ import {createAsyncThunk} from '@reduxjs/toolkit';
 
 import {AppDispatch} from './store';
 import {Store} from './reducer';
-import {Offer} from '../types/types';
-import {loadOffers, offersLoading, setAuthorizationStatus} from './actions';
+import {Offer, Review} from '../types/types';
+import {loadOffers, loading, setAuthorizationStatus, loadOffer, loadNearby, loadOfferReviews} from './actions';
 import {ApiRoute, AuthorizationStatus, authData, userData} from '../const';
 import {setToken, unsetToken} from '../api/token';
 
 type asyncThunkConfigType = {
-    dispatch: AppDispatch,
-    state: Store,
-    extra: AxiosInstance
+  dispatch: AppDispatch,
+  state: Store,
+  extra: AxiosInstance
 };
 
 export const fetchOffersAction = createAsyncThunk<void, undefined, asyncThunkConfigType>(
   'data/loadOffers',
   async (_arg, {dispatch, extra: api}) => {
-    const {data} = await api.get<Offer[]>(ApiRoute.Hotels);
-    dispatch(offersLoading(true));
-    dispatch(loadOffers(data));
-    dispatch(offersLoading(false));
+    dispatch(loading({
+      name: 'offers',
+      status: true
+    }));
+    try {
+      const {data} = await api.get<Offer[]>(ApiRoute.Hotels);
+      dispatch(loadOffers(data));
+    } finally {
+      dispatch(loading({
+        name: 'offers',
+        status: false
+      }));
+    }
+  }
+);
+
+export const fetchOfferAction = createAsyncThunk<void, string, asyncThunkConfigType>(
+  'data/loadOffer',
+  async (offerID, {dispatch, extra: api}) => {
+    dispatch(loading({
+      name: 'offer',
+      status: true
+    }));
+    try {
+      const {data} = await api.get<Offer>(ApiRoute.Offer.replace('{hotelID}', offerID));
+      dispatch(loadOffer(data));
+    } finally {
+      dispatch(loading({
+        name: 'offer',
+        status: false
+      }));
+    }
+  }
+);
+
+export const fetchNearbyPlacesAction = createAsyncThunk<void, string, asyncThunkConfigType>(
+  'data/loadNearbyPlaces',
+  async (offerID, {dispatch, extra: api}) => {
+    dispatch(loading({
+      name: 'nearby',
+      status: true
+    }));
+    try {
+      const {data} = await api.get<Offer[]>(ApiRoute.Nearby.replace('{hotelID}', offerID));
+      dispatch(loadNearby(data));
+    } finally {
+      dispatch(loading({
+        name: 'nearby',
+        status: false
+      }));
+    }
+  }
+);
+
+export const fetchOfferReviewsAction = createAsyncThunk<void, string, asyncThunkConfigType>(
+  'data/loadOfferReviews',
+  async (offerID, {dispatch, extra: api}) => {
+    dispatch(loading({
+      name: 'reviews',
+      status: true
+    }));
+    try {
+      const {data} = await api.get<Review[]>(ApiRoute.Comments.replace('{hotelID}', offerID));
+      dispatch(loadOfferReviews(data));
+    } finally {
+      dispatch(loading({
+        name: 'reviews',
+        status: false
+      }));
+    }
   }
 );
 
@@ -51,7 +117,7 @@ export const loginAction = createAsyncThunk<void, authData, asyncThunkConfigType
 
 export const logoutAction = createAsyncThunk<void, undefined, asyncThunkConfigType>(
   'app/logout',
-  async(_arg, {dispatch, extra: api}) => {
+  async (_arg, {dispatch, extra: api}) => {
     await api.delete(ApiRoute.Logout);
     unsetToken();
     dispatch(setAuthorizationStatus(AuthorizationStatus.NoAuth));
