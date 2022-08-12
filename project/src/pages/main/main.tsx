@@ -20,8 +20,6 @@ const Main = () => {
     dispatch(fetchOffersAction());
   }, [dispatch]);
 
-
-  // I tried to use useMemo here, but the app works faster without it
   const offersToDisplay = offers.filter((item) => item.city.name === city.title).sort((offer1, offer2) => {
     switch (sortBy) {
       case 'Popular':
@@ -39,8 +37,10 @@ const Main = () => {
 
   const [offersCount, setOffersCount] = useState<null | number>(null);
   useEffect(() => {
-    setOffersCount(offersToDisplay.length);
-  }, [offersToDisplay]);
+    if (loadingObj.offers in loading && !(loading[loadingObj.offers])) {
+      setOffersCount(offersToDisplay.length);
+    }
+  }, [offersToDisplay, loading]);
 
   const [activeCardID, setActiveCardID] = useState<number | null>(null);
 
