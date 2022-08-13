@@ -9,7 +9,7 @@ import Map from '../../components/ui/map/map';
 import Loader from '../../components/ux/loader';
 import {Offer, Points} from '../../types/types';
 import {useAppSelector, useAppDispatch} from '../../hooks/redux-hooks';
-import {AppRoute, AuthorizationStatus, loadingObj} from '../../const';
+import {AppRoute, AuthorizationStatus, LoadingObj} from '../../const';
 import {fetchNearbyPlacesAction, fetchOfferAction, fetchOfferReviewsAction} from '../../store/api-actions';
 import classes from './room.module.css';
 
@@ -34,7 +34,7 @@ const Room = () => {
     }
   }, [offer, id, dispatch]);
 
-  if (loading[loadingObj.offer]) {
+  if (loading[LoadingObj.offer]) {
     return <Loader/>;
   }
 
@@ -53,7 +53,7 @@ const Room = () => {
     lng: item.location.longitude,
     id: item.id
   }));
-  const nearbyIsLoading = loadingObj.nearby in loading && loading[loadingObj.nearby];
+  const nearbyIsLoading = LoadingObj.nearby in loading && loading[LoadingObj.nearby];
 
   return (
     <div className="page">
