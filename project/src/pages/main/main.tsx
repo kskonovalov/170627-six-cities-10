@@ -44,7 +44,7 @@ const Main = () => {
 
   const [activeCardID, setActiveCardID] = useState<number | null>(null);
 
-  const points: Points = offers.map((item) => ({
+  const points: Points = offersToDisplay.map((item) => ({
     title: item.title,
     lat: item.location.latitude,
     lng: item.location.longitude,

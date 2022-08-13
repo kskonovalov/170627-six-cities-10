@@ -16,18 +16,15 @@ import classes from './room.module.css';
 const Room = () => {
   const dispatch = useAppDispatch();
   const [activeCardID, setActiveCardID] = useState<number | null>(null);
-  const [offerRequestSent, setOfferRequestSent] = useState(false);
   const {city, authorizationStatus, offer, loading, nearby, reviews} = useAppSelector((store) => store);
 
   const {id} = useParams();
 
-  const offerIsLoading = loading[loadingObj.offer] || false;
   useEffect(() => {
-    if (typeof id !== 'undefined' && !offerIsLoading && !offerRequestSent && offer === null) {
-      setOfferRequestSent(true);
+    if (typeof id !== 'undefined') {
       dispatch(fetchOfferAction(id));
     }
-  }, [id, dispatch, offer, offerIsLoading, offerRequestSent]);
+  }, [id, dispatch]);
 
   // we may not need to load Nearby and Comments, in case we didn't load the offer
   useEffect(() => {
