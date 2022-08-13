@@ -15,10 +15,11 @@ type MapProps = {
 
 function Map({containerClassName, city, points, selectedPointID}: MapProps) {
   const mapRef = useRef(null);
-  const map = useMap(mapRef, city);
+  const [map, layerGroup] = useMap(mapRef, city);
 
   useEffect(() => {
-    if (map) {
+    if (map && layerGroup) {
+      layerGroup.clearLayers();
       points.forEach((point) => {
         const marker = new Marker({
           lat: point.lat,
@@ -30,10 +31,10 @@ function Map({containerClassName, city, points, selectedPointID}: MapProps) {
               ? new Icon(activeIcon)
               : new Icon(defaultIcon)
           )
-          .addTo(map);
+          .addTo(layerGroup);
       });
     }
-  }, [map, points, selectedPointID]);
+  }, [map, points, selectedPointID, layerGroup]);
 
   return <section className={containerClassName} ref={mapRef}></section>;
 }
