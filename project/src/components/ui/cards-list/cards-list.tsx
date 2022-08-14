@@ -13,22 +13,24 @@ type CardsListProps = {
 const CardsList = ({className, offers, activeCardID, setCardActive}: CardsListProps) => {
 
   /*
-  проблема: при наведении на одну карточку, перерисовываются все карточки
-  Я попытался использовать useCallback, чтобы перерисовывалась только одна, но Profiler говорит, что перерисовываются все
-  Он пишет, что перерисовываются они потому что родительский компонент делает re-render
-  А родительский компонент re-renderится, потому что меняются пропсы offers и activeCardID
-  */
+сейчас при наведении на одну карточку, перерисовываются все карточки
+Я попытался использовать useCallback, чтобы перерисовывалась только одна, но Profiler говорит, что перерисовываются все
+Он пишет, что перерисовываются они потому что родительский компонент (CardsList) делает re-render
+А CardsList re-render'ится, потому что меняется пропс activeCardID
+
+Я уже на самом деле не уверен, стоит ли вообще оборачивать setCardActive в useCallback, кажется что нет
+*/
   const setCardActiveCallback = useCallback(
     (id: number) => {
       setCardActive(id);
     },
-    [],
+    [setCardActive],
   );
   const setCardInactiveCallback = useCallback(
     () => {
       setCardActive(null);
     },
-    [],
+    [setCardActive],
   );
 
   return (

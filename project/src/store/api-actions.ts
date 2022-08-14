@@ -1,8 +1,7 @@
 import {AxiosInstance} from 'axios';
 import {createAsyncThunk} from '@reduxjs/toolkit';
 
-import {AppDispatch} from './store';
-import {Store} from './reducer';
+import {AppDispatch, RootState} from './store';
 import {Offer, Review} from '../types/types';
 import {loadOffers, loading, setAuthorizationStatus, loadOffer, loadNearby, loadOfferReviews} from './actions';
 import {ApiRoute, AuthorizationStatus, authData, userData, LoadingObj} from '../const';
@@ -10,7 +9,7 @@ import {setToken, unsetToken} from '../api/token';
 
 type asyncThunkConfigType = {
   dispatch: AppDispatch,
-  state: Store,
+  state: RootState,
   extra: AxiosInstance
 };
 
@@ -18,7 +17,7 @@ export const fetchOffersAction = createAsyncThunk<void, undefined, asyncThunkCon
   'data/loadOffers',
   async (_arg, {dispatch, extra: api}) => {
     dispatch(loading({
-      name: LoadingObj.offers,
+      name: LoadingObj.Offers,
       status: true
     }));
     try {
@@ -26,7 +25,7 @@ export const fetchOffersAction = createAsyncThunk<void, undefined, asyncThunkCon
       dispatch(loadOffers(data));
     } finally {
       dispatch(loading({
-        name: LoadingObj.offers,
+        name: LoadingObj.Offers,
         status: false
       }));
     }
@@ -37,7 +36,7 @@ export const fetchOfferAction = createAsyncThunk<void, string | number, asyncThu
   'data/loadOffer',
   async (offerID, {dispatch, extra: api}) => {
     dispatch(loading({
-      name: LoadingObj.offer,
+      name: LoadingObj.Offer,
       status: true
     }));
     try {
@@ -45,7 +44,7 @@ export const fetchOfferAction = createAsyncThunk<void, string | number, asyncThu
       dispatch(loadOffer(data));
     } finally {
       dispatch(loading({
-        name: LoadingObj.offer,
+        name: LoadingObj.Offer,
         status: false
       }));
     }
@@ -56,7 +55,7 @@ export const fetchNearbyPlacesAction = createAsyncThunk<void, string | number, a
   'data/loadNearbyPlaces',
   async (offerID, {dispatch, extra: api}) => {
     dispatch(loading({
-      name: LoadingObj.nearby,
+      name: LoadingObj.Nearby,
       status: true
     }));
     try {
@@ -64,7 +63,7 @@ export const fetchNearbyPlacesAction = createAsyncThunk<void, string | number, a
       dispatch(loadNearby(data));
     } finally {
       dispatch(loading({
-        name: LoadingObj.nearby,
+        name: LoadingObj.Nearby,
         status: false
       }));
     }
@@ -75,7 +74,7 @@ export const fetchOfferReviewsAction = createAsyncThunk<void, string | number, a
   'data/loadOfferReviews',
   async (offerID, {dispatch, extra: api}) => {
     dispatch(loading({
-      name: LoadingObj.reviews,
+      name: LoadingObj.Reviews,
       status: true
     }));
     try {
@@ -83,7 +82,7 @@ export const fetchOfferReviewsAction = createAsyncThunk<void, string | number, a
       dispatch(loadOfferReviews(data));
     } finally {
       dispatch(loading({
-        name: LoadingObj.reviews,
+        name: LoadingObj.Reviews,
         status: false
       }));
     }
@@ -94,7 +93,7 @@ export const submitReviewAction = createAsyncThunk<void, {offerID: string | numb
   'data/sendReviewAction',
   async (reviewData, {dispatch, extra: api}) => {
     dispatch(loading({
-      name: LoadingObj.commentSubmit,
+      name: LoadingObj.CommentSubmit,
       status: true
     }));
     try {
@@ -107,7 +106,7 @@ export const submitReviewAction = createAsyncThunk<void, {offerID: string | numb
       );
     } finally {
       dispatch(loading({
-        name: LoadingObj.commentSubmit,
+        name: LoadingObj.CommentSubmit,
         status: false
       }));
     }

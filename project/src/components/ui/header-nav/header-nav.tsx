@@ -5,9 +5,10 @@ import {useAppDispatch, useAppSelector} from '../../../hooks/redux-hooks';
 import {logoutAction} from '../../../store/api-actions';
 import {AppRoute, AuthorizationStatus} from '../../../const';
 import Loader from '../../ux/loader';
+import {getAuthorizationStatus} from '../../../store/user-slice/user-selectors';
 
 const HeaderNav = () => {
-  const authorizationStatus = useAppSelector((state) => state.authorizationStatus);
+  const authorizationStatus = useAppSelector(getAuthorizationStatus);
   const dispatch = useAppDispatch();
 
   const signOutHandle = (e: React.MouseEvent<HTMLElement>) => {

@@ -1,12 +1,14 @@
-import {Middleware, Dispatch, AnyAction} from '@reduxjs/toolkit';
+import {Middleware} from '@reduxjs/toolkit';
 
-import {Store} from './reducer';
 import {changeCity, setSortBy, setAuthorizationStatus} from './actions';
 import {sortByLocalStorageName, cityLocalStorageName, AuthorizationStatus} from '../const';
 import {unsetToken} from '../api/token';
+import {rootReducer} from './root-reducer';
+
+type Reducer = ReturnType<typeof rootReducer>;
 
 /* Save the 'Sort by' option into the user's local storage */
-export const saveUserSettingsToLocalStorage: Middleware<Record<string, unknown>, Store, Dispatch<AnyAction>> = (_store) =>
+export const saveUserSettingsToLocalStorage: Middleware<unknown, Reducer> = (_store) =>
   (next) =>
     (action) => {
       if (setSortBy.match(action)) {
@@ -19,7 +21,7 @@ export const saveUserSettingsToLocalStorage: Middleware<Record<string, unknown>,
     };
 
 /* drop token after logout */
-export const dropUserTokenAfterLogout: Middleware<Record<string, unknown>, Store, Dispatch<AnyAction>> =
+export const dropUserTokenAfterLogout: Middleware<unknown, Reducer> =
   (_store) =>
     (next) =>
       (action) => {

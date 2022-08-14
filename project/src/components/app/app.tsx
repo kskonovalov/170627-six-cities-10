@@ -14,18 +14,20 @@ import ScrollTop from '../ux/scroll-top';
 import {AppRoute} from '../../const';
 import {useAppSelector, useAppDispatch} from '../../hooks/redux-hooks';
 import {setError} from '../../store/actions';
+import {getAuthorizationStatus} from '../../store/user-slice/user-selectors';
+import {getAppError} from '../../store/app-slice/app-selectors';
 
 const App = () => {
-  const authorizationStatus = useAppSelector((store) => store.authorizationStatus);
-  const {error} = useAppSelector((state) => state);
+  const authorizationStatus = useAppSelector(getAuthorizationStatus);
+  const error = useAppSelector(getAppError);
   const dispatch = useAppDispatch();
 
   // if there's error and error is not empty, just show the error and remove it from the store
   useEffect(() => {
-    if(typeof error === 'string' || error instanceof String) {
+    if (typeof error === 'string' || error instanceof String) {
       NotificationManager.error(error, 'Error', 3000);
     }
-    if(Array.isArray(error)) {
+    if (Array.isArray(error)) {
       error.map((errorItem) => NotificationManager.error(errorItem, 'Error', 3000));
     }
     dispatch(setError(null));

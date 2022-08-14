@@ -1,13 +1,13 @@
 import {configureStore, getDefaultMiddleware} from '@reduxjs/toolkit';
 
-import reducer from './reducer';
 import createAPI from '../api/api';
 import {saveUserSettingsToLocalStorage, dropUserTokenAfterLogout} from './middleware';
+import {rootReducer} from './root-reducer';
 
 export const api = createAPI();
 
 const store = configureStore({
-  reducer,
+  reducer: rootReducer,
   middleware: getDefaultMiddleware({
     thunk: {
       extraArgument: api

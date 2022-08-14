@@ -124,11 +124,18 @@ export const enum StatusCodes {
 
 export const defaultErrorText = 'Something went wrong! Pleasy try again later';
 
-// different loading objects
+// 'loading' status for different components/things
 export const enum LoadingObj {
-  offers = 'offers',
-  offer = 'offer',
-  nearby = 'nearby',
-  reviews = 'reviews',
-  commentSubmit = 'commentSubmit',
+  Offers = 'offers',
+  Offer = 'offer',
+  Nearby = 'nearby',
+  Reviews = 'reviews',
+  CommentSubmit = 'commentSubmit',
+}
+
+// reducer slices
+export const enum NameSpace {
+  Offers = 'offers',
+  User = 'user',
+  App = 'app'
 }

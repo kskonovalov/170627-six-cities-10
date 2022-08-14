@@ -12,11 +12,20 @@ import {useAppSelector, useAppDispatch} from '../../hooks/redux-hooks';
 import {AppRoute, AuthorizationStatus, LoadingObj} from '../../const';
 import {fetchNearbyPlacesAction, fetchOfferAction, fetchOfferReviewsAction} from '../../store/api-actions';
 import classes from './room.module.css';
+import {getCity, getNearby, getOffer, getReviews} from '../../store/offers-slice/offers-selectors';
+import {getAuthorizationStatus} from '../../store/user-slice/user-selectors';
+import {getAppLoading} from '../../store/app-slice/app-selectors';
 
 const Room = () => {
   const dispatch = useAppDispatch();
   const [activeCardID, setActiveCardID] = useState<number | null>(null);
-  const {city, authorizationStatus, offer, loading, nearby, reviews} = useAppSelector((store) => store);
+
+  const city = useAppSelector(getCity);
+  const authorizationStatus = useAppSelector(getAuthorizationStatus);
+  const offer = useAppSelector(getOffer);
+  const loading = useAppSelector(getAppLoading);
+  const nearby = useAppSelector(getNearby);
+  const reviews = useAppSelector(getReviews);
 
   const {id} = useParams();
 
@@ -34,7 +43,7 @@ const Room = () => {
     }
   }, [offer, id, dispatch]);
 
-  if (loading[LoadingObj.offer]) {
+  if (loading[LoadingObj.Offer]) {
     return <Loader/>;
   }
 
@@ -53,7 +62,7 @@ const Room = () => {
     lng: item.location.longitude,
     id: item.id
   }));
-  const nearbyIsLoading = LoadingObj.nearby in loading && loading[LoadingObj.nearby];
+  const nearbyIsLoading = LoadingObj.Nearby in loading && loading[LoadingObj.Nearby];
 
   return (
     <div className="page">
