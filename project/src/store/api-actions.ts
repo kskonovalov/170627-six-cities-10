@@ -5,7 +5,7 @@ import {AppDispatch} from './store';
 import {Store} from './reducer';
 import {Offer, Review} from '../types/types';
 import {loadOffers, loading, setAuthorizationStatus, loadOffer, loadNearby, loadOfferReviews} from './actions';
-import {ApiRoute, AuthorizationStatus, authData, userData, loadingObj} from '../const';
+import {ApiRoute, AuthorizationStatus, authData, userData, LoadingObj} from '../const';
 import {setToken, unsetToken} from '../api/token';
 
 type asyncThunkConfigType = {
@@ -18,7 +18,7 @@ export const fetchOffersAction = createAsyncThunk<void, undefined, asyncThunkCon
   'data/loadOffers',
   async (_arg, {dispatch, extra: api}) => {
     dispatch(loading({
-      name: loadingObj.offers,
+      name: LoadingObj.offers,
       status: true
     }));
     try {
@@ -26,7 +26,7 @@ export const fetchOffersAction = createAsyncThunk<void, undefined, asyncThunkCon
       dispatch(loadOffers(data));
     } finally {
       dispatch(loading({
-        name: loadingObj.offers,
+        name: LoadingObj.offers,
         status: false
       }));
     }
@@ -37,7 +37,7 @@ export const fetchOfferAction = createAsyncThunk<void, string | number, asyncThu
   'data/loadOffer',
   async (offerID, {dispatch, extra: api}) => {
     dispatch(loading({
-      name: loadingObj.offer,
+      name: LoadingObj.offer,
       status: true
     }));
     try {
@@ -45,7 +45,7 @@ export const fetchOfferAction = createAsyncThunk<void, string | number, asyncThu
       dispatch(loadOffer(data));
     } finally {
       dispatch(loading({
-        name: loadingObj.offer,
+        name: LoadingObj.offer,
         status: false
       }));
     }
@@ -56,7 +56,7 @@ export const fetchNearbyPlacesAction = createAsyncThunk<void, string | number, a
   'data/loadNearbyPlaces',
   async (offerID, {dispatch, extra: api}) => {
     dispatch(loading({
-      name: loadingObj.nearby,
+      name: LoadingObj.nearby,
       status: true
     }));
     try {
@@ -64,7 +64,7 @@ export const fetchNearbyPlacesAction = createAsyncThunk<void, string | number, a
       dispatch(loadNearby(data));
     } finally {
       dispatch(loading({
-        name: loadingObj.nearby,
+        name: LoadingObj.nearby,
         status: false
       }));
     }
@@ -75,7 +75,7 @@ export const fetchOfferReviewsAction = createAsyncThunk<void, string | number, a
   'data/loadOfferReviews',
   async (offerID, {dispatch, extra: api}) => {
     dispatch(loading({
-      name: loadingObj.reviews,
+      name: LoadingObj.reviews,
       status: true
     }));
     try {
@@ -83,7 +83,7 @@ export const fetchOfferReviewsAction = createAsyncThunk<void, string | number, a
       dispatch(loadOfferReviews(data));
     } finally {
       dispatch(loading({
-        name: loadingObj.reviews,
+        name: LoadingObj.reviews,
         status: false
       }));
     }
@@ -94,7 +94,7 @@ export const submitReviewAction = createAsyncThunk<void, {offerID: string | numb
   'data/sendReviewAction',
   async (reviewData, {dispatch, extra: api}) => {
     dispatch(loading({
-      name: loadingObj.commentSubmit,
+      name: LoadingObj.commentSubmit,
       status: true
     }));
     try {
@@ -107,7 +107,7 @@ export const submitReviewAction = createAsyncThunk<void, {offerID: string | numb
       );
     } finally {
       dispatch(loading({
-        name: loadingObj.commentSubmit,
+        name: LoadingObj.commentSubmit,
         status: false
       }));
     }

@@ -9,25 +9,22 @@ import Map from '../../components/ui/map/map';
 import Loader from '../../components/ux/loader';
 import {Offer, Points} from '../../types/types';
 import {useAppSelector, useAppDispatch} from '../../hooks/redux-hooks';
-import {AppRoute, AuthorizationStatus, loadingObj} from '../../const';
+import {AppRoute, AuthorizationStatus, LoadingObj} from '../../const';
 import {fetchNearbyPlacesAction, fetchOfferAction, fetchOfferReviewsAction} from '../../store/api-actions';
 import classes from './room.module.css';
 
 const Room = () => {
   const dispatch = useAppDispatch();
   const [activeCardID, setActiveCardID] = useState<number | null>(null);
-  const [offerRequestSent, setOfferRequestSent] = useState(false);
   const {city, authorizationStatus, offer, loading, nearby, reviews} = useAppSelector((store) => store);
 
   const {id} = useParams();
 
-  const offerIsLoading = loading[loadingObj.offer] || false;
   useEffect(() => {
-    if (typeof id !== 'undefined' && !offerIsLoading && !offerRequestSent && offer === null) {
-      setOfferRequestSent(true);
+    if (typeof id !== 'undefined') {
       dispatch(fetchOfferAction(id));
     }
-  }, [id, dispatch, offer, offerIsLoading, offerRequestSent]);
+  }, [id, dispatch]);
 
   // we may not need to load Nearby and Comments, in case we didn't load the offer
   useEffect(() => {
@@ -37,7 +34,7 @@ const Room = () => {
     }
   }, [offer, id, dispatch]);
 
-  if (loading[loadingObj.offer]) {
+  if (loading[LoadingObj.offer]) {
     return <Loader/>;
   }
 
@@ -56,7 +53,7 @@ const Room = () => {
     lng: item.location.longitude,
     id: item.id
   }));
-  const nearbyIsLoading = loadingObj.nearby in loading && loading[loadingObj.nearby];
+  const nearbyIsLoading = LoadingObj.nearby in loading && loading[LoadingObj.nearby];
 
   return (
     <div className="page">
