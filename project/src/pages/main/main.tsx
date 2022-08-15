@@ -2,13 +2,14 @@ import React, {useEffect, useState, useMemo} from 'react';
 
 import CardsList from '../../components/ui/cards-list/cards-list';
 import Map from '../../components/ui/map/map';
+import Sorting from '../../components/ui/sorting/sorting';
+import Loader from '../../components/ux/loader';
+import MainEmpty from '../../components/ui/main-empty/main-empty';
 import {Points} from '../../types/types';
 import {LoadingObj, locations} from '../../const';
 import {useAppDispatch, useAppSelector} from '../../hooks/redux-hooks';
 import {changeCity} from '../../store/actions';
 import styles from './main.module.css';
-import Sorting from '../../components/ui/sorting/sorting';
-import Loader from '../../components/ux/loader';
 import {fetchOffersAction} from '../../store/api-actions';
 import {getCity, getOffers, getSortBy} from '../../store/offers-slice/offers-selectors';
 import {getAppLoading} from '../../store/app-slice/app-selectors';
@@ -40,7 +41,7 @@ const Main = () => {
     }
   })), [offers, city, sortBy]);
 
-  const offersCount = offersToDisplay.length || null;
+  const offersCount = offersToDisplay.length;
   const [activeCardID, setActiveCardID] = useState<number | null>(null);
 
   const points: Points = offersToDisplay.map((item) => ({
@@ -50,11 +51,19 @@ const Main = () => {
     id: item.id
   }));
 
-  const placesWord = (offersCount !== null && (offersCount === 0 || offersCount > 1)) ? 'places' : 'place';
+  const placesWord = (offersCount === 0 || offersCount > 1) ? 'places' : 'place';
+
+  const offersAreLoading = loading[LoadingObj.Offers];
+  const hasOffers = !offersAreLoading && offersCount > 0;
+  const noOffers = !offersAreLoading && offersCount === 0;
+
+  // console.log('offersAreLoading', offersAreLoading);
+  // console.log('hasOffers', hasOffers);
+  // console.log('noOffers', noOffers);
 
   return (
     <div className="page page--gray page--main">
-      <main className="page__main page__main--index">
+      <main className={`page__main page__main--index ${noOffers ? 'page__main--index-empty' : ''}`}>
         <h1 className="visually-hidden">Cities</h1>
         <div className="tabs">
           <section className="locations container">
@@ -73,11 +82,12 @@ const Main = () => {
           </section>
         </div>
         <div className="cities">
-          <div className="cities__places-container container">
-            <section className="cities__places places">
-              {loading[LoadingObj.Offers] || offersCount === null ?
-                <Loader/> :
-                <><h2 className="visually-hidden">Places</h2>
+          <div className={`cities__places-container container ${noOffers ? 'cities__places-container--empty' : ''}`}>
+            <section className={`${hasOffers ? 'cities__places places' : ''} ${noOffers ? 'cities__no-places' : ''}`}>
+              {offersAreLoading && <Loader/>}
+              {hasOffers &&
+                <>
+                  <h2 className="visually-hidden">Places</h2>
                   <b className="places__found">{offersCount} {placesWord} to stay in {city.title}</b>
                   <Sorting/>
                   <CardsList
@@ -87,9 +97,10 @@ const Main = () => {
                     className='cities__places-list places__list tabs__content'
                   />
                 </>}
+              {noOffers && <MainEmpty cityTitle={city.title}/>}
             </section>
             <div className="cities__right-section">
-              <Map containerClassName='cities__map map' city={city} points={points} selectedPointID={activeCardID}/>
+              {hasOffers && <Map containerClassName='cities__map map' city={city} points={points} selectedPointID={activeCardID}/>}
             </div>
           </div>
         </div>

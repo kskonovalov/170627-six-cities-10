@@ -23,7 +23,10 @@ export const fetchOffersAction = createAsyncThunk<void, undefined, asyncThunkCon
     try {
       const {data} = await api.get<Offer[]>(ApiRoute.Hotels);
       dispatch(loadOffers(data));
-    } finally {
+    } catch {
+      dispatch(loadOffers([]));
+    }
+    finally {
       dispatch(loading({
         name: LoadingObj.Offers,
         status: false
