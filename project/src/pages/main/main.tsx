@@ -10,7 +10,7 @@ import {LoadingObj, locations} from '../../const';
 import {useAppDispatch, useAppSelector} from '../../hooks/redux-hooks';
 import {changeCity} from '../../store/actions';
 import styles from './main.module.css';
-import {fetchOffersAction} from '../../store/api-actions';
+import {fetchOffersAction} from '../../store/offers-slice/offers-api-actions';
 import {getCity, getOffers, getSortBy} from '../../store/offers-slice/offers-selectors';
 import {getAppLoading} from '../../store/app-slice/app-selectors';
 

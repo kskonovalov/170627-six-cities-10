@@ -10,7 +10,7 @@ import Loader from '../../components/ux/loader';
 import {Offer, Points} from '../../types/types';
 import {useAppSelector, useAppDispatch} from '../../hooks/redux-hooks';
 import {AppRoute, AuthorizationStatus, LoadingObj} from '../../const';
-import {fetchNearbyPlacesAction, fetchOfferAction, fetchOfferReviewsAction} from '../../store/api-actions';
+import {fetchNearbyPlacesAction, fetchOfferAction, fetchOfferReviewsAction} from '../../store/offers-slice/offers-api-actions';
 import classes from './room.module.css';
 import {getCity, getNearby, getOffer, getReviews} from '../../store/offers-slice/offers-selectors';
 import {getAuthorizationStatus} from '../../store/user-slice/user-selectors';

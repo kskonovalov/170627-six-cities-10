@@ -2,7 +2,7 @@ import React from 'react';
 import {Link, useLocation} from 'react-router-dom';
 
 import {useAppDispatch, useAppSelector} from '../../../hooks/redux-hooks';
-import {logoutAction} from '../../../store/api-actions';
+import {logoutAction} from '../../../store/user-slice/user-api-actions';
 import {AppRoute, AuthorizationStatus} from '../../../const';
 import Loader from '../../ux/loader';
 import {getAuthorizationStatus} from '../../../store/user-slice/user-selectors';
