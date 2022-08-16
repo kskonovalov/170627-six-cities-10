@@ -1,0 +1,7 @@
+.sign-in-message {
+  text-align: center;
+  margin-top: 20px;
+}
+.sign-in-message a {
+  text-decoration: underline;
+}

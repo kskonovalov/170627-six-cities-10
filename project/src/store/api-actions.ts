@@ -3,24 +3,114 @@ import {createAsyncThunk} from '@reduxjs/toolkit';
 
 import {AppDispatch} from './store';
 import {Store} from './reducer';
-import {Offer} from '../types/types';
-import {loadOffers, offersLoading, setAuthorizationStatus} from './actions';
-import {ApiRoute, AuthorizationStatus, authData, userData} from '../const';
+import {Offer, Review} from '../types/types';
+import {loadOffers, loading, setAuthorizationStatus, loadOffer, loadNearby, loadOfferReviews} from './actions';
+import {ApiRoute, AuthorizationStatus, authData, userData, LoadingObj} from '../const';
 import {setToken, unsetToken} from '../api/token';
 
 type asyncThunkConfigType = {
-    dispatch: AppDispatch,
-    state: Store,
-    extra: AxiosInstance
+  dispatch: AppDispatch,
+  state: Store,
+  extra: AxiosInstance
 };
 
 export const fetchOffersAction = createAsyncThunk<void, undefined, asyncThunkConfigType>(
   'data/loadOffers',
   async (_arg, {dispatch, extra: api}) => {
-    const {data} = await api.get<Offer[]>(ApiRoute.Hotels);
-    dispatch(offersLoading(true));
-    dispatch(loadOffers(data));
-    dispatch(offersLoading(false));
+    dispatch(loading({
+      name: LoadingObj.offers,
+      status: true
+    }));
+    try {
+      const {data} = await api.get<Offer[]>(ApiRoute.Hotels);
+      dispatch(loadOffers(data));
+    } finally {
+      dispatch(loading({
+        name: LoadingObj.offers,
+        status: false
+      }));
+    }
+  }
+);
+
+export const fetchOfferAction = createAsyncThunk<void, string | number, asyncThunkConfigType>(
+  'data/loadOffer',
+  async (offerID, {dispatch, extra: api}) => {
+    dispatch(loading({
+      name: LoadingObj.offer,
+      status: true
+    }));
+    try {
+      const {data} = await api.get<Offer>(ApiRoute.Offer.replace('{hotelID}', `${offerID}`));
+      dispatch(loadOffer(data));
+    } finally {
+      dispatch(loading({
+        name: LoadingObj.offer,
+        status: false
+      }));
+    }
+  }
+);
+
+export const fetchNearbyPlacesAction = createAsyncThunk<void, string | number, asyncThunkConfigType>(
+  'data/loadNearbyPlaces',
+  async (offerID, {dispatch, extra: api}) => {
+    dispatch(loading({
+      name: LoadingObj.nearby,
+      status: true
+    }));
+    try {
+      const {data} = await api.get<Offer[]>(ApiRoute.Nearby.replace('{hotelID}', `${offerID}`));
+      dispatch(loadNearby(data));
+    } finally {
+      dispatch(loading({
+        name: LoadingObj.nearby,
+        status: false
+      }));
+    }
+  }
+);
+
+export const fetchOfferReviewsAction = createAsyncThunk<void, string | number, asyncThunkConfigType>(
+  'data/loadOfferReviews',
+  async (offerID, {dispatch, extra: api}) => {
+    dispatch(loading({
+      name: LoadingObj.reviews,
+      status: true
+    }));
+    try {
+      const {data} = await api.get<Review[]>(ApiRoute.Comments.replace('{hotelID}', `${offerID}`));
+      dispatch(loadOfferReviews(data));
+    } finally {
+      dispatch(loading({
+        name: LoadingObj.reviews,
+        status: false
+      }));
+    }
+  }
+);
+
+export const submitReviewAction = createAsyncThunk<void, {offerID: string | number, comment: string, rating: number}, asyncThunkConfigType>(
+  'data/sendReviewAction',
+  async (reviewData, {dispatch, extra: api}) => {
+    dispatch(loading({
+      name: LoadingObj.commentSubmit,
+      status: true
+    }));
+    try {
+      await api.post(
+        ApiRoute.Comments.replace('{hotelID}', `${reviewData.offerID}`),
+        {
+          comment: reviewData.comment,
+          rating: reviewData.rating
+        }
+      );
+    } finally {
+      dispatch(loading({
+        name: LoadingObj.commentSubmit,
+        status: false
+      }));
+    }
   }
 );
 
@@ -51,7 +141,7 @@ export const loginAction = createAsyncThunk<void, authData, asyncThunkConfigType
 
 export const logoutAction = createAsyncThunk<void, undefined, asyncThunkConfigType>(
   'app/logout',
-  async(_arg, {dispatch, extra: api}) => {
+  async (_arg, {dispatch, extra: api}) => {
     await api.delete(ApiRoute.Logout);
     unsetToken();
     dispatch(setAuthorizationStatus(AuthorizationStatus.NoAuth));

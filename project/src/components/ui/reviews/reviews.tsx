@@ -20,7 +20,7 @@ const Reviews = ({reviews}: ReviewsProps) => (
           const commentDate = new Date(date);
           const localizedDate = `${commentDate.toLocaleString('default', {month: 'long'})} ${commentDate.getUTCFullYear()}`;
           // let's do the default rating to be 100%
-          const ratingPercent = (rating > 1 && rating <= 5) ? rating * 20 : 100;
+          const ratingPercent = (rating >= 1 && rating <= 5) ? rating * 20 : 100;
           return (
             <li className="reviews__item" key={id}>
               <div className="reviews__user user">

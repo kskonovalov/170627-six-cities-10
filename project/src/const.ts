@@ -115,7 +115,7 @@ export const backendUrl = 'https://10.react.pages.academy/six-cities';
 export const requestTimeout = 5000; // ms
 
 // based on https://www.npmjs.com/package/http-status-codes
-export const enum statusCodes {
+export const enum StatusCodes {
   BAD_REQUEST = 400,
   UNAUTHORIZED = 401,
   NOT_FOUND = 404,
@@ -123,3 +123,12 @@ export const enum statusCodes {
 }
 
 export const defaultErrorText = 'Something went wrong! Pleasy try again later';
+
+// different loading objects
+export const enum LoadingObj {
+  offers = 'offers',
+  offer = 'offer',
+  nearby = 'nearby',
+  reviews = 'reviews',
+  commentSubmit = 'commentSubmit',
+}

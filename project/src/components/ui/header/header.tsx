@@ -3,16 +3,16 @@ import {Link, useLocation} from 'react-router-dom';
 
 import {AppRoute, AuthorizationStatus} from '../../../const';
 import {useAppDispatch, useAppSelector} from '../../../hooks/redux-hooks';
-import {setAuthorizationStatus} from '../../../store/actions';
+import {logoutAction} from '../../../store/api-actions';
 import Loader from '../../ux/loader';
 
 const Header = () => {
-  const dispatch = useAppDispatch();
   const authorizationStatus = useAppSelector((state) => state.authorizationStatus);
+  const dispatch = useAppDispatch();
 
   const signOutHandle = (e: React.MouseEvent<HTMLElement>) => {
     e.preventDefault();
-    dispatch(setAuthorizationStatus(AuthorizationStatus.NoAuth));
+    dispatch(logoutAction());
   };
 
   const location = useLocation();

@@ -3,12 +3,17 @@ import axios, {AxiosError, AxiosInstance, AxiosRequestConfig} from 'axios';
 import {getToken} from './token';
 import store from '../store/store';
 import {setError} from '../store/actions';
-import {statusCodes, ApiRoute, defaultErrorText, backendUrl, requestTimeout} from '../const';
+import {StatusCodes, ApiRoute, defaultErrorText, backendUrl, requestTimeout} from '../const';
 
 // exceptions when we don't need to show the errors
 const shouldShowError = (error: AxiosError) => {
   // don't need to show the error if we checked the login status and response was unauthorized
-  if (error.config.url === ApiRoute.Login && error.response?.status === statusCodes.UNAUTHORIZED) {
+  if (error.config.url === ApiRoute.Login && error.response?.status === StatusCodes.UNAUTHORIZED) {
+    return false;
+  }
+  // custom text for not found message
+  if (error.response?.status === StatusCodes.NOT_FOUND) {
+    store.dispatch(setError('Page not found'));
     return false;
   }
 
