@@ -122,7 +122,7 @@ export const enum StatusCodes {
   OK = 200,
 }
 
-export const defaultErrorText = 'Something went wrong! Pleasy try again later';
+export const defaultErrorText = 'Something went wrong! Please try again later';
 
 // 'loading' status for different components/things
 export const enum LoadingObj {

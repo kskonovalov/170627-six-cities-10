@@ -2,14 +2,14 @@ import React, {useEffect, useState, useMemo} from 'react';
 
 import CardsList from '../../components/ui/cards-list/cards-list';
 import Map from '../../components/ui/map/map';
+import Sorting from '../../components/ui/sorting/sorting';
+import Loader from '../../components/ux/loader';
 import {Points} from '../../types/types';
 import {LoadingObj, locations} from '../../const';
 import {useAppDispatch, useAppSelector} from '../../hooks/redux-hooks';
 import {changeCity} from '../../store/actions';
 import styles from './main.module.css';
-import Sorting from '../../components/ui/sorting/sorting';
-import Loader from '../../components/ux/loader';
-import {fetchOffersAction} from '../../store/api-actions';
+import {fetchOffersAction} from '../../store/offers-slice/offers-api-actions';
 import {getCity, getOffers, getSortBy} from '../../store/offers-slice/offers-selectors';
 import {getAppLoading} from '../../store/app-slice/app-selectors';
 

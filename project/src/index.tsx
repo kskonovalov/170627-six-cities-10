@@ -4,7 +4,7 @@ import {Provider} from 'react-redux';
 
 import App from './components/app/app';
 import store from './store/store';
-import {checkAuthAction} from './store/api-actions';
+import {checkAuthAction} from './store/user-slice/user-api-actions';
 
 /* load user state */
 store.dispatch(checkAuthAction());

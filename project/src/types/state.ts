@@ -1,4 +1,6 @@
-import store from '../store/store';
+import {AxiosInstance} from 'axios';
+
+import store, {AppDispatch, RootState} from '../store/store';
 import {AuthorizationStatus} from '../const';
 import {City, Offer, Review} from './types';
 
@@ -23,3 +25,9 @@ export type AppSlice = {
 }
 
 export type State = ReturnType<typeof store.getState>
+
+export type AsyncThunkConfigType = {
+  dispatch: AppDispatch,
+  state: RootState,
+  extra: AxiosInstance
+};

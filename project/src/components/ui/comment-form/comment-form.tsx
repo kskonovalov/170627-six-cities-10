@@ -1,7 +1,7 @@
 import React, {ChangeEvent, FormEvent, useState, useEffect, Fragment, useMemo} from 'react';
 
 import {useAppDispatch, useAppSelector} from '../../../hooks/redux-hooks';
-import {fetchOfferReviewsAction, submitReviewAction} from '../../../store/api-actions';
+import {fetchOfferReviewsAction, submitReviewAction} from '../../../store/offers-slice/offers-api-actions';
 import Loader from '../../ux/loader';
 import {LoadingObj} from '../../../const';
 import {getAppLoading} from '../../../store/app-slice/app-selectors';
