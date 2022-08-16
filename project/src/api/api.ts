@@ -13,10 +13,10 @@ const shouldShowError = (error: AxiosError) => {
   }
   // custom text for not found message
   if (error.response?.status === StatusCodes.NOT_FOUND) {
-    if(error.response?.data?.error) {
+    if (error.response?.data?.error) {
       store.dispatch(setError(error.response?.data?.error));
     } else {
-    store.dispatch(setError('Page not found'));
+      store.dispatch(setError('Page not found'));
     }
     return false;
   }
