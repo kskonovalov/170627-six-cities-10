@@ -5,7 +5,8 @@ import {UserSlice} from '../../types/state';
 import {checkAuthAction} from './user-api-actions';
 
 const initialState: UserSlice = {
-  authorizationStatus: AuthorizationStatus.Unknown
+  authorizationStatus: AuthorizationStatus.Unknown,
+  favorites: []
 };
 
 /*

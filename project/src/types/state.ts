@@ -5,7 +5,8 @@ import {AuthorizationStatus} from '../const';
 import {City, Offer, Review} from './types';
 
 export type UserSlice = {
-  authorizationStatus: AuthorizationStatus
+  authorizationStatus: AuthorizationStatus,
+  favorites: []
 }
 
 export type OffersSlice = {
