@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {memo} from 'react';
 
 type MainEmptyProps = {
   cityTitle: string
@@ -11,4 +11,4 @@ const MainEmpty = ({cityTitle}: MainEmptyProps) => (
   </div>
 );
 
-export default MainEmpty;
+export default memo(MainEmpty);

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {memo} from 'react';
 
 import Logo from '../logo/logo';
 import HeaderNav from '../header-nav/header-nav';
@@ -16,4 +16,4 @@ const Header = () => (
   </header>
 );
 
-export default Header;
+export default memo(Header);
