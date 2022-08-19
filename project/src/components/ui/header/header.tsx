@@ -8,7 +8,7 @@ const Header = () => (
     <div className="container">
       <div className="header__wrapper">
         <div className="header__left">
-          <Logo/>
+          <Logo location='header' width={81} height={41}/>
         </div>
         <HeaderNav/>
       </div>

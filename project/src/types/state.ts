@@ -4,8 +4,17 @@ import store, {AppDispatch, RootState} from '../store/store';
 import {AuthorizationStatus} from '../const';
 import {City, Offer, Review} from './types';
 
+export type UserType = {
+  avatarUrl: string,
+  email: string,
+  id: number,
+  isPro: boolean,
+  name: string
+}
+
 export type UserSlice = {
-  authorizationStatus: AuthorizationStatus
+  authorizationStatus: AuthorizationStatus,
+  user: null | UserType
 }
 
 export type OffersSlice = {

@@ -1,7 +1,7 @@
 import {createAsyncThunk} from '@reduxjs/toolkit';
 
 import {ApiRoute, authData, AuthorizationStatus, userData} from '../../const';
-import {setAuthorizationStatus} from '../actions';
+import {setAuthorizationStatus, setUserData} from '../actions';
 import {setToken, unsetToken} from '../../api/token';
 import {AsyncThunkConfigType} from '../../types/state';
 
@@ -9,10 +9,12 @@ export const checkAuthAction = createAsyncThunk<void, undefined, AsyncThunkConfi
   'user-slice/checkAuth',
   async (_arg, {dispatch, extra: api}) => {
     try {
-      await api.get(ApiRoute.Login);
+      const response = await api.get(ApiRoute.Login);
       dispatch(setAuthorizationStatus(AuthorizationStatus.Auth));
+      dispatch(setUserData(response?.data));
     } catch {
       dispatch(setAuthorizationStatus(AuthorizationStatus.NoAuth));
+      dispatch(setUserData(null));
     }
   }
 );
