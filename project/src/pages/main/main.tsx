@@ -22,11 +22,21 @@ const Main = () => {
   const sortBy = useAppSelector(getSortBy);
   const loading = useAppSelector(getAppLoading);
 
-  const offersByCitySelector = createSelector(
-    (state: State): OffersSlice['offers'] => state[NameSpace.Offers].offers,
-    (offers: OffersSlice['offers']) => getOffersByCityFilter(offers, city.title)
+  /**
+   * Вот тут что-то странное с createSelector
+   * Я вынес getOffersByCityFilter в отдельную функцию, чтобы можно было её тестировать,
+   * а сейчас ещё и добавил туда console.log чтобы понять, как часто она вызывается,
+   * и она вызывается даже при наведении на карточки
+   * Что я делаю не так?
+   */
+  const selectOffersByCity = createSelector(
+    [
+      (state: State): OffersSlice['offers'] => state[NameSpace.Offers].offers,
+      (state: State, cityTitle: string) => cityTitle
+    ],
+    (offers: OffersSlice['offers'], cityTitle) => getOffersByCityFilter(offers, cityTitle)
   );
-  const offers: Offer[] = useAppSelector(offersByCitySelector);
+  const offers: Offer[] = useAppSelector((state) => selectOffersByCity(state, city.title));
 
   /* load initial offers */
   useEffect(() => {
