@@ -1,20 +1,17 @@
 import React, {useEffect, useState, useMemo} from 'react';
-import {createSelector} from 'reselect';
 
 import CardsList from '../../components/ui/cards-list/cards-list';
 import Map from '../../components/ui/map/map';
 import Sorting from '../../components/ui/sorting/sorting';
 import Loader from '../../components/ux/loader';
 import {Offer, Points} from '../../types/types';
-import {LoadingObj, locations, NameSpace} from '../../const';
+import {LoadingObj, locations} from '../../const';
 import {useAppDispatch, useAppSelector} from '../../hooks/redux-hooks';
 import {changeCity} from '../../store/actions';
 import styles from './main.module.css';
 import {fetchOffersAction} from '../../store/offers-slice/offers-api-actions';
-import {getCity, getSortBy} from '../../store/offers-slice/offers-selectors';
+import {getCity, getOffersByCity, getSortBy} from '../../store/offers-slice/offers-selectors';
 import {getAppLoading} from '../../store/app-slice/app-selectors';
-import {State, OffersSlice} from '../../types/state';
-import {getOffersByCityFilter} from '../../helpers/getOffersByCityFilter';
 
 const Main = () => {
   const dispatch = useAppDispatch();
@@ -22,21 +19,7 @@ const Main = () => {
   const sortBy = useAppSelector(getSortBy);
   const loading = useAppSelector(getAppLoading);
 
-  /**
-   * Вот тут что-то странное с createSelector
-   * Я вынес getOffersByCityFilter в отдельную функцию, чтобы можно было её тестировать,
-   * а сейчас ещё и добавил туда console.log чтобы понять, как часто она вызывается,
-   * и она вызывается даже при наведении на карточки
-   * Что я делаю не так?
-   */
-  const selectOffersByCity = createSelector(
-    [
-      (state: State): OffersSlice['offers'] => state[NameSpace.Offers].offers,
-      (state: State, cityTitle: string) => cityTitle
-    ],
-    (offers: OffersSlice['offers'], cityTitle) => getOffersByCityFilter(offers, cityTitle)
-  );
-  const offers: Offer[] = useAppSelector((state) => selectOffersByCity(state, city.title));
+  const offers: Offer[] = useAppSelector((state) => getOffersByCity(state, city.title));
 
   /* load initial offers */
   useEffect(() => {
