@@ -1,31 +1,39 @@
 import React, {useEffect, useState, useMemo} from 'react';
+import {createSelector} from 'reselect';
 
 import CardsList from '../../components/ui/cards-list/cards-list';
 import Map from '../../components/ui/map/map';
 import Sorting from '../../components/ui/sorting/sorting';
 import Loader from '../../components/ux/loader';
-import {Points} from '../../types/types';
-import {LoadingObj, locations} from '../../const';
+import {Offer, Points} from '../../types/types';
+import {LoadingObj, locations, NameSpace} from '../../const';
 import {useAppDispatch, useAppSelector} from '../../hooks/redux-hooks';
 import {changeCity} from '../../store/actions';
 import styles from './main.module.css';
 import {fetchOffersAction} from '../../store/offers-slice/offers-api-actions';
-import {getCity, getOffers, getSortBy} from '../../store/offers-slice/offers-selectors';
+import {getCity, getSortBy} from '../../store/offers-slice/offers-selectors';
 import {getAppLoading} from '../../store/app-slice/app-selectors';
+import {State, OffersSlice} from '../../types/state';
+import {getOffersByCityFilter} from '../../helpers/getOffersByCityFilter';
 
 const Main = () => {
+  const dispatch = useAppDispatch();
   const city = useAppSelector(getCity);
-  const offers = useAppSelector(getOffers);
   const sortBy = useAppSelector(getSortBy);
   const loading = useAppSelector(getAppLoading);
-  const dispatch = useAppDispatch();
+
+  const offersByCitySelector = createSelector(
+    (state: State): OffersSlice['offers'] => state[NameSpace.Offers].offers,
+    (offers: OffersSlice['offers']) => getOffersByCityFilter(offers, city.title)
+  );
+  const offers: Offer[] = useAppSelector(offersByCitySelector);
 
   /* load initial offers */
   useEffect(() => {
     dispatch(fetchOffersAction());
   }, [dispatch]);
 
-  const offersToDisplay = useMemo(() => (offers.filter((item) => item.city.name === city.title).sort((offer1, offer2) => {
+  const offersToDisplay = useMemo(() => (offers.sort((offer1, offer2) => {
     switch (sortBy) {
       case 'Popular':
         return 0; // default order;
@@ -38,7 +46,7 @@ const Main = () => {
       default:
         return 0;
     }
-  })), [offers, city, sortBy]);
+  })), [offers, sortBy]);
 
   const offersCount = offersToDisplay.length || null;
   const [activeCardID, setActiveCardID] = useState<number | null>(null);
