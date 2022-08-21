@@ -9,7 +9,7 @@ type FavoriteCardProps = {
   offer: Offer
 };
 
-const FavoriteCard = ({offer}: FavoriteCardProps) => {
+const CardFavorite = ({offer}: FavoriteCardProps) => {
   const {id, isPremium, images, price, rating, title, type} = offer;
 
   const image: string | boolean = (typeof images !== 'undefined' && images.length > 0) ? images[0] : false;
@@ -47,7 +47,7 @@ const FavoriteCard = ({offer}: FavoriteCardProps) => {
           </div>
         </div>
         <h2 className="place-card__name">
-          <Link to={cardLink}>{<title></title>}</Link>
+          <Link to={cardLink}>{title}</Link>
         </h2>
         <p className="place-card__type">{type}</p>
       </div>
@@ -55,4 +55,4 @@ const FavoriteCard = ({offer}: FavoriteCardProps) => {
   );
 };
 
-export default FavoriteCard;
+export default CardFavorite;

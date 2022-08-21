@@ -6,7 +6,7 @@ import Sorting from '../../components/ui/sorting/sorting';
 import Loader from '../../components/ux/loader';
 import MainEmpty from '../../components/ui/main-empty/main-empty';
 import {Offer, Points} from '../../types/types';
-import {LoadingObj, locations} from '../../const';
+import {LoadingObj, locations, CardsType} from '../../const';
 import {useAppDispatch, useAppSelector} from '../../hooks/redux-hooks';
 import {changeCity} from '../../store/actions';
 import styles from './main.module.css';
@@ -92,6 +92,7 @@ const Main = () => {
                     setCardActive={setActiveCardID}
                     activeCardID={activeCardID}
                     className='cities__places-list places__list tabs__content'
+                    cardType={CardsType.Main}
                   />
                 </>}
               {noOffers && <MainEmpty cityTitle={city.title}/>}

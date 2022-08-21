@@ -11,16 +11,24 @@ import NotFound from '../../pages/not-found/not-found';
 import PrivateRoute from '../private-route';
 import Layout from '../ui/layout/layout';
 import ScrollTop from '../ux/scroll-top';
-import {AppRoute} from '../../const';
-import {useAppSelector, useAppDispatch} from '../../hooks/redux-hooks';
+import {AppRoute, AuthorizationStatus} from '../../const';
+import {useAppDispatch, useAppSelector} from '../../hooks/redux-hooks';
 import {setError} from '../../store/actions';
 import {getAuthorizationStatus} from '../../store/user-slice/user-selectors';
 import {getAppError} from '../../store/app-slice/app-selectors';
+import {fetchUserFavorites} from '../../store/user-slice/user-api-actions';
 
 const App = () => {
   const authorizationStatus = useAppSelector(getAuthorizationStatus);
   const error = useAppSelector(getAppError);
   const dispatch = useAppDispatch();
+
+  // load user favorites if the user is logged in
+  useEffect(() => {
+    if(authorizationStatus === AuthorizationStatus.Auth) {
+      dispatch(fetchUserFavorites());
+    }
+  }, [authorizationStatus]);
 
   // if there's error and error is not empty, just show the error and remove it from the store
   useEffect(() => {

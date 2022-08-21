@@ -1,64 +1,67 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {Link} from 'react-router-dom';
 
 import FavoriteCard from '../../components/ui/favorite-card/favorite-card';
-import {AppRoute} from '../../const';
+import {AppRoute, CardsType} from '../../const';
 import {Offer} from '../../types/types';
-
+import {useAppSelector} from '../../hooks/redux-hooks';
+import {getUserFavorites} from '../../store/user-slice/user-selectors';
+import FavoritesEmpty from '../../components/ui/favorites-empty/favorites-empty';
+import CardsList from '../../components/ui/cards-list/cards-list';
 
 const Favorites = () => {
-  // TODO: get favorites from API
-  const offers: Offer[] = [];
+  const offers = useAppSelector(getUserFavorites);
+  const [activeCardID, setActiveCardID] = useState<number | null>(null);
 
   type CityOffers = {
     [city: string]: Offer[]
   }
-  const cityoffers: CityOffers = {};
+  const cityOffers: CityOffers = {};
   offers.forEach((item) => {
-    if (!(item.city.name in cityoffers)) {
-      cityoffers[item.city.name] = [];
+    if (!(item.city.name in cityOffers)) {
+      cityOffers[item.city.name] = [];
     }
-    cityoffers[item.city.name].push(item);
+    cityOffers[item.city.name].push(item);
   });
+
+  const favoritesEmpty = Object.keys(cityOffers).length === 0;
 
   return (
     <div className="page">
-      {Object.keys(cityoffers).length > 0 &&
-        <main className="page__main page__main--favorites">
-          <div className="page__favorites-container container">
-            <section className="favorites">
-              <h1 className="favorites__title">Saved listing</h1>
-              <ul className="favorites__list">
-                {Object.keys(cityoffers).map((key) => (
-                  <li className="favorites__locations-items" key={key}>
-                    <div className="favorites__locations locations locations--current">
-                      <div className="locations__item">
-                        <Link className="locations__item-link" to={AppRoute.Main}>
-                          <span>{key}</span>
-                        </Link>
+      <main className={`page__main page__main--favorites ${favoritesEmpty ? 'page__main--favorites-empty' : ''}`}>
+        <div className="page__favorites-container container">
+          <section className={`favorites ${favoritesEmpty ? 'favorites--empty' : ''}`}>
+            {!favoritesEmpty &&
+              <>
+                <h1 className="favorites__title">Saved listing</h1>
+                <ul className="favorites__list">
+                  {Object.keys(cityOffers).map((key) => (
+                    <li className="favorites__locations-items" key={key}>
+                      <div className="favorites__locations locations locations--current">
+                        <div className="locations__item">
+                          <Link className="locations__item-link" to={AppRoute.Main}>
+                            <span>{key}</span>
+                          </Link>
+                        </div>
                       </div>
-                    </div>
-                    <div className="favorites__places">
-                      {cityoffers[key].map((item) => <FavoriteCard key={item.id} offer={item}/>)}
-                    </div>
-                  </li>
-                ))}
-              </ul>
-            </section>
-          </div>
-        </main>}
-      {!Object.keys(cityoffers).length &&
-        <main className="page__main page__main--favorites page__main--favorites-empty">
-          <div className="page__favorites-container container">
-            <section className="favorites favorites--empty">
-              <h1 className="visually-hidden">Favorites (empty)</h1>
-              <div className="favorites__status-wrapper">
-                <b className="favorites__status">Nothing yet saved.</b>
-                <p className="favorites__status-description">Save properties to narrow down search or plan your future trips.</p>
-              </div>
-            </section>
-          </div>
-        </main>}
+                      <CardsList
+                        offers={cityOffers[key]}
+                        setCardActive={setActiveCardID}
+                        activeCardID={activeCardID}
+                        className='favorites__places'
+                        cardType={CardsType.Favorite}
+                      />
+                      <div className="favorites__places">
+                        {cityOffers[key].map((item) => <FavoriteCard key={item.id} offer={item}/>)}
+                      </div>
+                    </li>
+                  ))}
+                </ul>
+              </>}
+            {favoritesEmpty && <FavoritesEmpty/>}
+          </section>
+        </div>
+      </main>
     </div>
   );
 };

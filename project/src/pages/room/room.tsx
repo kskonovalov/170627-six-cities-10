@@ -9,7 +9,7 @@ import Map from '../../components/ui/map/map';
 import Loader from '../../components/ux/loader';
 import {Offer, Points} from '../../types/types';
 import {useAppSelector, useAppDispatch} from '../../hooks/redux-hooks';
-import {AppRoute, AuthorizationStatus, LoadingObj} from '../../const';
+import {AppRoute, AuthorizationStatus, CardsType, LoadingObj} from '../../const';
 import {fetchNearbyPlacesAction, fetchOfferAction, fetchOfferReviewsAction} from '../../store/offers-slice/offers-api-actions';
 import classes from './room.module.css';
 import {getCity, getNearby, getOffer, getReviews} from '../../store/offers-slice/offers-selectors';
@@ -175,6 +175,7 @@ const Room = () => {
                 setCardActive={setActiveCardID}
                 activeCardID={activeCardID}
                 className='near-places__list places__list'
+                cardType={CardsType.Room}
               />
             </section>
           </div>}
