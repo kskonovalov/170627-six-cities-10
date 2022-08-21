@@ -5,10 +5,11 @@ import {useAppDispatch, useAppSelector} from '../../../hooks/redux-hooks';
 import {logoutAction} from '../../../store/user-slice/user-api-actions';
 import {AppRoute, AuthorizationStatus} from '../../../const';
 import Loader from '../../ux/loader';
-import {getAuthorizationStatus} from '../../../store/user-slice/user-selectors';
+import {getAuthorizationStatus, getUser} from '../../../store/user-slice/user-selectors';
 
 const HeaderNav = () => {
   const authorizationStatus = useAppSelector(getAuthorizationStatus);
+  const user = useAppSelector(getUser);
   const dispatch = useAppDispatch();
 
   const signOutHandle = (e: React.MouseEvent<HTMLElement>) => {
@@ -20,6 +21,9 @@ const HeaderNav = () => {
   const toShowUserFields = authorizationStatus === AuthorizationStatus.Auth;
   const toShowSignInLink = authorizationStatus === AuthorizationStatus.NoAuth && location.pathname !== AppRoute.Login;
 
+  const avatarUrl = user !== null ? user.avatarUrl : '';
+  const email = user !== null ? user.email : '';
+
   return authorizationStatus === AuthorizationStatus.Unknown ?
     <Loader/> :
     <nav className="header__nav">
@@ -28,8 +32,8 @@ const HeaderNav = () => {
           <>
             <li className="header__nav-item user">
               <Link className="header__nav-link header__nav-link--profile" to={AppRoute.Favorites}>
-                <div className="header__avatar-wrapper user__avatar-wrapper"></div>
-                <span className="header__user-name user__name">Oliver.conner@gmail.com</span>
+                <div className="header__avatar-wrapper user__avatar-wrapper" style={{backgroundImage: avatarUrl}}></div>
+                <span className="header__user-name user__name">{email}</span>
                 <span className="header__favorite-count">3</span>
               </Link>
             </li>

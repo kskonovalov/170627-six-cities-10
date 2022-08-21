@@ -5,28 +5,29 @@ import Map from '../../components/ui/map/map';
 import Sorting from '../../components/ui/sorting/sorting';
 import Loader from '../../components/ux/loader';
 import MainEmpty from '../../components/ui/main-empty/main-empty';
-import {Points} from '../../types/types';
+import {Offer, Points} from '../../types/types';
 import {LoadingObj, locations} from '../../const';
 import {useAppDispatch, useAppSelector} from '../../hooks/redux-hooks';
 import {changeCity} from '../../store/actions';
 import styles from './main.module.css';
 import {fetchOffersAction} from '../../store/offers-slice/offers-api-actions';
-import {getCity, getOffers, getSortBy} from '../../store/offers-slice/offers-selectors';
+import {getCity, getOffersByCity, getSortBy} from '../../store/offers-slice/offers-selectors';
 import {getAppLoading} from '../../store/app-slice/app-selectors';
 
 const Main = () => {
+  const dispatch = useAppDispatch();
   const city = useAppSelector(getCity);
-  const offers = useAppSelector(getOffers);
   const sortBy = useAppSelector(getSortBy);
   const loading = useAppSelector(getAppLoading);
-  const dispatch = useAppDispatch();
+
+  const offers: Offer[] = useAppSelector((state) => getOffersByCity(state, city.title));
 
   /* load initial offers */
   useEffect(() => {
     dispatch(fetchOffersAction());
   }, [dispatch]);
 
-  const offersToDisplay = useMemo(() => (offers.filter((item) => item.city.name === city.title).sort((offer1, offer2) => {
+  const offersToDisplay = useMemo(() => (offers.sort((offer1, offer2) => {
     switch (sortBy) {
       case 'Popular':
         return 0; // default order;
@@ -39,7 +40,7 @@ const Main = () => {
       default:
         return 0;
     }
-  })), [offers, city, sortBy]);
+  })), [offers, sortBy]);
 
   const offersCount = offersToDisplay.length;
   const [activeCardID, setActiveCardID] = useState<number | null>(null);
@@ -56,10 +57,6 @@ const Main = () => {
   const offersAreLoading = loading[LoadingObj.Offers];
   const hasOffers = !offersAreLoading && offersCount > 0;
   const noOffers = !offersAreLoading && offersCount === 0;
-
-  // console.log('offersAreLoading', offersAreLoading);
-  // console.log('hasOffers', hasOffers);
-  // console.log('noOffers', noOffers);
 
   return (
     <div className="page page--gray page--main">
