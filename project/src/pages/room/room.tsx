@@ -15,6 +15,7 @@ import classes from './room.module.css';
 import {getCity, getNearby, getOffer, getReviews} from '../../store/offers-slice/offers-selectors';
 import {getAuthorizationStatus} from '../../store/user-slice/user-selectors';
 import {getAppLoading} from '../../store/app-slice/app-selectors';
+import AddToFavorites from '../../components/ui/add-to-favorites/add-to-favorites';
 
 const Room = () => {
   const dispatch = useAppDispatch();
@@ -51,7 +52,7 @@ const Room = () => {
     return <NotFound/>;
   }
 
-  const {isPremium, price, rating, title, images, bedrooms, type, maxAdults, goods, host, description = ''} = offer;
+  const {isPremium, price, rating, title, images, bedrooms, type, maxAdults, goods, host, description = '', isFavorite} = offer;
   const {avatarUrl, name, isPro} = host;
   const calculatedRating = (rating >= 0 && rating <= 5) ? Math.floor(rating) * 20 : 0;
 
@@ -87,12 +88,7 @@ const Room = () => {
                 <h1 className="property__name">
                   {title}
                 </h1>
-                <button className="property__bookmark-button button property__bookmark-button--active" type="button">
-                  <svg className="property__bookmark-icon place-card__bookmark-icon" width="31" height="33">
-                    <use xlinkHref="#icon-bookmark"></use>
-                  </svg>
-                  <span className="visually-hidden">To bookmarks</span>
-                </button>
+                <AddToFavorites id={Number(id)} type="room" isFavorite={isFavorite} />
               </div>
               <div className="property__rating rating">
                 <div className="property__stars rating__stars">

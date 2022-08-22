@@ -135,6 +135,7 @@ export const enum LoadingObj {
   Nearby = 'nearby',
   Reviews = 'reviews',
   CommentSubmit = 'commentSubmit',
+  Favorites = 'favorites'
 }
 
 // reducer slices

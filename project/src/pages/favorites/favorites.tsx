@@ -1,16 +1,18 @@
 import React, {useState} from 'react';
 import {Link} from 'react-router-dom';
 
-import FavoriteCard from '../../components/ui/favorite-card/favorite-card';
-import {AppRoute, CardsType} from '../../const';
+import {AppRoute, CardsType, LoadingObj} from '../../const';
 import {Offer} from '../../types/types';
 import {useAppSelector} from '../../hooks/redux-hooks';
 import {getUserFavorites} from '../../store/user-slice/user-selectors';
 import FavoritesEmpty from '../../components/ui/favorites-empty/favorites-empty';
 import CardsList from '../../components/ui/cards-list/cards-list';
+import {getAppLoading} from '../../store/app-slice/app-selectors';
+import Loader from '../../components/ux/loader';
 
 const Favorites = () => {
   const offers = useAppSelector(getUserFavorites);
+  const loading = useAppSelector(getAppLoading);
   const [activeCardID, setActiveCardID] = useState<number | null>(null);
 
   type CityOffers = {
@@ -24,14 +26,19 @@ const Favorites = () => {
     cityOffers[item.city.name].push(item);
   });
 
-  const favoritesEmpty = Object.keys(cityOffers).length === 0;
+  const offersCount = Object.keys(cityOffers).length;
+  const favoritesLoading = loading[LoadingObj.Favorites];
+  const hasFavorites = !favoritesLoading && offersCount > 0;
+  const noFavorites = !favoritesLoading && offersCount === 0;
 
   return (
     <div className="page">
-      <main className={`page__main page__main--favorites ${favoritesEmpty ? 'page__main--favorites-empty' : ''}`}>
+      <main className={`page__main page__main--favorites ${noFavorites ? 'page__main--favorites-empty' : ''}`}>
         <div className="page__favorites-container container">
-          <section className={`favorites ${favoritesEmpty ? 'favorites--empty' : ''}`}>
-            {!favoritesEmpty &&
+          <section className={`favorites ${noFavorites ? 'favorites--empty' : ''}`}>
+            {favoritesLoading && <Loader/>}
+            {noFavorites && <FavoritesEmpty/>}
+            {hasFavorites &&
               <>
                 <h1 className="favorites__title">Saved listing</h1>
                 <ul className="favorites__list">
@@ -51,14 +58,10 @@ const Favorites = () => {
                         className='favorites__places'
                         cardType={CardsType.Favorite}
                       />
-                      <div className="favorites__places">
-                        {cityOffers[key].map((item) => <FavoriteCard key={item.id} offer={item}/>)}
-                      </div>
                     </li>
                   ))}
                 </ul>
               </>}
-            {favoritesEmpty && <FavoritesEmpty/>}
           </section>
         </div>
       </main>

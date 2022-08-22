@@ -2,7 +2,6 @@ import React, {Dispatch, SetStateAction, useCallback} from 'react';
 
 import Card from '../card/card';
 import {Offer} from '../../../types/types';
-import CardWrap from '../card-wrap/card-wrap';
 
 type CardsListProps = {
   offers: Offer[],
@@ -30,7 +29,7 @@ const CardsList = ({className, offers, activeCardID, setCardActive, cardType}: C
     <div className={className}>
       {
         offers.map((offer) => (
-          <CardWrap
+          <Card
             key={offer.id}
             offer={offer}
             isActive={offer.id === activeCardID}

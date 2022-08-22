@@ -2,6 +2,7 @@ import React from 'react';
 import {Navigate} from 'react-router-dom';
 
 import {AppRoute, AuthorizationStatus} from '../const';
+import Loader from './ux/loader';
 
 type PrivateRouteProps = {
   authorizationStatus: AuthorizationStatus,
@@ -9,9 +10,14 @@ type PrivateRouteProps = {
 };
 
 const PrivateRoute = ({authorizationStatus, children}: PrivateRouteProps): JSX.Element => {
-  const hasAccess = authorizationStatus === AuthorizationStatus.Auth;
-
-  return hasAccess ? children : <Navigate to={AppRoute.Login}/>;
+  if (authorizationStatus === AuthorizationStatus.Auth) {
+    return children;
+  }
+  if (authorizationStatus === AuthorizationStatus.NoAuth) {
+    return <Navigate to={AppRoute.Login}/>;
+  }
+  // just show the loader if the Authorization status is not clear
+  return <Loader/>;
 };
 
 export default PrivateRoute;

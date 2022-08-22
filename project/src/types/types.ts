@@ -58,11 +58,3 @@ export type Review = {
     name: string
   }
 }
-
-export type CardWrapProps = {
-  offer: Offer,
-  isActive: boolean,
-  setCardActive: (id: number) => void,
-  setCardInactive: () => void,
-  cardType: string
-};

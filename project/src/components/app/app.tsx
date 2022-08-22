@@ -28,7 +28,7 @@ const App = () => {
     if(authorizationStatus === AuthorizationStatus.Auth) {
       dispatch(fetchUserFavorites());
     }
-  }, [authorizationStatus]);
+  }, [authorizationStatus, dispatch]);
 
   // if there's error and error is not empty, just show the error and remove it from the store
   useEffect(() => {

@@ -10,7 +10,8 @@ export const loadNearby = createAction<Offer[]>('offers/loadNearby');
 export const loadOfferReviews = createAction<Review[]>('offers/offerReviews');
 export const setSortBy = createAction<string>('offers/setSortBy');
 export const loading = createAction<{ name: string, status: boolean }>('offers/loading');
-export const changeOfferIsFavorite = createAction<{ offerID: number, isFavorite: boolean }>('offers/changeOfferIsFavorite');
+export const changeOneOfOffersIsFavorite = createAction<{ offerID: number, isFavorite: boolean }>('offers/changeOneOfOffersIsFavorite');
+export const changeOfferIsFavorite = createAction<boolean>('offers/changeOfferIsFavorite');
 
 export const setError = createAction<string | string[] | null>('app/setError');
 
