@@ -4,12 +4,13 @@ import {Navigate} from 'react-router-dom';
 import {AppRoute, AuthorizationStatus} from '../../const';
 import {useAppSelector, useAppDispatch} from '../../hooks/redux-hooks';
 import {setError} from '../../store/actions';
-import {loginAction} from '../../store/api-actions';
+import {loginAction} from '../../store/user-slice/user-api-actions';
 import {validateEmail} from '../../helpers/validate-email';
+import {getAuthorizationStatus} from '../../store/user-slice/user-selectors';
 
 const Login = () => {
   const dispatch = useAppDispatch();
-  const authorizationStatus = useAppSelector((store) => store.authorizationStatus);
+  const authorizationStatus = useAppSelector(getAuthorizationStatus);
 
   type formDataType = {
     email: string,

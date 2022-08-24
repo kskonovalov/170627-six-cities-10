@@ -1,4 +1,4 @@
-import React, {Dispatch, SetStateAction} from 'react';
+import React, {Dispatch, SetStateAction, useCallback} from 'react';
 
 import Card from '../card/card';
 import {Offer} from '../../../types/types';
@@ -10,20 +10,35 @@ type CardsListProps = {
   activeCardID: number | null
 }
 
-const CardsList = ({className, offers, activeCardID, setCardActive}: CardsListProps) => (
-  <div className={className}>
-    {
-      offers.map((offer) => (
-        <Card
-          key={offer.id}
-          offer={offer}
-          isActive={offer.id === activeCardID}
-          setCardActive={() => setCardActive(offer.id)}
-          setCardInactive={() => setCardActive(null)}
-        />)
-      )
-    }
-  </div>
-);
+const CardsList = ({className, offers, activeCardID, setCardActive}: CardsListProps) => {
+  const setCardActiveCallback = useCallback(
+    (id: number) => {
+      setCardActive(id);
+    },
+    [setCardActive],
+  );
+  const setCardInactiveCallback = useCallback(
+    () => {
+      setCardActive(null);
+    },
+    [setCardActive],
+  );
+
+  return (
+    <div className={className}>
+      {
+        offers.map((offer) => (
+          <Card
+            key={offer.id}
+            offer={offer}
+            isActive={offer.id === activeCardID}
+            setCardActive={setCardActiveCallback}
+            setCardInactive={setCardInactiveCallback}
+          />)
+        )
+      }
+    </div>
+  );
+};
 
 export default CardsList;

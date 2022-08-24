@@ -1,26 +1,32 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useMemo} from 'react';
 
 import CardsList from '../../components/ui/cards-list/cards-list';
 import Map from '../../components/ui/map/map';
-import {Points} from '../../types/types';
+import Sorting from '../../components/ui/sorting/sorting';
+import Loader from '../../components/ux/loader';
+import {Offer, Points} from '../../types/types';
 import {LoadingObj, locations} from '../../const';
 import {useAppDispatch, useAppSelector} from '../../hooks/redux-hooks';
 import {changeCity} from '../../store/actions';
 import styles from './main.module.css';
-import Sorting from '../../components/ui/sorting/sorting';
-import Loader from '../../components/ux/loader';
-import {fetchOffersAction} from '../../store/api-actions';
+import {fetchOffersAction} from '../../store/offers-slice/offers-api-actions';
+import {getCity, getOffersByCity, getSortBy} from '../../store/offers-slice/offers-selectors';
+import {getAppLoading} from '../../store/app-slice/app-selectors';
 
 const Main = () => {
-  const {city, offers, sortBy, loading} = useAppSelector((state) => state);
   const dispatch = useAppDispatch();
+  const city = useAppSelector(getCity);
+  const sortBy = useAppSelector(getSortBy);
+  const loading = useAppSelector(getAppLoading);
+
+  const offers: Offer[] = useAppSelector((state) => getOffersByCity(state, city.title));
 
   /* load initial offers */
   useEffect(() => {
     dispatch(fetchOffersAction());
   }, [dispatch]);
 
-  const offersToDisplay = offers.filter((item) => item.city.name === city.title).sort((offer1, offer2) => {
+  const offersToDisplay = useMemo(() => (offers.sort((offer1, offer2) => {
     switch (sortBy) {
       case 'Popular':
         return 0; // default order;
@@ -33,7 +39,7 @@ const Main = () => {
       default:
         return 0;
     }
-  });
+  })), [offers, sortBy]);
 
   const offersCount = offersToDisplay.length || null;
   const [activeCardID, setActiveCardID] = useState<number | null>(null);
@@ -70,7 +76,7 @@ const Main = () => {
         <div className="cities">
           <div className="cities__places-container container">
             <section className="cities__places places">
-              {loading[LoadingObj.offers] || offersCount === null ?
+              {loading[LoadingObj.Offers] || offersCount === null ?
                 <Loader/> :
                 <><h2 className="visually-hidden">Places</h2>
                   <b className="places__found">{offersCount} {placesWord} to stay in {city.title}</b>

@@ -5,10 +5,11 @@ import {order} from '../../../const';
 import styles from './sorting.module.css';
 import {useAppDispatch, useAppSelector} from '../../../hooks/redux-hooks';
 import {setSortBy} from '../../../store/actions';
+import {getSortBy} from '../../../store/offers-slice/offers-selectors';
 
 const Sorting = () => {
   const [opened, setOpened] = useState(false);
-  const {sortBy} = useAppSelector((store) => store);
+  const sortBy = useAppSelector(getSortBy);
   const dispatch = useAppDispatch();
 
   const changeSortBy = (key: string) => {

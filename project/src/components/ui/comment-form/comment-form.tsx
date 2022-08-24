@@ -1,9 +1,10 @@
 import React, {ChangeEvent, FormEvent, useState, useEffect, Fragment, useMemo} from 'react';
 
 import {useAppDispatch, useAppSelector} from '../../../hooks/redux-hooks';
-import {fetchOfferReviewsAction, submitReviewAction} from '../../../store/api-actions';
+import {fetchOfferReviewsAction, submitReviewAction} from '../../../store/offers-slice/offers-api-actions';
 import Loader from '../../ux/loader';
 import {LoadingObj} from '../../../const';
+import {getAppLoading} from '../../../store/app-slice/app-selectors';
 
 type CommentFormProps = {
   offerID: number
@@ -11,7 +12,8 @@ type CommentFormProps = {
 
 const CommentForm = ({offerID}: CommentFormProps) => {
   const dispatch = useAppDispatch();
-  const commentIsOnSubmit = useAppSelector((store) => store.loading[LoadingObj.commentSubmit]) || false;
+  const commentIsLoading = useAppSelector(getAppLoading);
+  const commentIsOnSubmit = commentIsLoading[LoadingObj.CommentSubmit] || false;
 
   type FormData = {
     rating: number,

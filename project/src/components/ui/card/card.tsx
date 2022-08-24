@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {memo} from 'react';
 import {Link} from 'react-router-dom';
 
 import {AppRoute} from '../../../const';
@@ -8,7 +8,7 @@ import styles from './card.module.css';
 type CardProps = {
   offer: Offer,
   isActive: boolean,
-  setCardActive: () => void,
+  setCardActive: (id: number) => void,
   setCardInactive: () => void
 };
 
@@ -20,7 +20,7 @@ const Card = ({offer, isActive, setCardActive , setCardInactive}: CardProps) => 
   const calculatedRating = (rating >= 0 && rating <= 5) ? Math.round(rating) * 20 : 0;
 
   return (
-    <article className={`cities__card place-card ${styles['place-card']} ${styles[classForActiveCard]}`} onMouseEnter={setCardActive} onMouseLeave={setCardInactive}>
+    <article className={`cities__card place-card ${styles['place-card']} ${styles[classForActiveCard]}`} onMouseEnter={() => setCardActive(id)} onMouseLeave={setCardInactive}>
       {isPremium &&
         <div className="place-card__mark">
           <span>Premium</span>
@@ -60,4 +60,4 @@ const Card = ({offer, isActive, setCardActive , setCardInactive}: CardProps) => 
   );
 };
 
-export default Card;
+export default memo(Card);
