@@ -1,48 +1,52 @@
 import React, {memo} from 'react';
 import {Link} from 'react-router-dom';
 
-import {AppRoute} from '../../../const';
-import {Offer} from '../../../types/types';
+import AddToFavorites from '../add-to-favorites/add-to-favorites';
+import {AppRoute, CardsType} from '../../../const';
 import styles from './card.module.css';
+import {Offer} from '../../../types/types';
 
-type CardProps = {
+export type CardProps = {
   offer: Offer,
   isActive: boolean,
   setCardActive: (id: number) => void,
-  setCardInactive: () => void
+  setCardInactive: () => void,
+  cardType: string
 };
 
-const Card = ({offer, isActive, setCardActive , setCardInactive}: CardProps) => {
-  const {isPremium, images, price, rating, title, type, id} = offer;
+const Card = ({offer, isActive, setCardActive, setCardInactive, cardType}: CardProps) => {
+  const {isPremium, images, price, rating, title, type, id, isFavorite} = offer;
   const image: string | boolean = (typeof images !== 'undefined' && images.length > 0) ? images[0] : false;
   const cardLink: string = AppRoute.Card + id;
   const classForActiveCard = isActive ? 'place-card_active' : '';
   const calculatedRating = (rating >= 0 && rating <= 5) ? Math.round(rating) * 20 : 0;
 
+
+  const articleClass = cardType === CardsType.Favorite ? 'favorites__card' : 'cities__card';
+  const imageWrapperClass = cardType === CardsType.Favorite ? 'favorites__image-wrapper' : 'cities__image-wrapper';
+  const cardInfoClass = cardType === CardsType.Favorite ? 'favorites__card-info' : '';
+  const imageWidth = cardType === CardsType.Favorite ? 150 : 260;
+  const imageHeight = cardType === CardsType.Favorite ? 110 : 200;
+
   return (
-    <article className={`cities__card place-card ${styles['place-card']} ${styles[classForActiveCard]}`} onMouseEnter={() => setCardActive(id)} onMouseLeave={setCardInactive}>
+    <article className={`${articleClass} place-card ${styles['place-card']} ${styles[classForActiveCard]}`} onMouseEnter={() => setCardActive(id)} onMouseLeave={setCardInactive}>
       {isPremium &&
         <div className="place-card__mark">
           <span>Premium</span>
         </div>}
-      <div className="cities__image-wrapper place-card__image-wrapper">
+      <div className={`${imageWrapperClass} place-card__image-wrapper`}>
         {image &&
           <Link to={cardLink}>
-            <img className="place-card__image" src={image} width="260" height="200" alt={title}/>
+            <img className="place-card__image" src={image} width={imageWidth} height={imageHeight} alt={title}/>
           </Link>}
       </div>
-      <div className="place-card__info">
+      <div className={`${cardInfoClass} place-card__info`}>
         <div className="place-card__price-wrapper">
           <div className="place-card__price">
             <b className="place-card__price-value">&euro;{price}</b>
             <span className="place-card__price-text">&#47;&nbsp;night</span>
           </div>
-          <button className="place-card__bookmark-button button place-card__bookmark-button--active" type="button">
-            <svg className="place-card__bookmark-icon" width="18" height="19">
-              <use xlinkHref="#icon-bookmark"></use>
-            </svg>
-            <span className="visually-hidden">To bookmarks</span>
-          </button>
+          <AddToFavorites id={id} type="card" isFavorite={isFavorite} />
         </div>
         <div className="place-card__rating rating">
           <div className="place-card__stars rating__stars">

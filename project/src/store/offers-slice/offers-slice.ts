@@ -2,7 +2,7 @@ import {createSlice} from '@reduxjs/toolkit';
 
 import {cityLocalStorageName, locations, NameSpace, sortByLocalStorageName} from '../../const';
 import {OffersSlice} from '../../types/state';
-import {changeCity, loadNearby, loadOffer, loadOfferReviews, loadOffers, setSortBy} from '../actions';
+import {changeCity, changeOfferIsFavorite, changeOneOfOffersIsFavorite, loadNearby, loadOffer, loadOfferReviews, loadOffers, setSortBy} from '../actions';
 
 const getUserSavedCity = () => {
   const savedCity = window.localStorage.getItem(cityLocalStorageName);
@@ -42,6 +42,25 @@ export const offersSlice = createSlice({
       })
       .addCase(setSortBy, (state: OffersSlice, action) => {
         state.sortBy = action.payload;
+      })
+      .addCase(changeOneOfOffersIsFavorite, (state: OffersSlice, action) => {
+        state.offers = state.offers.map((item) => {
+          if (item.id === action.payload.offerID) {
+            return {
+              ...item,
+              isFavorite: action.payload.isFavorite
+            };
+          }
+          return item;
+        });
+      })
+      .addCase(changeOfferIsFavorite, (state, action) => {
+        if(state.offer !== null) {
+          state.offer = {
+            ...state.offer,
+            isFavorite: action.payload
+          };
+        }
       });
   }
 });

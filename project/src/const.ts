@@ -15,13 +15,13 @@ export const enum AppRoute {
 export const enum ApiRoute {
   // Hotels
   Hotels = '/hotels', // GET
-  Offer = '/hotels/{hotelID}', // GET
-  Nearby = '/hotels/{hotelID}/nearby', // GET
+  Offer = '/hotels/{offerID}', // GET
+  Nearby = '/hotels/{offerID}/nearby', // GET
   // Favorite
   Favorite = '/favorite', // GET
-  AddToFavorites = '/favorite/{hotelID}/{status}', // POST
+  AddToFavorites = '/favorite/{offerID}/{setFavorite}', // POST
   // Comments
-  Comments = '/comments/{hotelID}', // GET, POST
+  Comments = '/comments/{offerID}', // GET, POST
   // User
   Login = '/login', // GET, POST
   Logout = '/logout', // DELETE
@@ -110,6 +110,10 @@ export type authData = {
   login: string,
   password: string,
 }
+export type setUserFavoriteData = {
+  offerID: number,
+  setFavorite: 0 | 1
+}
 
 export const backendUrl = 'https://10.react.pages.academy/six-cities';
 export const requestTimeout = 5000; // ms
@@ -131,6 +135,7 @@ export const enum LoadingObj {
   Nearby = 'nearby',
   Reviews = 'reviews',
   CommentSubmit = 'commentSubmit',
+  Favorites = 'favorites'
 }
 
 // reducer slices
@@ -138,4 +143,11 @@ export const enum NameSpace {
   Offers = 'offers',
   User = 'user',
   App = 'app'
+}
+
+// type of the cards
+export const enum CardsType {
+  Main = 'main',
+  Room = 'room',
+  Favorite = 'favorite'
 }

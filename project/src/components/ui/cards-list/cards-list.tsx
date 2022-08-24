@@ -4,13 +4,14 @@ import Card from '../card/card';
 import {Offer} from '../../../types/types';
 
 type CardsListProps = {
-  className: string,
   offers: Offer[],
   setCardActive: Dispatch<SetStateAction<number | null>>,
-  activeCardID: number | null
+  activeCardID: number | null,
+  className: string,
+  cardType: string
 }
 
-const CardsList = ({className, offers, activeCardID, setCardActive}: CardsListProps) => {
+const CardsList = ({className, offers, activeCardID, setCardActive, cardType}: CardsListProps) => {
   const setCardActiveCallback = useCallback(
     (id: number) => {
       setCardActive(id);
@@ -34,6 +35,7 @@ const CardsList = ({className, offers, activeCardID, setCardActive}: CardsListPr
             isActive={offer.id === activeCardID}
             setCardActive={setCardActiveCallback}
             setCardInactive={setCardInactiveCallback}
+            cardType={cardType}
           />)
         )
       }

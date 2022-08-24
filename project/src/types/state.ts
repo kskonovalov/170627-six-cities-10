@@ -14,7 +14,8 @@ export type UserType = {
 
 export type UserSlice = {
   authorizationStatus: AuthorizationStatus,
-  user: null | UserType
+  user: null | UserType,
+  favorites: Offer[]
 }
 
 export type OffersSlice = {

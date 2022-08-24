@@ -34,7 +34,7 @@ export const fetchOfferAction = createAsyncThunk<void, string | number, AsyncThu
       status: true
     }));
     try {
-      const {data} = await api.get<Offer>(ApiRoute.Offer.replace('{hotelID}', `${offerID}`));
+      const {data} = await api.get<Offer>(ApiRoute.Offer.replace('{offerID}', `${offerID}`));
       dispatch(loadOffer(data));
     } finally {
       dispatch(loading({
@@ -53,7 +53,7 @@ export const fetchNearbyPlacesAction = createAsyncThunk<void, string | number, A
       status: true
     }));
     try {
-      const {data} = await api.get<Offer[]>(ApiRoute.Nearby.replace('{hotelID}', `${offerID}`));
+      const {data} = await api.get<Offer[]>(ApiRoute.Nearby.replace('{offerID}', `${offerID}`));
       dispatch(loadNearby(data));
     } finally {
       dispatch(loading({
@@ -72,7 +72,7 @@ export const fetchOfferReviewsAction = createAsyncThunk<void, string | number, A
       status: true
     }));
     try {
-      const {data} = await api.get<Review[]>(ApiRoute.Comments.replace('{hotelID}', `${offerID}`));
+      const {data} = await api.get<Review[]>(ApiRoute.Comments.replace('{offerID}', `${offerID}`));
       dispatch(loadOfferReviews(data));
     } finally {
       dispatch(loading({
@@ -92,7 +92,7 @@ export const submitReviewAction = createAsyncThunk<void, { offerID: string | num
     }));
     try {
       await api.post(
-        ApiRoute.Comments.replace('{hotelID}', `${reviewData.offerID}`),
+        ApiRoute.Comments.replace('{offerID}', `${reviewData.offerID}`),
         {
           comment: reviewData.comment,
           rating: reviewData.rating

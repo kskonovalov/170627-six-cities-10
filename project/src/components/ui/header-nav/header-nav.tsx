@@ -5,11 +5,12 @@ import {useAppDispatch, useAppSelector} from '../../../hooks/redux-hooks';
 import {logoutAction} from '../../../store/user-slice/user-api-actions';
 import {AppRoute, AuthorizationStatus} from '../../../const';
 import Loader from '../../ux/loader';
-import {getAuthorizationStatus, getUser} from '../../../store/user-slice/user-selectors';
+import {getAuthorizationStatus, getUser, getUserFavoriteCount} from '../../../store/user-slice/user-selectors';
 
 const HeaderNav = () => {
   const authorizationStatus = useAppSelector(getAuthorizationStatus);
   const user = useAppSelector(getUser);
+  const favoriteCount = useAppSelector(getUserFavoriteCount);
   const dispatch = useAppDispatch();
 
   const signOutHandle = (e: React.MouseEvent<HTMLElement>) => {
@@ -34,7 +35,7 @@ const HeaderNav = () => {
               <Link className="header__nav-link header__nav-link--profile" to={AppRoute.Favorites}>
                 <div className="header__avatar-wrapper user__avatar-wrapper" style={{backgroundImage: avatarUrl}}></div>
                 <span className="header__user-name user__name">{email}</span>
-                <span className="header__favorite-count">3</span>
+                {favoriteCount > 0 && <span className="header__favorite-count">{favoriteCount}</span>}
               </Link>
             </li>
             <li className="header__nav-item">
