@@ -18,8 +18,8 @@ const AddToFavorites = ({id, type, isFavorite}: AddToFavoritesProps) => {
   const authorizationStatus = useAppSelector(getAuthorizationStatus);
   const navigate = useNavigate();
 
-  const favoriteButtonHandler = (e: React.MouseEvent<HTMLElement>) => {
-    e.preventDefault();
+  const favoriteButtonHandler = (evt: React.MouseEvent<HTMLElement>) => {
+    evt.preventDefault();
     if(authorizationStatus !== AuthorizationStatus.Auth) {
       dispatch(setError('Please log in to add to favorites!'));
       return navigate(AppRoute.Login);

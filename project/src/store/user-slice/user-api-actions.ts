@@ -1,6 +1,6 @@
 import {createAsyncThunk} from '@reduxjs/toolkit';
 
-import {ApiRoute, authData, AuthorizationStatus, LoadingObj, setUserFavoriteData} from '../../const';
+import {ApiRoute, authData, AuthorizationStatus, LoadingObject, setUserFavoriteData} from '../../const';
 import {addToUserFavorites, loading, removeFromUserFavorites, setAuthorizationStatus, setError, setUserData, setUserFavorites} from '../actions';
 import {setToken, unsetToken} from '../../api/token';
 import {AsyncThunkConfigType} from '../../types/state';
@@ -47,7 +47,7 @@ export const fetchUserFavorites = createAsyncThunk<void, undefined, AsyncThunkCo
   'user-slice/fetchFavorites',
   async (_arg, {dispatch, extra: api}) => {
     dispatch(loading({
-      name: LoadingObj.Favorites,
+      name: LoadingObject.Favorites,
       status: true
     }));
     try {
@@ -59,7 +59,7 @@ export const fetchUserFavorites = createAsyncThunk<void, undefined, AsyncThunkCo
       dispatch(setUserFavorites([]));
     } finally {
       dispatch(loading({
-        name: LoadingObj.Favorites,
+        name: LoadingObject.Favorites,
         status: false
       }));
     }

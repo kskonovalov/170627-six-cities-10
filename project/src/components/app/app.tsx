@@ -8,7 +8,7 @@ import Login from '../../pages/login/login';
 import Favorites from '../../pages/favorites/favorites';
 import Room from '../../pages/room/room';
 import NotFound from '../../pages/not-found/not-found';
-import PrivateRoute from '../private-route';
+import PrivateRoute from '../private-route/private-route';
 import Layout from '../ui/layout/layout';
 import ScrollTop from '../ux/scroll-top';
 import {AppRoute, AuthorizationStatus} from '../../const';

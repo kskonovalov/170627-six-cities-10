@@ -9,7 +9,7 @@ import Map from '../../components/ui/map/map';
 import Loader from '../../components/ux/loader';
 import {Offer, Points} from '../../types/types';
 import {useAppSelector, useAppDispatch} from '../../hooks/redux-hooks';
-import {AppRoute, AuthorizationStatus, CardsType, LoadingObj} from '../../const';
+import {AppRoute, AuthorizationStatus, CardType, LoadingObject} from '../../const';
 import {fetchNearbyPlacesAction, fetchOfferAction, fetchOfferReviewsAction} from '../../store/offers-slice/offers-api-actions';
 import classes from './room.module.css';
 import {getCity, getNearby, getOffer, getReviews} from '../../store/offers-slice/offers-selectors';
@@ -44,7 +44,7 @@ const Room = () => {
     }
   }, [offer, id, dispatch]);
 
-  if (loading[LoadingObj.Offer]) {
+  if (loading[LoadingObject.Offer]) {
     return <Loader/>;
   }
 
@@ -63,7 +63,7 @@ const Room = () => {
     lng: item.location.longitude,
     id: item.id
   }));
-  const nearbyIsLoading = LoadingObj.Nearby in loading && loading[LoadingObj.Nearby];
+  const nearbyIsLoading = LoadingObject.Nearby in loading && loading[LoadingObject.Nearby];
 
   return (
     <div className="page">
@@ -171,7 +171,7 @@ const Room = () => {
                 setCardActive={setActiveCardID}
                 activeCardID={activeCardID}
                 className='near-places__list places__list'
-                cardType={CardsType.Room}
+                cardType={CardType.Room}
               />
             </section>
           </div>}

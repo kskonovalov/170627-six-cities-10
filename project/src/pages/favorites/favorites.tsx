@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import {Link} from 'react-router-dom';
 
-import {AppRoute, CardsType, LoadingObj} from '../../const';
+import {AppRoute, CardType, LoadingObject} from '../../const';
 import {Offer} from '../../types/types';
 import {useAppSelector} from '../../hooks/redux-hooks';
 import {getUserFavorites} from '../../store/user-slice/user-selectors';
@@ -27,7 +27,7 @@ const Favorites = () => {
   });
 
   const offersCount = Object.keys(cityOffers).length;
-  const favoritesLoading = loading[LoadingObj.Favorites];
+  const favoritesLoading = loading[LoadingObject.Favorites];
   const hasFavorites = !favoritesLoading && offersCount > 0;
   const noFavorites = !favoritesLoading && offersCount === 0;
 
@@ -56,7 +56,7 @@ const Favorites = () => {
                         setCardActive={setActiveCardID}
                         activeCardID={activeCardID}
                         className='favorites__places'
-                        cardType={CardsType.Favorite}
+                        cardType={CardType.Favorite}
                       />
                     </li>
                   ))}

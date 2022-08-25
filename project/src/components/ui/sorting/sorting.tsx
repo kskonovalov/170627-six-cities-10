@@ -29,7 +29,7 @@ const Sorting = () => {
       <ul className={`places__options places__options--custom ${opened ? 'places__options--opened' : ''}`}>
         {Object.keys(order).map((key) => (
           <li className={`places__option ${styles['places__option']} ${sortBy === key ? 'places__option--active' : ''}`} tabIndex={0} key={key}>
-            <button onClick={(e) => {e.preventDefault(); changeSortBy(key);}} className={`${styles['places__option-button']} ${sortBy === key ? styles['places__option-button--active'] : ''}`}>{order[key]}</button>
+            <button onClick={(evt) => {evt.preventDefault(); changeSortBy(key);}} className={`${styles['places__option-button']} ${sortBy === key ? styles['places__option-button--active'] : ''}`}>{order[key]}</button>
           </li>
         ))}
       </ul>

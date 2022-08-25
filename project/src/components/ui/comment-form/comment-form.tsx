@@ -3,7 +3,7 @@ import React, {ChangeEvent, FormEvent, useState, useEffect, Fragment, useMemo} f
 import {useAppDispatch, useAppSelector} from '../../../hooks/redux-hooks';
 import {fetchOfferReviewsAction, submitReviewAction} from '../../../store/offers-slice/offers-api-actions';
 import Loader from '../../ux/loader';
-import {LoadingObj} from '../../../const';
+import {LoadingObject} from '../../../const';
 import {getAppLoading} from '../../../store/app-slice/app-selectors';
 
 type CommentFormProps = {
@@ -13,7 +13,7 @@ type CommentFormProps = {
 const CommentForm = ({offerID}: CommentFormProps) => {
   const dispatch = useAppDispatch();
   const commentIsLoading = useAppSelector(getAppLoading);
-  const commentIsOnSubmit = commentIsLoading[LoadingObj.CommentSubmit] || false;
+  const commentIsOnSubmit = commentIsLoading[LoadingObject.CommentSubmit] || false;
 
   type FormData = {
     rating: number,
@@ -25,25 +25,25 @@ const CommentForm = ({offerID}: CommentFormProps) => {
   }), []);
   const [formData, setFormData] = useState<FormData>(initialFormData);
 
-  const setRating = (e: ChangeEvent<HTMLInputElement>) => {
+  const setRating = (evt: ChangeEvent<HTMLInputElement>) => {
     setFormData((prevState) => ({
       ...prevState,
-      rating: parseInt(e.target.value, 10)
+      rating: parseInt(evt.target.value, 10)
     }));
   };
 
-  const handleCommentText = (e: ChangeEvent<HTMLTextAreaElement>) => {
+  const handleCommentText = (evt: ChangeEvent<HTMLTextAreaElement>) => {
     setFormData((prevState) => ({
       ...prevState,
-      comment: e.target.value
+      comment: evt.target.value
     }));
   };
 
   const minCommentLength = 50;
   const commentLengthGoodEnough = formData.comment.length > minCommentLength;
 
-  const submitHandler = (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  const submitHandler = (evt: FormEvent<HTMLFormElement>) => {
+    evt.preventDefault();
     if (!commentIsOnSubmit) {
       dispatch(submitReviewAction({
         offerID,

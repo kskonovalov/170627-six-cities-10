@@ -51,7 +51,7 @@ export const activeIcon: Icon = {
   iconAnchor: [20, 40]
 };
 
-export const defaultZoom = 13;
+export const DEFAULT_ZOOM = 13;
 
 /* City centers and coordinates */
 export const locations: City[] = [
@@ -101,11 +101,6 @@ export const sortByLocalStorageName = 'sortBy';
 export const cityLocalStorageName = 'city';
 
 /* User login */
-export type userData = {
-  id: number,
-  email: string,
-  token: string
-}
 export type authData = {
   login: string,
   password: string,
@@ -115,21 +110,21 @@ export type setUserFavoriteData = {
   setFavorite: 0 | 1
 }
 
-export const backendUrl = 'https://10.react.pages.academy/six-cities';
-export const requestTimeout = 5000; // ms
+export const BACKEND_URL = 'https://10.react.pages.academy/six-cities';
+export const REQUEST_TIMEOUT = 5000; // ms
 
 // based on https://www.npmjs.com/package/http-status-codes
-export const enum StatusCodes {
+export const enum StatusCode {
   BAD_REQUEST = 400,
   UNAUTHORIZED = 401,
   NOT_FOUND = 404,
   OK = 200,
 }
 
-export const defaultErrorText = 'Something went wrong! Please try again later';
+export const DEFAULT_ERROR_TEXT = 'Something went wrong! Please try again later';
 
 // 'loading' status for different components/things
-export const enum LoadingObj {
+export const enum LoadingObject {
   Offers = 'offers',
   Offer = 'offer',
   Nearby = 'nearby',
@@ -146,7 +141,7 @@ export const enum NameSpace {
 }
 
 // type of the cards
-export const enum CardsType {
+export const enum CardType {
   Main = 'main',
   Room = 'room',
   Favorite = 'favorite'

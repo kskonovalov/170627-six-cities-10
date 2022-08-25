@@ -1,7 +1,11 @@
+import {faker} from '@faker-js/faker';
+
 import {offersSlice} from './offers-slice';
 import {changeCity, changeOfferIsFavorite, changeOneOfOffersIsFavorite, loadNearby, loadOffer, loadOfferReviews, loadOffers, setSortBy} from '../actions';
 import {OffersSlice} from '../../types/state';
 import {locations} from '../../const';
+import createMockOffer from '../../mocks/create-mock-offer';
+import createMockReview from '../../mocks/create-mock-review';
 
 describe('Reducer: Offers slice', () => {
   const initialState: OffersSlice = {
@@ -22,43 +26,47 @@ describe('Reducer: Offers slice', () => {
   });
 
   it('should load offers', () => {
-    expect(offersSlice.reducer(void 0, loadOffers([1, '2', 'test'])))
-    .toEqual({
-      ...initialState,
-      offers: [1, '2', 'test'],
-    });
+    const mockOffers = new Array(faker.datatype.number(5)).fill(null).map(() => createMockOffer());
+    expect(offersSlice.reducer(void 0, loadOffers(mockOffers)))
+      .toEqual({
+        ...initialState,
+        offers: mockOffers,
+      });
   });
 
   it('should load nearby', () => {
-    expect(offersSlice.reducer(void 0, loadNearby([1, '2', 'test'])))
-    .toEqual({
-      ...initialState,
-      nearby: [1, '2', 'test'],
-    });
+    const mockOffers = new Array(faker.datatype.number(5)).fill(null).map(() => createMockOffer());
+    expect(offersSlice.reducer(void 0, loadNearby(mockOffers)))
+      .toEqual({
+        ...initialState,
+        nearby: mockOffers,
+      });
   });
 
   it('should load offer', () => {
-    expect(offersSlice.reducer(void 0, loadOffer({offer: 'test'})))
-    .toEqual({
-      ...initialState,
-      offer: {offer: 'test'},
-    });
+    const mockOffer = createMockOffer();
+    expect(offersSlice.reducer(void 0, loadOffer(mockOffer)))
+      .toEqual({
+        ...initialState,
+        offer: mockOffer,
+      });
   });
 
   it('should load offer reviews', () => {
-    expect(offersSlice.reducer(void 0, loadOfferReviews([1, '2', 'test'])))
-    .toEqual({
-      ...initialState,
-      reviews: [1, '2', 'test'],
-    });
+    const mockReviews = new Array(faker.datatype.number(5)).fill(null).map(() => createMockReview());
+    expect(offersSlice.reducer(void 0, loadOfferReviews(mockReviews)))
+      .toEqual({
+        ...initialState,
+        reviews: mockReviews,
+      });
   });
 
   it('should set sort by', () => {
     expect(offersSlice.reducer(void 0, setSortBy('Order by price')))
-    .toEqual({
-      ...initialState,
-      sortBy: 'Order by price',
-    });
+      .toEqual({
+        ...initialState,
+        sortBy: 'Order by price',
+      });
   });
 
   // TODO: changeOneOfOffersIsFavorite

@@ -6,7 +6,7 @@ import Sorting from '../../components/ui/sorting/sorting';
 import Loader from '../../components/ux/loader';
 import MainEmpty from '../../components/ui/main-empty/main-empty';
 import {Offer, Points} from '../../types/types';
-import {LoadingObj, locations, CardsType} from '../../const';
+import {LoadingObject, locations, CardType} from '../../const';
 import {useAppDispatch, useAppSelector} from '../../hooks/redux-hooks';
 import {changeCity} from '../../store/actions';
 import styles from './main.module.css';
@@ -54,7 +54,7 @@ const Main = () => {
 
   const placesWord = (offersCount === 0 || offersCount > 1) ? 'places' : 'place';
 
-  const offersAreLoading = loading[LoadingObj.Offers];
+  const offersAreLoading = loading[LoadingObject.Offers];
   const hasOffers = !offersAreLoading && offersCount > 0;
   const noOffers = !offersAreLoading && offersCount === 0;
 
@@ -67,8 +67,8 @@ const Main = () => {
             <ul className="locations__list tabs__list">
               {locations.map((item) => (
                 <li className="locations__item" key={item.title}>
-                  <button className={`locations__item-link tabs__item ${item.title === city.title ? 'tabs__item--active' : ''} ${styles['locations__item-link']}`} onClick={(e) => {
-                    e.preventDefault();
+                  <button className={`locations__item-link tabs__item ${item.title === city.title ? 'tabs__item--active' : ''} ${styles['locations__item-link']}`} onClick={(evt) => {
+                    evt.preventDefault();
                     dispatch(changeCity(item));
                   }}
                   >
@@ -92,7 +92,7 @@ const Main = () => {
                     setCardActive={setActiveCardID}
                     activeCardID={activeCardID}
                     className='cities__places-list places__list tabs__content'
-                    cardType={CardsType.Main}
+                    cardType={CardType.Main}
                   />
                 </>}
               {noOffers && <MainEmpty cityTitle={city.title}/>}

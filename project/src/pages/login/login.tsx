@@ -22,9 +22,9 @@ const Login = () => {
   });
   const minPasswordLength = 2;
 
-  const formDataHandler = (e: ChangeEvent<HTMLInputElement>) => {
-    const fieldName = e.target.name;
-    const fieldValue = e.target.value.trim();
+  const formDataHandler = (evt: ChangeEvent<HTMLInputElement>) => {
+    const fieldName = evt.target.name;
+    const fieldValue = evt.target.value.trim();
 
     setFormData({
       ...formData,
@@ -32,8 +32,8 @@ const Login = () => {
     });
   };
 
-  const onSubmitHandle = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  const onSubmitHandle = (evt: React.FormEvent<HTMLFormElement>) => {
+    evt.preventDefault();
     const errors: string[] = [];
 
     if (formData.password.length <= minPasswordLength) {

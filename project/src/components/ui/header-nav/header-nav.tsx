@@ -13,8 +13,8 @@ const HeaderNav = () => {
   const favoriteCount = useAppSelector(getUserFavoriteCount);
   const dispatch = useAppDispatch();
 
-  const signOutHandle = (e: React.MouseEvent<HTMLElement>) => {
-    e.preventDefault();
+  const signOutHandle = (evt: React.MouseEvent<HTMLElement>) => {
+    evt.preventDefault();
     dispatch(logoutAction());
   };
 
