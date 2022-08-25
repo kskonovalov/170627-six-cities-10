@@ -1,6 +1,6 @@
 import {City} from './types/types';
 
-/* Application routes */
+// Application routes
 export const enum AppRoute {
   Main = '/',
   Login = '/login',
@@ -10,7 +10,7 @@ export const enum AppRoute {
   NotFound = '*',
 }
 
-/* API routes */
+// API routes
 // https://10.react.pages.academy/six-cities/spec
 export const enum ApiRoute {
   // Hotels
@@ -27,14 +27,14 @@ export const enum ApiRoute {
   Logout = '/logout', // DELETE
 }
 
-/* Authorization status */
+// Authorization status
 export const enum AuthorizationStatus {
   Auth = 'AUTH',
   NoAuth = 'NO_AUTH',
   Unknown = 'UNKNOWN'
 }
 
-/* Icons */
+// Icons
 type Icon = {
   iconUrl: string,
   iconSize: [number, number],
@@ -53,8 +53,8 @@ export const activeIcon: Icon = {
 
 export const DEFAULT_ZOOM = 13;
 
-/* City centers and coordinates */
-export const locations: City[] = [
+// City centers and coordinates
+export const LOCATIONS: City[] = [
   {
     title: 'Paris',
     lat: 48.856613,
@@ -87,7 +87,7 @@ export const locations: City[] = [
   },
 ];
 
-/* Order / Sort by */
+// Order / Sort by
 type orderType = {
   [key: string]: string
 };
@@ -100,7 +100,7 @@ export const order: orderType = {
 export const sortByLocalStorageName = 'sortBy';
 export const cityLocalStorageName = 'city';
 
-/* User login */
+// User login
 export type authData = {
   login: string,
   password: string,
@@ -146,3 +146,9 @@ export const enum CardType {
   Room = 'room',
   Favorite = 'favorite'
 }
+
+// comment length
+export const MIN_COMMENT_LENGTH = 50;
+export const MAX_COMMENT_LENGTH = 300;
+
+export const MIN_PASSWORD_LENGTH = 2;

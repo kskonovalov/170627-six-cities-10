@@ -1,4 +1,4 @@
-import {validateEmail} from './validate-email';
+import validateEmail from './validate-email';
 
 describe('Helper function: validateEmail', () => {
   it('should return true if the passed e-mail is valid', () => {

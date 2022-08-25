@@ -3,13 +3,13 @@ import {faker} from '@faker-js/faker';
 import {offersSlice} from './offers-slice';
 import {changeCity, changeOfferIsFavorite, changeOneOfOffersIsFavorite, loadNearby, loadOffer, loadOfferReviews, loadOffers, setSortBy} from '../actions';
 import {OffersSlice} from '../../types/state';
-import {locations} from '../../const';
+import {LOCATIONS} from '../../const';
 import createMockOffer from '../../mocks/create-mock-offer';
 import createMockReview from '../../mocks/create-mock-review';
 
 describe('Reducer: Offers slice', () => {
   const initialState: OffersSlice = {
-    city: locations[0],
+    city: LOCATIONS[0],
     offers: [],
     nearby: [],
     offer: null,
@@ -18,10 +18,10 @@ describe('Reducer: Offers slice', () => {
   };
 
   it('should change city', () => {
-    expect(offersSlice.reducer(void 0, changeCity(locations[1])))
+    expect(offersSlice.reducer(void 0, changeCity(LOCATIONS[1])))
       .toEqual({
         ...initialState,
-        city: locations[1],
+        city: LOCATIONS[1],
       });
   });
 

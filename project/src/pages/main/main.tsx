@@ -6,7 +6,7 @@ import Sorting from '../../components/ui/sorting/sorting';
 import Loader from '../../components/ux/loader';
 import MainEmpty from '../../components/ui/main-empty/main-empty';
 import {Offer, Points} from '../../types/types';
-import {LoadingObject, locations, CardType} from '../../const';
+import {LoadingObject, LOCATIONS, CardType} from '../../const';
 import {useAppDispatch, useAppSelector} from '../../hooks/redux-hooks';
 import {changeCity} from '../../store/actions';
 import styles from './main.module.css';
@@ -65,7 +65,7 @@ const Main = () => {
         <div className="tabs">
           <section className="locations container">
             <ul className="locations__list tabs__list">
-              {locations.map((item) => (
+              {LOCATIONS.map((item) => (
                 <li className="locations__item" key={item.title}>
                   <button className={`locations__item-link tabs__item ${item.title === city.title ? 'tabs__item--active' : ''} ${styles['locations__item-link']}`} onClick={(evt) => {
                     evt.preventDefault();

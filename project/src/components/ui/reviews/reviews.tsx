@@ -3,14 +3,15 @@ import React from 'react';
 import {Review} from '../../../types/types';
 
 type ReviewsProps = {
-  reviews: Review[]
+  reviews: Review[],
+  totalReviewsCount: number
 }
 
-const Reviews = ({reviews}: ReviewsProps) => (
+const Reviews = ({reviews, totalReviewsCount}: ReviewsProps) => (
   <>
     <h2 className="reviews__title">
-      Reviews &middot;
-      <span className="reviews__amount">{Object.keys(reviews).length}</span>
+      {totalReviewsCount > reviews.length ? <>Showing last <span className="reviews__amount">{reviews.length}</span> from <span className="reviews__amount">{totalReviewsCount}</span> Reviews</> :
+        <>Reviews &middot; <span className="reviews__amount">{totalReviewsCount}</span></>}
     </h2>
     {reviews.length > 0 &&
       <ul className="reviews__list">

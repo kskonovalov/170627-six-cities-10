@@ -3,7 +3,7 @@ import React, {ChangeEvent, FormEvent, useState, useEffect, Fragment, useMemo} f
 import {useAppDispatch, useAppSelector} from '../../../hooks/redux-hooks';
 import {fetchOfferReviewsAction, submitReviewAction} from '../../../store/offers-slice/offers-api-actions';
 import Loader from '../../ux/loader';
-import {LoadingObject} from '../../../const';
+import {LoadingObject, MIN_COMMENT_LENGTH, MAX_COMMENT_LENGTH} from '../../../const';
 import {getAppLoading} from '../../../store/app-slice/app-selectors';
 
 type CommentFormProps = {
@@ -39,8 +39,8 @@ const CommentForm = ({offerID}: CommentFormProps) => {
     }));
   };
 
-  const minCommentLength = 50;
-  const commentLengthGoodEnough = formData.comment.length > minCommentLength;
+  const commentLengthMoreThanMin = MIN_COMMENT_LENGTH > 0 ? formData.comment.length >= MIN_COMMENT_LENGTH : true;
+  const commentLengthLessThanMax = MAX_COMMENT_LENGTH > 0 ? formData.comment.length <= MAX_COMMENT_LENGTH : true;
 
   const submitHandler = (evt: FormEvent<HTMLFormElement>) => {
     evt.preventDefault();
@@ -96,6 +96,7 @@ const CommentForm = ({offerID}: CommentFormProps) => {
         placeholder="Tell how was your stay, what you like and what can be improved"
         value={formData.comment}
         onChange={handleCommentText}
+        disabled={commentIsOnSubmit}
       >
       </textarea>
       <div className="reviews__button-wrapper">
@@ -103,10 +104,11 @@ const CommentForm = ({offerID}: CommentFormProps) => {
           To submit review please make sure to set&nbsp;
           <span className="reviews__star">rating</span>
           and describe your stay with at least&nbsp;
-          <b className="reviews__text-amount">50 characters</b>
-          {!commentLengthGoodEnough && <>&nbsp;({minCommentLength - formData.comment.length} symbols left)</>}.
+          <b className="reviews__text-amount">{MIN_COMMENT_LENGTH} characters</b> and no more than <b className="reviews__text-amount">{MAX_COMMENT_LENGTH} characters</b><br/>
+          {!commentLengthMoreThanMin && <>&nbsp;({MIN_COMMENT_LENGTH - formData.comment.length} symbols left)</>}
+          {!commentLengthLessThanMax && <>&nbsp;({formData.comment.length - MAX_COMMENT_LENGTH} symbols over {MAX_COMMENT_LENGTH})</>}
         </p>
-        <button className="reviews__submit form__submit button" type="submit" disabled={!commentLengthGoodEnough || commentIsOnSubmit}>{commentIsOnSubmit ? <Loader/> : 'Submit'}</button>
+        <button className="reviews__submit form__submit button" type="submit" disabled={!commentLengthMoreThanMin || !commentLengthLessThanMax || commentIsOnSubmit}>{commentIsOnSubmit ? <Loader/> : 'Submit'}</button>
       </div>
     </form>
   );

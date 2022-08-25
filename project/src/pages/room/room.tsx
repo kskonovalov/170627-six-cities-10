@@ -12,7 +12,7 @@ import {useAppSelector, useAppDispatch} from '../../hooks/redux-hooks';
 import {AppRoute, AuthorizationStatus, CardType, LoadingObject} from '../../const';
 import {fetchNearbyPlacesAction, fetchOfferAction, fetchOfferReviewsAction} from '../../store/offers-slice/offers-api-actions';
 import classes from './room.module.css';
-import {getCity, getNearby, getOffer, getReviews} from '../../store/offers-slice/offers-selectors';
+import {getCity, getLastNReviews, getNearby, getOffer, getReviews} from '../../store/offers-slice/offers-selectors';
 import {getAuthorizationStatus} from '../../store/user-slice/user-selectors';
 import {getAppLoading} from '../../store/app-slice/app-selectors';
 import AddToFavorites from '../../components/ui/add-to-favorites/add-to-favorites';
@@ -27,6 +27,7 @@ const Room = () => {
   const loading = useAppSelector(getAppLoading);
   const nearby = useAppSelector(getNearby);
   const reviews = useAppSelector(getReviews);
+  const lastNReviews = useAppSelector((state) => getLastNReviews(state, 10));
 
   const {id} = useParams();
 
@@ -63,6 +64,13 @@ const Room = () => {
     lng: item.location.longitude,
     id: item.id
   }));
+  // add current offer to the points
+  points.push({
+    title,
+    lat: offer.location.latitude,
+    lng: offer.location.longitude,
+    id: offer.id
+  });
   const nearbyIsLoading = LoadingObject.Nearby in loading && loading[LoadingObject.Nearby];
 
   return (
@@ -150,7 +158,7 @@ const Room = () => {
                 </div>
               </div>
               <section className="property__reviews reviews">
-                <Reviews reviews={reviews}/>
+                <Reviews reviews={lastNReviews} totalReviewsCount={Object.keys(reviews).length}/>
                 {authorizationStatus === AuthorizationStatus.Auth ?
                   <CommentForm offerID={offer.id}/> :
                   <p className={classes['sign-in-message']}><Link to={AppRoute.Login}>Sign in</Link> to write a review!</p>}
@@ -159,7 +167,7 @@ const Room = () => {
           </div>
           {nearbyIsLoading && <Loader/>}
           {nearby.length > 0 &&
-            <Map containerClassName='property__map map' city={city} points={points} selectedPointID={activeCardID}/>}
+            <Map containerClassName='property__map map' city={city} points={points} selectedPointID={offer.id}/>}
         </section>
         {nearbyIsLoading && <Loader/>}
         {nearby.length > 0 &&
