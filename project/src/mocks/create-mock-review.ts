@@ -10,7 +10,7 @@ const createMockReview = (): Review => ({
     avatarUrl: faker.image.abstract(),
     id: faker.datatype.number(),
     isPro: faker.datatype.boolean(),
-    name: faker.hacker.adjective()
+    name: faker.name.fullName()
   }
 });
 
