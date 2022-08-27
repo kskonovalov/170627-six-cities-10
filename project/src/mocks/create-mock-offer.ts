@@ -12,7 +12,7 @@ const createMockOffer = (): Offer => ({
     }
   },
   'previewImage': faker.image.abstract(),
-  'images': new Array(faker.datatype.number(5)).fill(null).map(() => faker.image.abstract()),
+  'images': new Array(faker.datatype.number({min: 1, max: 6})).fill(null).map(() => faker.image.abstract()),
   'title': faker.hacker.adjective(),
   'isFavorite': faker.datatype.boolean(),
   'isPremium': faker.datatype.boolean(),
@@ -21,7 +21,7 @@ const createMockOffer = (): Offer => ({
   'bedrooms': faker.datatype.number(),
   'maxAdults': faker.datatype.number(),
   'price': faker.datatype.number(),
-  'goods': new Array(faker.datatype.number(5)).fill(null).map(() => faker.hacker.adjective()),
+  'goods': new Array(faker.datatype.number({min: 1, max: 5})).fill(null).map(() => faker.hacker.adjective()),
   'host': {
     'id': faker.datatype.number(),
     'name': faker.hacker.adjective(),

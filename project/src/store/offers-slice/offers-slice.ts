@@ -4,7 +4,7 @@ import {cityLocalStorageName, LOCATIONS, NameSpace, sortByLocalStorageName} from
 import {OffersSlice} from '../../types/state';
 import {changeCity, changeOfferIsFavorite, changeOneOfOffersIsFavorite, loadNearby, loadOffer, loadOfferReviews, loadOffers, setSortBy} from '../actions';
 
-const getUserSavedCity = () => {
+export const getUserSavedCity = () => {
   const savedCity = window.localStorage.getItem(cityLocalStorageName);
   const foundCity = LOCATIONS.filter((item) => item.title === savedCity);
   return foundCity[0] ? foundCity[0] : LOCATIONS[0];

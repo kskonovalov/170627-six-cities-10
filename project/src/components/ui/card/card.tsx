@@ -38,7 +38,7 @@ const Card = ({offer, isActive, setCardActive, setCardInactive, cardType}: CardP
       <div className={`${imageWrapperClass} place-card__image-wrapper`}>
         {image &&
           <Link to={cardLink}>
-            <img className="place-card__image" src={image} width={imageWidth} height={imageHeight} alt={title}/>
+            <img className="place-card__image" src={image} width={imageWidth} height={imageHeight} alt={title} data-testid="card-image"/>
           </Link>}
       </div>
       <div className={`${cardInfoClass} place-card__info`}>

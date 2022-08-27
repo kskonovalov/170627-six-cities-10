@@ -4,7 +4,7 @@ import Logo from '../logo/logo';
 
 const Footer = () => (
   <footer className="footer container">
-    <Logo location='footer' width={64} height={33}/>
+    <Logo location='footer' width={64} height={33} />
   </footer>
 );
 

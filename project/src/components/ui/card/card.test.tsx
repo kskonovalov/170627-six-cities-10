@@ -52,7 +52,54 @@ describe('Component: Card', () => {
         </Provider>
       </BrowserRouter>);
 
-    const cardPriceContainer = screen.getByText(/27482364/sm);
-    expect(cardPriceContainer).toBeInTheDocument();
+    expect(screen.getByText(/27482364/sm)).toBeInTheDocument();
   });
+
+
+  it('should render Favorite card image correctly', () => {
+    const expectedImageWidth = '150';
+    const expectedImageHeight = '110';
+    render(
+      <BrowserRouter>
+        <Provider store={store}>
+          <Card
+            offer={mockOffer}
+            isActive={false}
+            setCardActive={() => undefined}
+            setCardInactive={() => undefined}
+            cardType={CardType.Favorite}
+          />
+        </Provider>
+      </BrowserRouter>);
+
+    const cardImage = screen.getByTestId('card-image');
+
+    expect(cardImage).toBeInTheDocument();
+    expect(cardImage.getAttribute('width')).toBe(expectedImageWidth);
+    expect(cardImage.getAttribute('height')).toBe(expectedImageHeight);
+  });
+
+  it('should render Main card image correctly', () => {
+    const expectedImageWidth = '260';
+    const expectedImageHeight = '200';
+    render(
+      <BrowserRouter>
+        <Provider store={store}>
+          <Card
+            offer={mockOffer}
+            isActive={false}
+            setCardActive={() => undefined}
+            setCardInactive={() => undefined}
+            cardType={CardType.Main}
+          />
+        </Provider>
+      </BrowserRouter>);
+
+    const cardImage = screen.getByTestId('card-image');
+
+    expect(cardImage).toBeInTheDocument();
+    expect(cardImage.getAttribute('width')).toBe(expectedImageWidth);
+    expect(cardImage.getAttribute('height')).toBe(expectedImageHeight);
+  });
+
 });
