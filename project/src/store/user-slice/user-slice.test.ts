@@ -10,7 +10,7 @@ import createMockOffer from '../../mocks/create-mock-offer';
 describe('Reducer: User slice', () => {
   const initialState: UserSlice = {
     authorizationStatus: AuthorizationStatus.Unknown,
-    favorites: new Array(faker.datatype.number(5)).fill(null).map(() => createMockOffer()),
+    favorites: new Array(faker.datatype.number({min: 1, max: 5})).fill(null).map(() => createMockOffer()),
     user: null
   };
 
@@ -37,7 +37,7 @@ describe('Reducer: User slice', () => {
   });
 
   it('Should completely replace user favorites', () => {
-    const newFavorites = new Array(faker.datatype.number(5)).fill(null).map(() => createMockOffer());
+    const newFavorites = new Array(faker.datatype.number({min: 1, max: 5})).fill(null).map(() => createMockOffer());
     expect(userSlice.reducer(initialState, setUserFavorites(newFavorites)))
       .toEqual({
         ...initialState,
@@ -68,7 +68,7 @@ describe('Reducer: User slice', () => {
       id: faker.datatype.number(),
       isPro: faker.datatype.boolean(),
       name: faker.name.fullName()
-    }
+    };
     expect(userSlice.reducer(initialState, setUserData(mockUser)))
       .toEqual({
         ...initialState,

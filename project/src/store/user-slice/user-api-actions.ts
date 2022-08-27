@@ -40,17 +40,18 @@ export const logoutAction = createAsyncThunk<void, undefined, AsyncThunkConfigTy
     await api.delete(ApiRoute.Logout);
     unsetToken();
     dispatch(setAuthorizationStatus(AuthorizationStatus.NoAuth));
+    dispatch(setUserData(null));
   }
 );
 
 export const fetchUserFavorites = createAsyncThunk<void, undefined, AsyncThunkConfigType>(
   'user-slice/fetchFavorites',
   async (_arg, {dispatch, extra: api}) => {
-    dispatch(loading({
-      name: LoadingObject.Favorites,
-      status: true
-    }));
     try {
+      dispatch(loading({
+        name: LoadingObject.Favorites,
+        status: true
+      }));
       const response = await api.get(ApiRoute.Favorite);
       if (response?.data) {
         dispatch(setUserFavorites(response?.data));
@@ -70,7 +71,7 @@ export const setUserFavoriteAction = createAsyncThunk<void, setUserFavoriteData,
   'user-slice/setUserFavorite',
   async ({offerID, setFavorite}, {dispatch, extra: api}) => {
     try {
-      const urlSetUserFavorite = ApiRoute.AddToFavorites.replace('{offerID}', `${offerID}`).replace('{setFavorite}', `${setFavorite}`);
+      const urlSetUserFavorite = ApiRoute.AddToFavorites.replace('{offerID}', String(offerID)).replace('{setFavorite}', String(setFavorite));
       const response = await api.post(urlSetUserFavorite);
       if (response?.data?.isFavorite) {
         dispatch(addToUserFavorites(response?.data));

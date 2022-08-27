@@ -15,8 +15,6 @@ export const fetchOffersAction = createAsyncThunk<void, undefined, AsyncThunkCon
     try {
       const {data} = await api.get<Offer[]>(ApiRoute.Hotels);
       dispatch(loadOffers(data));
-    } catch {
-      dispatch(loadOffers([]));
     } finally {
       dispatch(loading({
         name: LoadingObject.Offers,
@@ -34,7 +32,7 @@ export const fetchOfferAction = createAsyncThunk<void, string | number, AsyncThu
       status: true
     }));
     try {
-      const {data} = await api.get<Offer>(ApiRoute.Offer.replace('{offerID}', `${offerID}`));
+      const {data} = await api.get<Offer>(ApiRoute.Offer.replace('{offerID}', String(offerID)));
       dispatch(loadOffer(data));
     } finally {
       dispatch(loading({
@@ -53,7 +51,7 @@ export const fetchNearbyPlacesAction = createAsyncThunk<void, string | number, A
       status: true
     }));
     try {
-      const {data} = await api.get<Offer[]>(ApiRoute.Nearby.replace('{offerID}', `${offerID}`));
+      const {data} = await api.get<Offer[]>(ApiRoute.Nearby.replace('{offerID}', String(offerID)));
       dispatch(loadNearby(data));
     } finally {
       dispatch(loading({

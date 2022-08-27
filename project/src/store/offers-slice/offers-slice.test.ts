@@ -10,7 +10,7 @@ import createMockReview from '../../mocks/create-mock-review';
 describe('Reducer: Offers slice', () => {
   const initialState: OffersSlice = {
     city: LOCATIONS[0],
-    offers: new Array(faker.datatype.number(5)).fill(null).map(() => createMockOffer()),
+    offers: new Array(faker.datatype.number({min: 1, max: 5})).fill(null).map(() => createMockOffer()),
     nearby: [],
     offer: createMockOffer(),
     sortBy: 'Popular',
@@ -26,7 +26,7 @@ describe('Reducer: Offers slice', () => {
   });
 
   it('should load offers', () => {
-    const mockOffers = new Array(faker.datatype.number(5)).fill(null).map(() => createMockOffer());
+    const mockOffers = new Array(faker.datatype.number({min: 1, max: 5})).fill(null).map(() => createMockOffer());
     expect(offersSlice.reducer(initialState, loadOffers(mockOffers)))
       .toEqual({
         ...initialState,
@@ -35,7 +35,7 @@ describe('Reducer: Offers slice', () => {
   });
 
   it('should load nearby', () => {
-    const mockOffers = new Array(faker.datatype.number(5)).fill(null).map(() => createMockOffer());
+    const mockOffers = new Array(faker.datatype.number({min: 1, max: 5})).fill(null).map(() => createMockOffer());
     expect(offersSlice.reducer(initialState, loadNearby(mockOffers)))
       .toEqual({
         ...initialState,
@@ -53,7 +53,7 @@ describe('Reducer: Offers slice', () => {
   });
 
   it('should load offer reviews', () => {
-    const mockReviews = new Array(faker.datatype.number(5)).fill(null).map(() => createMockReview());
+    const mockReviews = new Array(faker.datatype.number({min: 1, max: 5})).fill(null).map(() => createMockReview());
     expect(offersSlice.reducer(initialState, loadOfferReviews(mockReviews)))
       .toEqual({
         ...initialState,
@@ -92,15 +92,13 @@ describe('Reducer: Offers slice', () => {
   });
 
   it('should change one of offers state to favorite', () => {
-    let expectedOffers = [
+    const expectedOffers = [
       ...initialState.offers
     ];
     expectedOffers[0] = {
       ...expectedOffers[0],
       isFavorite: true
     };
-    // TODO: иногда этот тест падает с ошибкой,
-    // потому что initialState.offers = [] пустой массив
     expect(offersSlice.reducer(initialState, changeOneOfOffersIsFavorite({offerID: initialState.offers[0].id, isFavorite: true})))
       .toEqual({
         ...initialState,
@@ -109,7 +107,7 @@ describe('Reducer: Offers slice', () => {
   });
 
   it('should change one of offers state to not favorite', () => {
-    let expectedOffers = [
+    const expectedOffers = [
       ...initialState.offers
     ];
     expectedOffers[0] = {
@@ -117,9 +115,9 @@ describe('Reducer: Offers slice', () => {
       isFavorite: false
     };
     expect(offersSlice.reducer(initialState, changeOneOfOffersIsFavorite({offerID: initialState.offers[0].id, isFavorite: false})))
-    .toEqual({
-      ...initialState,
-      offers: expectedOffers
-    });
+      .toEqual({
+        ...initialState,
+        offers: expectedOffers
+      });
   });
 });
