@@ -7,7 +7,7 @@ describe('Helper function for validating password', () => {
     // only letters
     expect(validatePasswordForSymbols('aaa')).toBeFalsy();
     // at least 1 number and letter
-    expect(validatePasswordForSymbols('1a')).toBeTruthy()
+    expect(validatePasswordForSymbols('1a')).toBeTruthy();
   });
   it('should validate the password length', () => {
     expect(validatePasswordForLength('1')).toBeFalsy();
