@@ -4,7 +4,7 @@ import {render, screen} from '@testing-library/react';
 import {Provider} from 'react-redux';
 import {configureMockStore} from '@jedmao/redux-mock-store';
 import HistoryRouter from '../history-route/history-route';
-import {AppRoute, AuthorizationStatus} from '../../const';
+import {AppRoute, AuthorizationStatus, NameSpace} from '../../const';
 import PrivateRoute from './private-route';
 
 const mockStore = configureMockStore();
@@ -43,8 +43,14 @@ describe('Component: PrivateRouter', () => {
     expect(screen.queryByText(/Private Route/i)).not.toBeInTheDocument();
   });
 
-  it('should render component for private route when user not authorized', () => {
-    const store = mockStore();
+  it('should render component for private route when user authorized', () => {
+    const store = mockStore({
+      [NameSpace.User]: {
+        authorizationStatus: AuthorizationStatus.Auth,
+        favorites: [],
+        user: null
+      },
+    });
     render(
       <Provider store={store}>
         <HistoryRouter history={history}>
