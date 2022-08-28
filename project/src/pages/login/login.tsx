@@ -8,6 +8,7 @@ import {loginAction} from '../../store/user-slice/user-api-actions';
 import validateEmail from '../../helpers/validate-email';
 import {validatePasswordForLength, validatePasswordForSymbols} from '../../helpers/validate-password';
 import {getAuthorizationStatus} from '../../store/user-slice/user-selectors';
+import Loader from '../../components/ux/loader';
 
 const Login = () => {
   const dispatch = useAppDispatch();
@@ -64,6 +65,10 @@ const Login = () => {
     dispatch(changeCity(randomLocation));
     navigate(AppRoute.Main);
   };
+
+  if(authorizationStatus === AuthorizationStatus.Unknown) {
+    return <Loader />;
+  }
 
   return (
     authorizationStatus === AuthorizationStatus.Auth ?

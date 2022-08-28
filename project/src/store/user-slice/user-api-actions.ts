@@ -1,7 +1,7 @@
 import {createAsyncThunk} from '@reduxjs/toolkit';
 
 import {ApiRoute, authData, AuthorizationStatus, LoadingObject, setUserFavoriteData} from '../../const';
-import {addToUserFavorites, loading, removeFromUserFavorites, setAuthorizationStatus, setError, setUserData, setUserFavorites} from '../actions';
+import {addToUserFavorites, changeOfferIsFavorite, changeOneOfOffersIsFavorite, loading, removeFromUserFavorites, setAuthorizationStatus, setError, setUserData, setUserFavorites} from '../actions';
 import {setToken, unsetToken} from '../../api/token';
 import {AsyncThunkConfigType} from '../../types/state';
 
@@ -70,6 +70,10 @@ export const fetchUserFavorites = createAsyncThunk<void, undefined, AsyncThunkCo
 export const setUserFavoriteAction = createAsyncThunk<void, setUserFavoriteData, AsyncThunkConfigType>(
   'user-slice/setUserFavorite',
   async ({offerID, setFavorite}, {dispatch, extra: api}) => {
+    dispatch(loading({
+      name: LoadingObject.FavoriteToggle,
+      status: true
+    }));
     try {
       const urlSetUserFavorite = ApiRoute.AddToFavorites.replace('{offerID}', String(offerID)).replace('{setFavorite}', String(setFavorite));
       const response = await api.post(urlSetUserFavorite);
@@ -78,10 +82,16 @@ export const setUserFavoriteAction = createAsyncThunk<void, setUserFavoriteData,
       } else {
         dispatch(removeFromUserFavorites(offerID));
       }
+      dispatch(changeOneOfOffersIsFavorite({offerID, isFavorite: response?.data?.isFavorite}));
+      dispatch(changeOfferIsFavorite(response?.data?.isFavorite));
     } catch {
       dispatch(setError('Failed to set favorite'));
     } finally {
       dispatch(fetchUserFavorites);
+      dispatch(loading({
+        name: LoadingObject.FavoriteToggle,
+        status: false
+      }));
     }
   }
 );

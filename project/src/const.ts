@@ -130,7 +130,8 @@ export const enum LoadingObject {
   Nearby = 'nearby',
   Reviews = 'reviews',
   CommentSubmit = 'commentSubmit',
-  Favorites = 'favorites'
+  Favorites = 'favorites',
+  FavoriteToggle = 'favoriteToggle',
 }
 
 // reducer slices

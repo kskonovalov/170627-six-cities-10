@@ -12,7 +12,7 @@ const mockStore = configureMockStore();
 
 const store = mockStore({
   [NameSpace.User]: {
-    authorizationStatus: AuthorizationStatus.Unknown,
+    authorizationStatus: AuthorizationStatus.NoAuth,
     favorites: [],
     user: null
   },

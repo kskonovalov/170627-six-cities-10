@@ -8,7 +8,7 @@ import {checkAuthAction, loginAction, logoutAction, setUserFavoriteAction, fetch
 import {ApiRoute, StatusCode} from '../../const';
 import {State} from '../../types/state';
 import {api} from '../store';
-import {addToUserFavorites, loading, removeFromUserFavorites, setAuthorizationStatus, setError, setUserData, setUserFavorites} from '../actions';
+import {addToUserFavorites, changeOfferIsFavorite, changeOneOfOffersIsFavorite, loading, removeFromUserFavorites, setAuthorizationStatus, setError, setUserData, setUserFavorites} from '../actions';
 
 describe('User slice async action', () => {
   const mockApi = new MockAdapter(api);
@@ -176,7 +176,11 @@ describe('User slice async action', () => {
 
     expect(actions).toEqual([
       setUserFavoriteAction.pending.type,
+      loading.type,
       addToUserFavorites.type,
+      changeOneOfOffersIsFavorite.type,
+      changeOfferIsFavorite.type,
+      loading.type,
       setUserFavoriteAction.fulfilled.type
     ]);
   });
@@ -195,7 +199,11 @@ describe('User slice async action', () => {
 
     expect(actions).toEqual([
       setUserFavoriteAction.pending.type,
+      loading.type,
       removeFromUserFavorites.type,
+      changeOneOfOffersIsFavorite.type,
+      changeOfferIsFavorite.type,
+      loading.type,
       setUserFavoriteAction.fulfilled.type
     ]);
   });
@@ -214,7 +222,9 @@ describe('User slice async action', () => {
 
     expect(actions).toEqual([
       setUserFavoriteAction.pending.type,
+      loading.type,
       setError.type,
+      loading.type,
       setUserFavoriteAction.fulfilled.type
     ]);
   });
