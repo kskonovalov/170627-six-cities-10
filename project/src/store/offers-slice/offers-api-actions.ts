@@ -1,7 +1,7 @@
 import {createAsyncThunk} from '@reduxjs/toolkit';
 
 import {loading, loadNearby, loadOffer, loadOfferReviews, loadOffers} from '../actions';
-import {ApiRoute, LoadingObj} from '../../const';
+import {ApiRoute, LoadingObject} from '../../const';
 import {Offer, Review} from '../../types/types';
 import {AsyncThunkConfigType} from '../../types/state';
 
@@ -9,17 +9,15 @@ export const fetchOffersAction = createAsyncThunk<void, undefined, AsyncThunkCon
   'offers-slice/loadOffers',
   async (_arg, {dispatch, extra: api}) => {
     dispatch(loading({
-      name: LoadingObj.Offers,
+      name: LoadingObject.Offers,
       status: true
     }));
     try {
       const {data} = await api.get<Offer[]>(ApiRoute.Hotels);
       dispatch(loadOffers(data));
-    } catch {
-      dispatch(loadOffers([]));
     } finally {
       dispatch(loading({
-        name: LoadingObj.Offers,
+        name: LoadingObject.Offers,
         status: false
       }));
     }
@@ -30,15 +28,15 @@ export const fetchOfferAction = createAsyncThunk<void, string | number, AsyncThu
   'offers-slice/loadOffer',
   async (offerID, {dispatch, extra: api}) => {
     dispatch(loading({
-      name: LoadingObj.Offer,
+      name: LoadingObject.Offer,
       status: true
     }));
     try {
-      const {data} = await api.get<Offer>(ApiRoute.Offer.replace('{offerID}', `${offerID}`));
+      const {data} = await api.get<Offer>(ApiRoute.Offer.replace('{offerID}', String(offerID)));
       dispatch(loadOffer(data));
     } finally {
       dispatch(loading({
-        name: LoadingObj.Offer,
+        name: LoadingObject.Offer,
         status: false
       }));
     }
@@ -49,15 +47,15 @@ export const fetchNearbyPlacesAction = createAsyncThunk<void, string | number, A
   'offers-slice/loadNearbyPlaces',
   async (offerID, {dispatch, extra: api}) => {
     dispatch(loading({
-      name: LoadingObj.Nearby,
+      name: LoadingObject.Nearby,
       status: true
     }));
     try {
-      const {data} = await api.get<Offer[]>(ApiRoute.Nearby.replace('{offerID}', `${offerID}`));
+      const {data} = await api.get<Offer[]>(ApiRoute.Nearby.replace('{offerID}', String(offerID)));
       dispatch(loadNearby(data));
     } finally {
       dispatch(loading({
-        name: LoadingObj.Nearby,
+        name: LoadingObject.Nearby,
         status: false
       }));
     }
@@ -68,7 +66,7 @@ export const fetchOfferReviewsAction = createAsyncThunk<void, string | number, A
   'offers-slice/loadOfferReviews',
   async (offerID, {dispatch, extra: api}) => {
     dispatch(loading({
-      name: LoadingObj.Reviews,
+      name: LoadingObject.Reviews,
       status: true
     }));
     try {
@@ -76,7 +74,7 @@ export const fetchOfferReviewsAction = createAsyncThunk<void, string | number, A
       dispatch(loadOfferReviews(data));
     } finally {
       dispatch(loading({
-        name: LoadingObj.Reviews,
+        name: LoadingObject.Reviews,
         status: false
       }));
     }
@@ -87,7 +85,7 @@ export const submitReviewAction = createAsyncThunk<void, { offerID: string | num
   'offers-slice/sendReviewAction',
   async (reviewData, {dispatch, extra: api}) => {
     dispatch(loading({
-      name: LoadingObj.CommentSubmit,
+      name: LoadingObject.CommentSubmit,
       status: true
     }));
     try {
@@ -100,7 +98,7 @@ export const submitReviewAction = createAsyncThunk<void, { offerID: string | num
       );
     } finally {
       dispatch(loading({
-        name: LoadingObj.CommentSubmit,
+        name: LoadingObject.CommentSubmit,
         status: false
       }));
     }

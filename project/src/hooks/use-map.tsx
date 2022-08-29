@@ -2,7 +2,7 @@ import {useEffect, useState, MutableRefObject, useRef} from 'react';
 import {Map, TileLayer, LayerGroup} from 'leaflet';
 
 import {City} from '../types/types';
-import {defaultZoom} from '../const';
+import {DEFAULT_ZOOM} from '../const';
 
 type useMapType = [
   map: Map | null,
@@ -24,7 +24,7 @@ function useMap(
           lat: city.lat,
           lng: city.lng
         },
-        zoom: defaultZoom
+        zoom: DEFAULT_ZOOM
       });
 
       const layer = new TileLayer(

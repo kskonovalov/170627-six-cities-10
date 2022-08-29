@@ -1,13 +1,13 @@
 import {createSlice} from '@reduxjs/toolkit';
 
-import {cityLocalStorageName, locations, NameSpace, sortByLocalStorageName} from '../../const';
+import {cityLocalStorageName, LOCATIONS, NameSpace, sortByLocalStorageName} from '../../const';
 import {OffersSlice} from '../../types/state';
 import {changeCity, changeOfferIsFavorite, changeOneOfOffersIsFavorite, loadNearby, loadOffer, loadOfferReviews, loadOffers, setSortBy} from '../actions';
 
-const getUserSavedCity = () => {
+export const getUserSavedCity = () => {
   const savedCity = window.localStorage.getItem(cityLocalStorageName);
-  const foundCity = locations.filter((item) => item.title === savedCity);
-  return foundCity[0] ? foundCity[0] : locations[0];
+  const foundCity = LOCATIONS.filter((item) => item.title === savedCity);
+  return foundCity[0] ? foundCity[0] : LOCATIONS[0];
 };
 
 const initialState: OffersSlice = {

@@ -1,15 +1,18 @@
-import React, {ChangeEvent, useState} from 'react';
-import {Navigate} from 'react-router-dom';
+import React, {ChangeEvent, useState, useMemo} from 'react';
+import {Navigate, useNavigate} from 'react-router-dom';
 
-import {AppRoute, AuthorizationStatus} from '../../const';
+import {AppRoute, AuthorizationStatus, MIN_PASSWORD_LENGTH, LOCATIONS} from '../../const';
 import {useAppSelector, useAppDispatch} from '../../hooks/redux-hooks';
-import {setError} from '../../store/actions';
+import {changeCity, setError} from '../../store/actions';
 import {loginAction} from '../../store/user-slice/user-api-actions';
-import {validateEmail} from '../../helpers/validate-email';
+import validateEmail from '../../helpers/validate-email';
+import {validatePasswordForLength, validatePasswordForSymbols} from '../../helpers/validate-password';
 import {getAuthorizationStatus} from '../../store/user-slice/user-selectors';
+import Loader from '../../components/ux/loader';
 
 const Login = () => {
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
   const authorizationStatus = useAppSelector(getAuthorizationStatus);
 
   type formDataType = {
@@ -20,11 +23,10 @@ const Login = () => {
     email: '',
     password: ''
   });
-  const minPasswordLength = 2;
 
-  const formDataHandler = (e: ChangeEvent<HTMLInputElement>) => {
-    const fieldName = e.target.name;
-    const fieldValue = e.target.value.trim();
+  const formDataHandler = (evt: ChangeEvent<HTMLInputElement>) => {
+    const fieldName = evt.target.name;
+    const fieldValue = evt.target.value.trim();
 
     setFormData({
       ...formData,
@@ -32,12 +34,15 @@ const Login = () => {
     });
   };
 
-  const onSubmitHandle = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  const onSubmitHandle = (evt: React.FormEvent<HTMLFormElement>) => {
+    evt.preventDefault();
     const errors: string[] = [];
 
-    if (formData.password.length <= minPasswordLength) {
-      errors.push(`Password length should be more than ${minPasswordLength} symbols`);
+    if (!validatePasswordForLength(formData.password)) {
+      errors.push(`Password length should be more than ${MIN_PASSWORD_LENGTH} symbols`);
+    }
+    if (!validatePasswordForSymbols(formData.password)) {
+      errors.push('Password should contain at least one number and letter');
     }
     if (!validateEmail(formData.email)) {
       errors.push('Should be valid e-mail address!');
@@ -53,6 +58,18 @@ const Login = () => {
     }
   };
 
+  const randomLocation = useMemo(() => LOCATIONS[Math.floor(Math.random() * LOCATIONS.length)], []);
+
+  const cityButtonHandler = (evt: React.MouseEvent) => {
+    evt.preventDefault();
+    dispatch(changeCity(randomLocation));
+    navigate(AppRoute.Main);
+  };
+
+  if(authorizationStatus === AuthorizationStatus.Unknown) {
+    return <Loader />;
+  }
+
   return (
     authorizationStatus === AuthorizationStatus.Auth ?
       <Navigate to={AppRoute.Main}/>
@@ -62,7 +79,7 @@ const Login = () => {
           <div className="page__login-container container">
             <section className="login">
               <h1 className="login__title">Sign in</h1>
-              <form className="login__form form" action="#" method="post" onSubmit={onSubmitHandle}>
+              <form className="login__form form" action="#" method="post" onSubmit={onSubmitHandle} data-testid="login-form">
                 <div className="login__input-wrapper form__input-wrapper">
                   <label className="visually-hidden">E-mail</label>
                   <input
@@ -92,9 +109,9 @@ const Login = () => {
             </section>
             <section className="locations locations--login locations--current">
               <div className="locations__item">
-                <span className="locations__item-link">
-                  <span>Amsterdam</span>
-                </span>
+                <button className="locations__item-link" onClick={cityButtonHandler}>
+                  <span>{randomLocation.title}</span>
+                </button>
               </div>
             </section>
           </div>

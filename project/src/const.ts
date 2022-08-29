@@ -1,6 +1,6 @@
 import {City} from './types/types';
 
-/* Application routes */
+// Application routes
 export const enum AppRoute {
   Main = '/',
   Login = '/login',
@@ -10,7 +10,7 @@ export const enum AppRoute {
   NotFound = '*',
 }
 
-/* API routes */
+// API routes
 // https://10.react.pages.academy/six-cities/spec
 export const enum ApiRoute {
   // Hotels
@@ -27,14 +27,14 @@ export const enum ApiRoute {
   Logout = '/logout', // DELETE
 }
 
-/* Authorization status */
+// Authorization status
 export const enum AuthorizationStatus {
   Auth = 'AUTH',
   NoAuth = 'NO_AUTH',
   Unknown = 'UNKNOWN'
 }
 
-/* Icons */
+// Icons
 type Icon = {
   iconUrl: string,
   iconSize: [number, number],
@@ -51,10 +51,10 @@ export const activeIcon: Icon = {
   iconAnchor: [20, 40]
 };
 
-export const defaultZoom = 13;
+export const DEFAULT_ZOOM = 13;
 
-/* City centers and coordinates */
-export const locations: City[] = [
+// City centers and coordinates
+export const LOCATIONS: City[] = [
   {
     title: 'Paris',
     lat: 48.856613,
@@ -87,7 +87,7 @@ export const locations: City[] = [
   },
 ];
 
-/* Order / Sort by */
+// Order / Sort by
 type orderType = {
   [key: string]: string
 };
@@ -100,12 +100,7 @@ export const order: orderType = {
 export const sortByLocalStorageName = 'sortBy';
 export const cityLocalStorageName = 'city';
 
-/* User login */
-export type userData = {
-  id: number,
-  email: string,
-  token: string
-}
+// User login
 export type authData = {
   login: string,
   password: string,
@@ -115,27 +110,28 @@ export type setUserFavoriteData = {
   setFavorite: 0 | 1
 }
 
-export const backendUrl = 'https://10.react.pages.academy/six-cities';
-export const requestTimeout = 5000; // ms
+export const BACKEND_URL = 'https://10.react.pages.academy/six-cities';
+export const REQUEST_TIMEOUT = 5000; // ms
 
 // based on https://www.npmjs.com/package/http-status-codes
-export const enum StatusCodes {
+export const enum StatusCode {
   BAD_REQUEST = 400,
   UNAUTHORIZED = 401,
   NOT_FOUND = 404,
   OK = 200,
 }
 
-export const defaultErrorText = 'Something went wrong! Please try again later';
+export const DEFAULT_ERROR_TEXT = 'Something went wrong! Please try again later';
 
 // 'loading' status for different components/things
-export const enum LoadingObj {
+export const enum LoadingObject {
   Offers = 'offers',
   Offer = 'offer',
   Nearby = 'nearby',
   Reviews = 'reviews',
   CommentSubmit = 'commentSubmit',
-  Favorites = 'favorites'
+  Favorites = 'favorites',
+  FavoriteToggle = 'favoriteToggle',
 }
 
 // reducer slices
@@ -146,8 +142,14 @@ export const enum NameSpace {
 }
 
 // type of the cards
-export const enum CardsType {
+export const enum CardType {
   Main = 'main',
   Room = 'room',
   Favorite = 'favorite'
 }
+
+// comment length
+export const MIN_COMMENT_LENGTH = 50;
+export const MAX_COMMENT_LENGTH = 300;
+
+export const MIN_PASSWORD_LENGTH = 2;

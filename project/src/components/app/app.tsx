@@ -1,5 +1,5 @@
 import React, {useEffect} from 'react';
-import {BrowserRouter, Route, Routes} from 'react-router-dom';
+import {Route, Routes} from 'react-router-dom';
 import {NotificationContainer, NotificationManager} from 'react-notifications';
 import 'react-notifications/lib/notifications.css';
 
@@ -8,9 +8,8 @@ import Login from '../../pages/login/login';
 import Favorites from '../../pages/favorites/favorites';
 import Room from '../../pages/room/room';
 import NotFound from '../../pages/not-found/not-found';
-import PrivateRoute from '../private-route';
+import PrivateRoute from '../private-route/private-route';
 import Layout from '../ui/layout/layout';
-import ScrollTop from '../ux/scroll-top';
 import {AppRoute, AuthorizationStatus} from '../../const';
 import {useAppDispatch, useAppSelector} from '../../hooks/redux-hooks';
 import {setError} from '../../store/actions';
@@ -42,8 +41,7 @@ const App = () => {
   }, [error, dispatch]);
 
   return (
-    <BrowserRouter>
-      <ScrollTop/>
+    <>
       <NotificationContainer/>
       <Routes>
         <Route path={AppRoute.Main} element={<Layout/>}>
@@ -59,7 +57,7 @@ const App = () => {
           <Route path={AppRoute.NotFound} element={<NotFound/>}/>
         </Route>
       </Routes>
-    </BrowserRouter>
+    </>
   );
 };
 

@@ -11,7 +11,7 @@ type LogoProps = {
 
 const Logo = ({location, width, height}: LogoProps) => (
   <Link className={`${location}__logo-link ${location}__logo-link--active`} to={AppRoute.Main}>
-    <img className={`${location}__logo`} src="img/logo.svg" alt="6 cities logo" width={width} height={height}/>
+    <img className={`${location}__logo`} src="img/logo.svg" alt="6 cities logo" width={width} height={height} data-testid="logo"/>
   </Link>
 );
 
