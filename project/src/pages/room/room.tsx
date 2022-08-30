@@ -165,7 +165,6 @@ const Room = () => {
               </section>
             </div>
           </div>
-          {nearbyIsLoading && <Loader/>}
           {nearby.length > 0 &&
             <Map containerClassName='property__map map' city={city} points={points} selectedPointID={offer.id}/>}
         </section>

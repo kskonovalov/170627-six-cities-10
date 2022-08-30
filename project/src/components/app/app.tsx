@@ -10,7 +10,7 @@ import Room from '../../pages/room/room';
 import NotFound from '../../pages/not-found/not-found';
 import PrivateRoute from '../private-route/private-route';
 import Layout from '../ui/layout/layout';
-import {AppRoute, AuthorizationStatus} from '../../const';
+import {AppRoute, AuthorizationStatus, ERROR_SHOW_MS} from '../../const';
 import {useAppDispatch, useAppSelector} from '../../hooks/redux-hooks';
 import {setError} from '../../store/actions';
 import {getAuthorizationStatus} from '../../store/user-slice/user-selectors';
@@ -32,10 +32,10 @@ const App = () => {
   // if there's error and error is not empty, just show the error and remove it from the store
   useEffect(() => {
     if (typeof error === 'string' || error instanceof String) {
-      NotificationManager.error(error, 'Error', 3000);
+      NotificationManager.error(error, 'Error', ERROR_SHOW_MS);
     }
     if (Array.isArray(error)) {
-      error.map((errorItem) => NotificationManager.error(errorItem, 'Error', 3000));
+      error.map((errorItem) => NotificationManager.error(errorItem, 'Error', ERROR_SHOW_MS));
     }
     dispatch(setError(null));
   }, [error, dispatch]);
