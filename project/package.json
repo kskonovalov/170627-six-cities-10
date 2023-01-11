@@ -20,13 +20,25 @@
     "build": "react-scripts build",
     "test": "react-scripts test --passWithNoTests --coverage",
     "eject": "react-scripts eject",
-    "lint": "eslint --ext .tsx --ext .ts src/"
+    "lint": "eslint --ext .tsx --ext .ts src/",
+    "storybook": "start-storybook -p 6006 -s public",
+    "build-storybook": "build-storybook -s public"
   },
   "eslintConfig": {
     "extends": [
       "react-app",
       "react-app/jest",
       "htmlacademy/react-typescript"
+    ],
+    "overrides": [
+      {
+        "files": [
+          "**/*.stories.*"
+        ],
+        "rules": {
+          "import/no-anonymous-default-export": "off"
+        }
+      }
     ]
   },
   "browserslist": {
@@ -44,6 +56,16 @@
   "devDependencies": {
     "@faker-js/faker": "^7.4.0",
     "@jedmao/redux-mock-store": "^3.0.5",
+    "@storybook/addon-actions": "^6.5.15",
+    "@storybook/addon-essentials": "^6.5.15",
+    "@storybook/addon-interactions": "^6.5.15",
+    "@storybook/addon-links": "^6.5.15",
+    "@storybook/builder-webpack5": "^6.5.15",
+    "@storybook/manager-webpack5": "^6.5.15",
+    "@storybook/node-logger": "^6.5.15",
+    "@storybook/preset-create-react-app": "^4.1.2",
+    "@storybook/react": "^6.5.15",
+    "@storybook/testing-library": "^0.0.13",
     "@testing-library/jest-dom": "^5.16.4",
     "@testing-library/react": "^13.3.0",
     "@testing-library/user-event": "^14.2.0",
@@ -55,9 +77,12 @@
     "@types/react-dom": "^18.0.6",
     "@types/react-redux": "^7.1.24",
     "axios-mock-adapter": "^1.19.0",
+    "babel-plugin-named-exports-order": "^0.0.2",
     "eslint-config-htmlacademy": "^6.0.0",
     "faker": "^5.5.3",
+    "prop-types": "^15.8.1",
     "redux-devtools-extension": "2.13",
-    "typescript": "^4.7.4"
+    "typescript": "^4.7.4",
+    "webpack": "^5.75.0"
   }
 }

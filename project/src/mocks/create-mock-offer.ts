@@ -16,7 +16,10 @@ const createMockOffer = (): Offer => ({
   'title': faker.hacker.adjective(),
   'isFavorite': faker.datatype.boolean(),
   'isPremium': faker.datatype.boolean(),
-  'rating': faker.datatype.number(),
+  'rating': faker.datatype.number({
+    min: 1,
+    max: 5
+  }),
   'type': faker.hacker.adjective(),
   'bedrooms': faker.datatype.number(),
   'maxAdults': faker.datatype.number(),
