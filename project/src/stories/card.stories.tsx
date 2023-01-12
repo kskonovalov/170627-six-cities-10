@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { ComponentStory, ComponentMeta } from '@storybook/react';
+import React from 'react';
+import {ComponentStory, ComponentMeta} from '@storybook/react';
 
 import Card from '../components/ui/card/card';
 import createMockOffer from '../mocks/create-mock-offer';
@@ -50,7 +50,7 @@ SimpleCard.args = {
 export const SimpleActiveCard = Template.bind({});
 SimpleActiveCard.args = {
   ...SimpleCard.args,
-   isActive: true
+  isActive: true
 };
 
 export const FavoriteCard = Template.bind({});
